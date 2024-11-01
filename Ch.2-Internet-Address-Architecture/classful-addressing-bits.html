@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classful Addressing Diagram</title>
+    <style>
+         body {
+            font-family: 'Poppins', sans-serif;
+            background: #1a1a2e;
+            margin: 0;
+            padding: 20px;
+            color: #fff;
+        }
+
+        /* Container with Extra Bottom Padding */
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #007bff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+    position: relative;
+    padding-bottom: 50px; /* Extra bottom padding */
+    border-bottom: 8px solid #e2e8f0; /* Thick border-bottom */
+}
+
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            background: #0f3460;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .intro-text {
+            background: #1f4287;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 6px solid #21e6c1;
+            color: #fff;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .intro-text ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .intro-text li {
+            margin: 5px 0;
+            color: #21e6c1;
+        }
+
+        .class-block {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .class-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Distinct background colors for each class */
+        .class-block:nth-child(3) { 
+            background: linear-gradient(145deg, #2d5a88 0%, #1a365d 100%);
+            border: 2px solid #4299e1;
+        }
+        .class-block:nth-child(4) { 
+            background: linear-gradient(145deg, #276749 0%, #1c4532 100%);
+            border: 2px solid #48bb78;
+        }
+        .class-block:nth-child(5) { 
+            background: linear-gradient(145deg, #c05621 0%, #7b341e 100%);
+            border: 2px solid #ed8936;
+        }
+        .class-block:nth-child(6) { 
+            background: linear-gradient(145deg, #6b46c1 0%, #44337a 100%);
+            border: 2px solid #9f7aea;
+        }
+        .class-block:nth-child(7) { 
+            background: linear-gradient(145deg, #b83280 0%, #702459 100%);
+            border: 2px solid #ed64a6;
+        }
+
+        .class-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 25px;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .class-block:nth-child(3) .class-title { background: #4299e1; }
+        .class-block:nth-child(4) .class-title { background: #48bb78; }
+        .class-block:nth-child(5) .class-title { background: #ed8936; }
+        .class-block:nth-child(6) .class-title { background: #9f7aea; }
+        .class-block:nth-child(7) .class-title { background: #ed64a6; }
+
+        .bit-markers {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #21e6c1;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .address-box {
+            display: flex;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            height: 80px;
+            margin: 10px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .leading-bits {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            min-width: 60px;
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .segment {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            min-width: 100px;
+            border-right: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .segment:last-child {
+            border-right: none;
+        }
+
+        .segment-text {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .note {
+            font-size: 14px;
+            color: #21e6c1;
+            margin-top: 15px;
+            padding: 10px 15px;
+            background: rgba(33, 230, 193, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #21e6c1;
+        }
+
+        .example {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 14px;
+            color: #fff;
+            border-left: 4px solid #fff;
+        }
+
+        .bit-number {
+            position: relative;
+            cursor: help;
+            background: rgba(33, 230, 193, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip:hover::after,
+        .bit-number:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 200px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .class-block {
+                padding: 15px;
+            }
+
+            .segment-text {
+                font-size: 12px;
+            }
+
+            .leading-bits {
+                min-width: 40px;
+                font-size: 16px;
+            }
+        }
+    </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
+</head>
+<body>
+    <div class="container">
+        <h1>Classful Addressing Diagram</h1>
+
+        <div class="intro-text">
+            <strong>Understanding IP Address Classes:</strong><br>
+            An IP address is 32 bits long, divided into different sections for network and host identification. The numbers (0, 15, 16, 31) show bit positions in the address, where:
+            <ul>
+                <li>0 is the first bit</li>
+                <li>15-16 marks the middle section</li>
+                <li>31 is the last bit</li>
+            </ul>
+            Hover over elements for more detailed explanations!
+        </div>
+
+        <div class="class-block">
+            <div class="class-title">Class A</div>
+            <div class="bit-markers">
+                <span class="bit-number" data-tooltip="First bit (always 0 for Class A)">0</span>
+                <span class="bit-number" data-tooltip="Bits 15-16 separate network and host portions">15 16</span>
+                <span class="bit-number" data-tooltip="Last bit (32nd bit)">31</span>
+            </div>
+            <div class="address-box">
+                <div class="leading-bits tooltip" data-tooltip="First bit is always 0, allowing for 126 possible networks">0</div>
+                <div class="segment tooltip" data-tooltip="Network portion: identifies the network (1-126)">
+                    <div class="segment-text">Net Number<br>(8 bits; 7 free)</div>
+                </div>
+                <div class="segment tooltip" data-tooltip="Host portion: can have up to 16,777,214 hosts" style="flex-grow: 1">
+                    <div class="segment-text">Host (24 bits)</div>
+                </div>
+            </div>
+            <div class="note">Class A is for very large networks.</div>
+            <div class="example">Example: 10.0.0.0 to 126.255.255.255</div>
+        </div>
+
+        <div class="class-block">
+            <div class="class-title">Class B</div>
+            <div class="bit-markers">
+                <span class="bit-number" data-tooltip="First two bits (always 10 for Class B)">10</span>
+                <span class="bit-number" data-tooltip="Bits 15-16 separate network and host portions">15 16</span>
+                <span class="bit-number" data-tooltip="Last bit (32nd bit)">31</span>
+            </div>
+            <div class="address-box">
+                <div class="leading-bits tooltip" data-tooltip="First two bits are always 10">10</div>
+                <div class="segment tooltip" data-tooltip="Network portion: identifies up to 16,384 networks">
+                    <div class="segment-text">Net Number<br>(16 bits; 14 free)</div>
+                </div>
+                <div class="segment tooltip" data-tooltip="Host portion: can have up to 65,534 hosts" style="flex-grow: 1">
+                    <div class="segment-text">Host (16 bits)</div>
+                </div>
+            </div>
+            <div class="note">Class B is suitable for medium to large networks.</div>
+            <div class="example">Example: 128.0.0.0 to 191.255.255.255</div>
+        </div>
+
+        <div class="class-block">
+            <div class="class-title">Class C</div>
+            <div class="bit-markers">
+                <span class="bit-number" data-tooltip="First three bits (always 110 for Class C)">110</span>
+                <span class="bit-number" data-tooltip="Bits 15-16 are part of network portion">15 16</span>
+                <span class="bit-number" data-tooltip="Last bit (32nd bit)">31</span>
+            </div>
+            <div class="address-box">
+                <div class="leading-bits tooltip" data-tooltip="First three bits are always 110">110</div>
+                <div class="segment tooltip" data-tooltip="Network portion: identifies up to 2,097,152 networks">
+                    <div class="segment-text">Net Number<br>(24 bits; 21 free)</div>
+                </div>
+                <div class="segment tooltip" data-tooltip="Host portion: can have up to 254 hosts" style="flex-grow: 1">
+                    <div class="segment-text">Host (8 bits)</div>
+                </div>
+            </div>
+            <div class="note">Class C is for smaller networks.</div>
+            <div class="example">Example: 192.0.0.0 to 223.255.255.255</div>
+        </div>
+
+        <div class="class-block">
+            <div class="class-title">Class D</div>
+            <div class="bit-markers">
+                <span class="bit-number" data-tooltip="First four bits (always 1110 for Class D)">1110</span>
+            </div>
+            <div class="address-box">
+                <div class="leading-bits tooltip" data-tooltip="First four bits are always 1110">1110</div>
+                <div class="segment tooltip" data-tooltip="Used for multicast groups (sending data to multiple devices)" style="flex-grow: 1">
+                    <div class="segment-text">Multicast Address (32 bits; 28 free)</div>
+                </div>
+            </div>
+            <div class="note">Class D is used for multicast groups.</div>
+            <div class="example">Example: 224.0.0.0 to 239.255.255.255</div>
+        </div>
+
+        <div class="class-block">
+            <div class="class-title">Class E</div>
+            <div class="bit-markers">
+                <span class="bit-number" data-tooltip="First four bits (always 1111 for Class E)">1111</span>
+            </div>
+            <div class="address-box">
+                <div class="leading-bits tooltip" data-tooltip="First four bits are always 1111">1111</div>
+                <div class="segment tooltip" data-tooltip="Reserved for experimental use only" style="flex-grow: 1">
+                    <div class="segment-text">Reserved (32 bits; 28 free)</div>
+                </div>
+            </div>
+            <div class="note">Class E is reserved for experimental use.</div>
+            <div class="example">Example: 240.0.0.0 to 255.255.255.255</div>
+        </div>
+    </div>
+</body>
+</html>

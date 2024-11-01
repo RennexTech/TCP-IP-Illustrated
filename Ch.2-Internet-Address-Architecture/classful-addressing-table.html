@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classful Addressing Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        @media (max-width: 600px) {
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Classful Addressing Table</h1>
+    
+    <table>
+        <tr>
+            <th>Class</th>
+            <th>Address Range</th>
+            <th>Leading Bits</th>
+            <th>Default Subnet Mask</th>
+            <th>Purpose</th>
+            <th>Network Bits</th>
+            <th>Host Bits</th>
+            <th>Networks Available</th>
+            <th>Hosts per Network</th>
+            <th>% of Address Space</th>
+        </tr>
+        <tr>
+            <td>A</td>
+            <td>0.0.0.0 - 127.255.255.255</td>
+            <td>0</td>
+            <td>255.0.0.0 (/8)</td>
+            <td>Unicast</td>
+            <td>8</td>
+            <td>24</td>
+            <td>126*</td>
+            <td>16,777,214**</td>
+            <td>50%</td>
+        </tr>
+        <tr>
+            <td>B</td>
+            <td>128.0.0.0 - 191.255.255.255</td>
+            <td>10</td>
+            <td>255.255.0.0 (/16)</td>
+            <td>Unicast</td>
+            <td>16</td>
+            <td>16</td>
+            <td>16,384</td>
+            <td>65,534**</td>
+            <td>25%</td>
+        </tr>
+        <tr>
+            <td>C</td>
+            <td>192.0.0.0 - 223.255.255.255</td>
+            <td>110</td>
+            <td>255.255.255.0 (/24)</td>
+            <td>Unicast</td>
+            <td>24</td>
+            <td>8</td>
+            <td>2,097,152</td>
+            <td>254**</td>
+            <td>12.5%</td>
+        </tr>
+        <tr>
+            <td>D</td>
+            <td>224.0.0.0 - 239.255.255.255</td>
+            <td>1110</td>
+            <td>N/A</td>
+            <td>Multicast</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>E</td>
+            <td>240.0.0.0 - 255.255.255.255</td>
+            <td>1111</td>
+            <td>N/A</td>
+            <td>Reserved/Experimental</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+    </table>
+
+</body>
+</html>
