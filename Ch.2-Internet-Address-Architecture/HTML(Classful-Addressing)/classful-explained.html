@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .intro {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .class-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .class-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .class-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .class-range {
+            color: #666;
+            font-family: monospace;
+        }
+
+        .bit-diagram {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        .features {
+            margin-top: 15px;
+        }
+
+        .features li {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .example-box {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        .warning {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="intro">
+        <h1>Understanding IP Address Classes: A Visual Guide</h1>
+        <p>IP addresses are 32-bit numbers divided into different classes (A through E). Each class has specific characteristics that determine how many networks and hosts it can support. This guide explains each class in detail.</p>
+    </div>
+
+    <div class="class-container">
+        <div class="class-card">
+            <div class="class-header">
+                <div class="class-name">Class A</div>
+                <div class="class-range">1.0.0.0 - 126.255.255.255</div>
+            </div>
+            <div class="bit-diagram">
+                0NNNNNNN.HHHHHHHH.HHHHHHHH.HHHHHHHH
+                ├─Net ID─┤├─────────Host ID────────┤
+            </div>
+            <ul class="features">
+                <li><strong>First bit:</strong> Always 0</li>
+                <li><strong>Network bits:</strong> 8 (first octet)</li>
+                <li><strong>Host bits:</strong> 24 (last three octets)</li>
+                <li><strong>Networks available:</strong> 126 (2^7 - 2)</li>
+                <li><strong>Hosts per network:</strong> 16,777,214 (2^24 - 2)</li>
+            </ul>
+            <div class="example-box">
+                <strong>Example:</strong> 10.45.12.87 belongs to network 10.0.0.0
+            </div>
+        </div>
+
+        <div class="class-card">
+            <div class="class-header">
+                <div class="class-name">Class B</div>
+                <div class="class-range">128.0.0.0 - 191.255.255.255</div>
+            </div>
+            <div class="bit-diagram">
+                10NNNNNN.NNNNNNNN.HHHHHHHH.HHHHHHHH
+                ├────Net ID────┤├────Host ID───────┤
+            </div>
+            <ul class="features">
+                <li><strong>First bits:</strong> Always 10</li>
+                <li><strong>Network bits:</strong> 16 (first two octets)</li>
+                <li><strong>Host bits:</strong> 16 (last two octets)</li>
+                <li><strong>Networks available:</strong> 16,384 (2^14)</li>
+                <li><strong>Hosts per network:</strong> 65,534 (2^16 - 2)</li>
+            </ul>
+            <div class="example-box">
+                <strong>Example:</strong> 172.16.45.12 belongs to network 172.16.0.0
+            </div>
+        </div>
+
+        <div class="class-card">
+            <div class="class-header">
+                <div class="class-name">Class C</div>
+                <div class="class-range">192.0.0.0 - 223.255.255.255</div>
+            </div>
+            <div class="bit-diagram">
+                110NNNNN.NNNNNNNN.NNNNNNNN.HHHHHHHH
+                ├──────────Net ID──────────┤├─Host─┤
+            </div>
+            <ul class="features">
+                <li><strong>First bits:</strong> Always 110</li>
+                <li><strong>Network bits:</strong> 24 (first three octets)</li>
+                <li><strong>Host bits:</strong> 8 (last octet)</li>
+                <li><strong>Networks available:</strong> 2,097,152 (2^21)</li>
+                <li><strong>Hosts per network:</strong> 254 (2^8 - 2)</li>
+            </ul>
+            <div class="example-box">
+                <strong>Example:</strong> 192.168.1.45 belongs to network 192.168.1.0
+            </div>
+        </div>
+
+        <div class="class-card">
+            <div class="class-header">
+                <div class="class-name">Class D (Multicast)</div>
+                <div class="class-range">224.0.0.0 - 239.255.255.255</div>
+            </div>
+            <div class="bit-diagram">
+                1110MMMM.MMMMMMMM.MMMMMMMM.MMMMMMMM
+                ├──────────Multicast Address────────┤
+            </div>
+            <ul class="features">
+                <li><strong>First bits:</strong> Always 1110</li>
+                <li><strong>Purpose:</strong> Reserved for multicast groups</li>
+                <li><strong>Usage:</strong> Send packets to multiple destinations simultaneously</li>
+            </ul>
+            <div class="warning">
+                Not used for regular host addressing
+            </div>
+        </div>
+
+        <div class="class-card">
+            <div class="class-header">
+                <div class="class-name">Class E (Reserved)</div>
+                <div class="class-range">240.0.0.0 - 255.255.255.255</div>
+            </div>
+            <div class="bit-diagram">
+                1111RRRR.RRRRRRRR.RRRRRRRR.RRRRRRRR
+                ├───────Reserved for Research───────┤
+            </div>
+            <ul class="features">
+                <li><strong>First bits:</strong> Always 1111</li>
+                <li><strong>Purpose:</strong> Reserved for experimental use</li>
+                <li><strong>Usage:</strong> Research and development only</li>
+            </ul>
+            <div class="warning">
+                Not available for public use on the Internet
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classful Addressing Explanation</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f3f4f6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 28px;
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    .intro-text {
+        background-color: #e3f2fd;
+        padding: 15px;
+        border-left: 4px solid #007bff;
+        border-radius: 5px;
+        margin-bottom: 30px;
+    }
+
+    .class-block {
+        background-color: #f9fafb;
+        padding: 20px;
+        border-left: 5px solid #007bff;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        transition: box-shadow 0.3s;
+    }
+
+    .class-block:hover {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .class-title {
+        font-size: 22px;
+        color: #0056b3;
+        margin-bottom: 15px;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #4a4a4a;
+        margin: 10px 0;
+    }
+
+    .example {
+        margin-top: 10px;
+        padding: 8px 12px;
+        background-color: #e9ecef;
+        border-radius: 4px;
+        font-size: 15px;
+        font-family: monospace;
+        color: #333;
+    }
+
+    .note {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-left: 4px solid #6c757d;
+        border-radius: 6px;
+        margin-top: 30px;
+    }
+
+    code {
+        font-family: Consolas, monospace;
+        background-color: #e3e4e8;
+        padding: 2px 4px;
+        border-radius: 4px;
+        color: #d63384;
+    }
+    .leading-bits-info, .class-leading-bits, .importance-leading-bits, .practical-example, .historical-context {
+        background-color: #f1f8ff;
+        padding: 15px;
+        border-left: 5px solid #1a73e8;
+        border-radius: 6px;
+        margin-bottom: 25px;
+    }
+
+    h2, h3, h4 {
+        color: #1a73e8;
+    }
+
+    h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    h3 {
+        font-size: 20px;
+        margin-top: 25px;
+        margin-bottom: 10px;
+    }
+
+    h4 {
+        font-size: 18px;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .class-leading-bits .class-block {
+        background-color: #ffffff;
+        border-left: 5px solid #007bff;
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: box-shadow 0.3s;
+    }
+
+    .class-leading-bits .class-block:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    ul {
+        padding-left: 20px;
+        margin: 10px 0;
+    }
+
+    li {
+        font-size: 15px;
+        color: #4a4a4a;
+        line-height: 1.6;
+    }
+
+    .practical-example ul, .importance-leading-bits ul {
+        padding-left: 20px;
+    }
+
+    .practical-example p, .importance-leading-bits p, .historical-context p {
+        margin-top: 10px;
+    }
+
+    /* Code block styling for examples */
+    code {
+        font-family: Consolas, monospace;
+        background-color: #e6f4ea;
+        padding: 2px 5px;
+        border-radius: 4px;
+        color: #d63384;
+    }
+
+    .example, .importance-leading-bits ul, .practical-example ul {
+        background-color: #e9ecef;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 15px;
+        color: #333;
+    }
+
+}
+</style>
+
+</head>
+<body>
+
+    <div class="container">
+        <h1>Classful IP Addressing</h1>
+
+        <div class="intro-text">
+            <p><strong>Understanding Classful IP Addressing:</strong></p>
+            <p>Classful addressing divides the IPv4 address space into five classes (A, B, C, D, and E), each with specific purposes and network/host configurations. IP addresses are 32 bits in length, where the number and position of bits determine the class. Here, we'll explain the structure and purpose of each class.</p>
+        </div>
+
+        <!-- Class A -->
+        <div class="class-block">
+            <h2 class="class-title">Class A</h2>
+            <p><strong>Bit Pattern:</strong> The first bit is always <strong>0</strong>, allowing for 128 possible network addresses, of which 126 are usable. Bits from 1-7 define the network, and bits from 8-31 define the host.</p>
+            <p><strong>Range:</strong> 0.0.0.0 to 127.255.255.255</p>
+            <p><strong>Usage:</strong> Designed for very large networks, such as ISPs or large organizations. It supports over 16 million hosts within each network.</p>
+            <p><strong>Example:</strong> IP address <strong>10.0.0.1</strong> in Class A represents a large-scale network with many hosts.</p>
+            <div class="example">Address Structure: <code>Network (8 bits) | Host (24 bits)</code></div>
+        </div>
+
+        <!-- Class B -->
+        <div class="class-block">
+            <h2 class="class-title">Class B</h2>
+            <p><strong>Bit Pattern:</strong> The first two bits are always <strong>10</strong>, providing 16,384 possible networks. Bits 2-15 define the network, and bits 16-31 define the host.</p>
+            <p><strong>Range:</strong> 128.0.0.0 to 191.255.255.255</p>
+            <p><strong>Usage:</strong> Intended for medium to large-sized networks, such as universities or large business networks. Each network can have up to 65,534 hosts.</p>
+            <p><strong>Example:</strong> IP address <strong>172.16.0.1</strong> in Class B represents a network that supports thousands of hosts.</p>
+            <div class="example">Address Structure: <code>Network (16 bits) | Host (16 bits)</code></div>
+        </div>
+
+        <!-- Class C -->
+        <div class="class-block">
+            <h2 class="class-title">Class C</h2>
+            <p><strong>Bit Pattern:</strong> The first three bits are always <strong>110</strong>, giving 2,097,152 possible networks. Bits 3-23 define the network, and bits 24-31 define the host.</p>
+            <p><strong>Range:</strong> 192.0.0.0 to 223.255.255.255</p>
+            <p><strong>Usage:</strong> Ideal for small networks, such as local businesses. Each Class C network can support up to 254 hosts.</p>
+            <p><strong>Example:</strong> IP address <strong>192.168.0.1</strong> in Class C is commonly used in home networks, supporting a limited number of devices.</p>
+            <div class="example">Address Structure: <code>Network (24 bits) | Host (8 bits)</code></div>
+        </div>
+
+        <!-- Class D -->
+        <div class="class-block">
+            <h2 class="class-title">Class D</h2>
+            <p><strong>Bit Pattern:</strong> The first four bits are always <strong>1110</strong>, and Class D does not split between network and host portions because it is used exclusively for multicast.</p>
+            <p><strong>Range:</strong> 224.0.0.0 to 239.255.255.255</p>
+            <p><strong>Usage:</strong> Reserved for multicast addresses, which are used to send data to multiple devices simultaneously, such as in live video streaming or online gaming.</p>
+            <p><strong>Example:</strong> IP address <strong>224.0.0.1</strong> in Class D can be used for a multicast group in a video conference.</p>
+            <div class="example">Address Structure: <code>Multicast Address (32 bits)</code></div>
+        </div>
+
+        <!-- Class E -->
+        <div class="class-block">
+            <h2 class="class-title">Class E</h2>
+            <p><strong>Bit Pattern:</strong> The first four bits are always <strong>1111</strong>. Similar to Class D, it has no distinction between network and host portions and is set aside for research and experimental purposes.</p>
+            <p><strong>Range:</strong> 240.0.0.0 to 255.255.255.255</p>
+            <p><strong>Usage:</strong> Reserved for experimental and research purposes. It is not intended for general use on the internet.</p>
+            <p><strong>Example:</strong> IP addresses in this range, such as <strong>250.0.0.1</strong>, are typically restricted and not assigned in production environments.</p>
+            <div class="example">Address Structure: <code>Experimental Use Only (32 bits)</code></div>
+        </div>
+
+        <!-- Summary Note -->
+        <div class="note">
+            <p><strong>Summary:</strong> Classful addressing was a foundational model in the early days of IP addressing, where each class served a distinct purpose based on the size of the network. Modern networks often use classless addressing (CIDR) to allow flexible and efficient IP address allocation.</p>
+        </div>
+         <!-- New Section: Understanding Leading Bits -->
+        <div class="leading-bits-info">
+            <h2>Understanding IP Address Leading Bits in Classful Networking</h2>
+            <p><strong>What Are Leading Bits?</strong> Leading bits are the first few bits in an IP address that determine which class (A, B, C, D, or E) the IP address belongs to. Think of them as "class identifiers" - they're like a label at the start of each IP address that tells networking equipment what kind of address it's dealing with.</p>
+        </div>
+
+        <!-- Breaking Down Each Class's Leading Bits -->
+        <div class="class-leading-bits">
+            <h3>Breaking Down Each Class's Leading Bits</h3>
+
+            <div class="class-block">
+                <h4>Class A: Leading Bit = 0</h4>
+                <p><strong>First bit:</strong> Always 0</p>
+                <p><strong>Binary pattern:</strong> 0xxxxxxx (where x can be either 0 or 1)</p>
+                <p><strong>Range:</strong> Any IP address starting with a number between 1-126 in the first octet</p>
+                <p><strong>Example:</strong> IP address <code>10.0.0.1</code> in binary starts with 00001010... Since it starts with 0, it's Class A.</p>
+            </div>
+
+            <div class="class-block">
+                <h4>Class B: Leading Bits = 10</h4>
+                <p><strong>First two bits:</strong> Always 10</p>
+                <p><strong>Binary pattern:</strong> 10xxxxxx</p>
+                <p><strong>Range:</strong> Any IP address starting with a number between 128-191 in the first octet</p>
+                <p><strong>Example:</strong> IP address <code>172.16.0.1</code> in binary starts with 10101100... Since it starts with 10, it's Class B.</p>
+            </div>
+
+            <div class="class-block">
+                <h4>Class C: Leading Bits = 110</h4>
+                <p><strong>First three bits:</strong> Always 110</p>
+                <p><strong>Binary pattern:</strong> 110xxxxx</p>
+                <p><strong>Range:</strong> Any IP address starting with a number between 192-223 in the first octet</p>
+                <p><strong>Example:</strong> IP address <code>192.168.1.1</code> in binary starts with 11000000... Since it starts with 110, it's Class C.</p>
+            </div>
+
+            <div class="class-block">
+                <h4>Class D: Leading Bits = 1110</h4>
+                <p><strong>First four bits:</strong> Always 1110</p>
+                <p><strong>Binary pattern:</strong> 1110xxxx</p>
+                <p><strong>Range:</strong> Any IP address starting with a number between 224-239 in the first octet</p>
+                <p><strong>Usage:</strong> Reserved for multicast addresses, used to send data to multiple devices.</p>
+                <p><strong>Example:</strong> IP address <code>224.0.0.1</code> in binary starts with 11100000... Since it starts with 1110, it's Class D.</p>
+            </div>
+
+            <div class="class-block">
+                <h4>Class E: Leading Bits = 1111</h4>
+                <p><strong>First four bits:</strong> Always 1111</p>
+                <p><strong>Binary pattern:</strong> 1111xxxx</p>
+                <p><strong>Range:</strong> Any IP address starting with a number between 240-255 in the first octet</p>
+                <p><strong>Usage:</strong> Reserved for experimental purposes.</p>
+                <p><strong>Example:</strong> IP address <code>240.0.0.1</code> in binary starts with 11110000... Since it starts with 1111, it's Class E.</p>
+            </div>
+        </div>
+
+        <!-- Why Leading Bits Matter -->
+        <div class="importance-leading-bits">
+            <h3>Why This Matters</h3>
+
+            <p><strong>Quick Classification:</strong> Networking devices can quickly determine the address class by examining the first few bits, making routing decisions faster without processing the entire address.</p>
+            
+            <p><strong>Address Space Division:</strong> These leading bits help divide the total IP address space:
+                <ul>
+                    <li>Class A: 50% of addresses (leading bit 0)</li>
+                    <li>Class B: 25% of addresses (leading bits 10)</li>
+                    <li>Class C: 12.5% of addresses (leading bits 110)</li>
+                    <li>Class D and E: Remaining 12.5% (leading bits 1110 and 1111)</li>
+                </ul>
+            </p>
+
+            <p><strong>Network/Host Division:</strong> Leading bits help define where the network portion ends and the host portion begins:
+                <ul>
+                    <li>Class A: 1 byte for network, 3 bytes for hosts</li>
+                    <li>Class B: 2 bytes for network, 2 bytes for hosts</li>
+                    <li>Class C: 3 bytes for network, 1 byte for hosts</li>
+                </ul>
+            </p>
+        </div>
+
+        <!-- Practical Example -->
+        <div class="practical-example">
+            <h3>Practical Example</h3>
+            <p><strong>IP Address:</strong> 192.168.1.1</p>
+            <p><strong>Binary Conversion:</strong> The first octet (192) in binary is 11000000.</p>
+            <p><strong>Classification:</strong> Since it starts with 110, it's a Class C address with:
+                <ul>
+                    <li>24 bits for the network portion</li>
+                    <li>8 bits for the host portion</li>
+                    <li>Typically used in small local networks</li>
+                </ul>
+            </p>
+        </div>
+
+        <!-- Historical Context -->
+        <div class="historical-context">
+            <h3>Historical Context</h3>
+            <p>This classful addressing system was used from 1981 until the introduction of CIDR (Classless Inter-Domain Routing) in 1993. While modern networks use CIDR, understanding classful addressing remains relevant because:
+                <ul>
+                    <li>Legacy systems may still use it</li>
+                    <li>Class-based private IP ranges (e.g., 192.168.x.x) are common in local networks</li>
+                    <li>It's foundational for understanding IP addressing's evolution</li>
+                </ul>
+            </p>
+        </div>
+    </div>
+
+    </div>
+</body>
+</html>
