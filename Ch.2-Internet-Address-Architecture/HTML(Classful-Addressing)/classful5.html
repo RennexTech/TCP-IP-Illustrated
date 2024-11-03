@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .container {
+    font-family: 'Arial', sans-serif;
+    max-width: 900px;
+    margin: 40px auto;
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  }
+
+  .title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .class-row {
+    margin: 25px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .class-label {
+    font-size: 28px;
+    font-weight: bold;
+    width: 60px;
+    height: 60px;
+    background: #2c3e50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+
+  .address-container {
+    flex-grow: 1;
+  }
+
+  .bit-markers {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    margin-bottom: 5px;
+    font-size: 12px;
+    padding: 0 5px;
+  }
+
+  .address-box {
+    border: 2px solid #2c3e50;
+    height: 60px;
+    display: flex;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bit-separator {
+    position: absolute;
+    top: 5px;
+    font-size: 12px;
+    color: #666;
+    display: flex;
+    gap: 8px;
+  }
+
+  .section {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+    position: relative;
+    transition: background-color 0.3s;
+  }
+
+  .section:hover {
+    filter: brightness(95%);
+  }
+
+  .net-number {
+    background-color: #bbdefb;
+    border-right: 1px solid #2c3e50;
+  }
+
+  .host {
+    background-color: #c8e6c9;
+  }
+
+  .multicast {
+    background-color: #ffcdd2;
+  }
+
+  .reserved {
+    background-color: #ffe0b2;
+  }
+
+  .prefix-bits {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    display: flex;
+    gap: 3px;
+    font-family: monospace;
+    font-size: 14px;
+    background: rgba(255,255,255,0.8);
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+
+  .prefix-bit {
+    width: 12px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #666;
+    background: white;
+  }
+
+  .info-text {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="title">IPv4 Address Classes</div>
+
+  <!-- Class A -->
+  <div class="class-row">
+    <div class="class-label">A</div>
+    <div class="address-container">
+      <div class="bit-markers">
+        <span>0</span>
+        <span>8</span>
+        <span>16</span>
+        <span>24</span>
+        <span>31</span>
+      </div>
+      <div class="address-box">
+        <div class="prefix-bits">
+          <div class="prefix-bit">0</div>
+        </div>
+        <div class="section net-number" style="width: 25%">
+          Network ID<br>(7 free bits)
+        </div>
+        <div class="section host" style="width: 75%">
+          Host Address<br>(24 bits)
+        </div>
+      </div>
+      <div class="info-text">Range: 0.0.0.0 to 127.255.255.255</div>
+    </div>
+  </div>
+
+  <!-- Class B -->
+  <div class="class-row">
+    <div class="class-label">B</div>
+    <div class="address-container">
+      <div class="bit-markers">
+        <span>0</span>
+        <span>8</span>
+        <span>16</span>
+        <span>24</span>
+        <span>31</span>
+      </div>
+      <div class="address-box">
+        <div class="prefix-bits">
+          <div class="prefix-bit">1</div>
+          <div class="prefix-bit">0</div>
+        </div>
+        <div class="section net-number" style="width: 50%">
+          Network ID<br>(14 free bits)
+        </div>
+        <div class="section host" style="width: 50%">
+          Host Address<br>(16 bits)
+        </div>
+      </div>
+      <div class="info-text">Range: 128.0.0.0 to 191.255.255.255</div>
+    </div>
+  </div>
+
+  <!-- Class C -->
+  <div class="class-row">
+    <div class="class-label">C</div>
+    <div class="address-container">
+      <div class="bit-markers">
+        <span>0</span>
+        <span>8</span>
+        <span>16</span>
+        <span>24</span>
+        <span>31</span>
+      </div>
+      <div class="address-box">
+        <div class="prefix-bits">
+          <div class="prefix-bit">1</div>
+          <div class="prefix-bit">1</div>
+          <div class="prefix-bit">0</div>
+        </div>
+        <div class="section net-number" style="width: 75%">
+          Network ID<br>(21 free bits)
+        </div>
+        <div class="section host" style="width: 25%">
+          Host Address<br>(8 bits)
+        </div>
+      </div>
+      <div class="info-text">Range: 192.0.0.0 to 223.255.255.255</div>
+    </div>
+  </div>
+
+  <!-- Class D -->
+  <div class="class-row">
+    <div class="class-label">D</div>
+    <div class="address-container">
+      <div class="bit-markers">
+        <span>0</span>
+        <span>8</span>
+        <span>16</span>
+        <span>24</span>
+        <span>31</span>
+      </div>
+      <div class="address-box">
+        <div class="prefix-bits">
+          <div class="prefix-bit">1</div>
+          <div class="prefix-bit">1</div>
+          <div class="prefix-bit">1</div>
+          <div class="prefix-bit">0</div>
+        </div>
+        <div class="section multicast" style="width: 100%">
+          Multicast Address<br>(28 free bits)
+        </div>
+      </div>
+      <div class="info-text">Range: 224.0.0.0 to 239.255.255.255</div>
+    </div>
+  </div>
+
+  <!-- Class E -->
+  <div class="class-row">
+    <div class="class-label">E</div>
+    <div class="address-container">
+      <div class="bit-markers">
+        <span>0</span>
+        <span>8</span>
+        <span>16</span>
+        <span>24</span>
+        <span>31</span>
+      </div>
+      <div class="address-box">
+        <div class="prefix-bits">
+          <div class="prefix-bit">1</div>
+          <div class="prefix-bit">1</div>
+          <div class="prefix-bit">1</div>
+          <div class="prefix-bit">1</div>
+        </div>
+        <div class="section reserved" style="width: 100%">
+          Reserved for Future Use<br>(28 free bits)
+        </div>
+      </div>
+      <div class="info-text">Range: 240.0.0.0 to 255.255.255.255</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classless Addressing Table (CIDR)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        caption {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        @media (max-width: 600px) {
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Classless Addressing (CIDR) Example Table</h1>
+    
+    <table>
+        <caption>Valid Subnet Masks by CIDR Notation</caption>
+        <tr>
+            <th>/n</th>
+            <th>Subnet Mask</th>
+            <th>/n</th>
+            <th>Subnet Mask</th>
+            <th>/n</th>
+            <th>Subnet Mask</th>
+        </tr>
+        <tr>
+            <td>/1</td><td>128.0.0.0</td>
+            <td>/9</td><td>255.128.0.0</td>
+            <td>/17</td><td>255.255.128.0</td>
+        </tr>
+        <tr>
+            <td>/2</td><td>192.0.0.0</td>
+            <td>/10</td><td>255.192.0.0</td>
+            <td>/18</td><td>255.255.192.0</td>
+        </tr>
+        <tr>
+            <td>/3</td><td>224.0.0.0</td>
+            <td>/11</td><td>255.224.0.0</td>
+            <td>/19</td><td>255.255.224.0</td>
+        </tr>
+        <tr>
+            <td>/4</td><td>240.0.0.0</td>
+            <td>/12</td><td>255.240.0.0</td>
+            <td>/20</td><td>255.255.240.0</td>
+        </tr>
+        <tr>
+            <td>/5</td><td>248.0.0.0</td>
+            <td>/13</td><td>255.248.0.0</td>
+            <td>/21</td><td>255.255.248.0</td>
+        </tr>
+        <tr>
+            <td>/6</td><td>252.0.0.0</td>
+            <td>/14</td><td>255.252.0.0</td>
+            <td>/22</td><td>255.255.252.0</td>
+        </tr>
+        <tr>
+            <td>/7</td><td>254.0.0.0</td>
+            <td>/15</td><td>255.254.0.0</td>
+            <td>/23</td><td>255.255.254.0</td>
+        </tr>
+        <tr>
+            <td>/8</td><td>255.0.0.0</td>
+            <td>/16</td><td>255.255.0.0</td>
+            <td>/24</td><td>255.255.255.0</td>
+        </tr>
+        <tr>
+            <td>/25</td><td>255.255.255.128</td>
+            <td>/26</td><td>255.255.255.192</td>
+            <td>/27</td><td>255.255.255.224</td>
+        </tr>
+        <tr>
+            <td>/28</td><td>255.255.255.240</td>
+            <td>/29</td><td>255.255.255.248</td>
+            <td>/30</td><td>255.255.255.252</td>
+        </tr>
+        <tr>
+            <td>/31</td><td>255.255.255.254</td>
+            <td>/32</td><td>255.255.255.255</td>
+            <td></td><td></td>
+        </tr>
+    </table>
+
+</body>
+</html>
