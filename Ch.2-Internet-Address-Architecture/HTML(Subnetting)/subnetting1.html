@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f4f8;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c5282;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+
+        .explanation {
+            background: #ebf4ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .center-text {
+            text-align: center;
+            flex-grow: 1;
+            color: #4a5568;
+        }
+        
+        .class-label {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2b6cb0;
+        }
+        
+        .address-container {
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .bit-numbers {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #4a5568;
+        }
+        
+        .address-box {
+            border: 2px solid #4299e1;
+            display: flex;
+            height: 50px;
+            background: white;
+        }
+        
+        .segment {
+            border-right: 2px solid #4299e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            position: relative;
+        }
+
+        .leading-bits {
+            flex: 2;
+            background: #ebf8ff;
+            font-weight: bold;
+            color: #2c5282;
+        }
+        
+        .segment:last-child {
+            border-right: none;
+        }
+        
+        .bits-14 {
+            flex: 14;
+            background: #e6fffa;
+        }
+        
+        .bits-8 {
+            flex: 8;
+            background: #f0fff4;
+        }
+        
+        .arrow-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .arrow {
+            width: 2px;
+            height: 30px;
+            background: #4299e1;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: -6px;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-top: 8px solid #4299e1;
+        }
+        
+        .partition-label {
+            text-align: center;
+            margin-top: 5px;
+            font-size: 14px;
+            color: #4a5568;
+        }
+        
+        .figure-caption {
+            margin-top: 40px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #4a5568;
+        }
+
+        .key-points {
+            margin-top: 30px;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+        }
+
+        .key-points h3 {
+            color: #2c5282;
+            margin-top: 0;
+        }
+
+        .key-points ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .key-points li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: #faf5ff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Class B IP Address Structure</h1>
+        
+        <div class="explanation">
+            Class B addresses are one of five classes (A through E) in IPv4 addressing. They are identified by their first two bits being "10" and are typically used for medium to large-sized networks.
+        </div>
+
+        <div class="header">
+            <div>Class</div>
+            <div class="center-text">Centrally<br>Allocated</div>
+            <div style="text-align: right">Locally Managed<br>at Site</div>
+        </div>
+        
+        <div class="class-label">B</div>
+        
+        <div class="address-container">
+            <div class="bit-numbers">
+                <span>0</span>
+                <span style="margin-left: 30px">2</span>
+                <span style="margin-left: 150px">15 16</span>
+                <span>31</span>
+            </div>
+            
+            <div class="address-box">
+                <div class="segment leading-bits">
+                    <span>10</span>
+                </div>
+                <div class="segment bits-14">
+                    <span>Net Number (14 bits)</span>
+                </div>
+                <div class="segment bits-8">
+                    <span>Subnet ID (8 bits)</span>
+                </div>
+                <div class="segment bits-8">
+                    <span>Host ID (8 bits)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="arrow-container">
+            <div class="arrow"></div>
+            <div class="partition-label">Subnet/Host<br>Partition</div>
+        </div>
+        
+        <div class="figure-caption">
+            Figure 2-2 An example of a subnetted class B address. Using 8 bits for the subnet ID provides for 
+            256 subnets with 254 hosts on each of the subnets. This partitioning may be altered by 
+            the network administrator.
+        </div>
+
+        <div class="key-points">
+            <h3>Key Characteristics of Class B Addresses</h3>
+            <ul>
+                <li>Begins with binary <span class="highlight">10</span></li>
+                <li>Network portion: 16 bits (2 fixed + 14 variable)</li>
+                <li>Host portion: 16 bits (can be subdivided into subnet and host IDs)</li>
+                <li>Range: 128.0.0.0 to 191.255.255.255</li>
+                <li>Default subnet mask: 255.255.0.0 (before subnetting)</li>
+                <li>Maximum number of networks: 16,384 (2¹⁴)</li>
+                <li>Hosts per network: 65,534 (2¹⁶ - 2) without subnetting</li>
+            </ul>
+        </div>
+
+        <div class="explanation" style="margin-top: 30px;">
+            <strong>Subnetting Note:</strong> When the network administrator implements subnetting (as shown in the diagram with 8 bits), 
+            the available host addresses are subdivided. With 8 bits for subnetting:
+            <ul>
+                <li>Number of possible subnets: 256 (2⁸)</li>
+                <li>Hosts per subnet: 254 (2⁸ - 2)</li>
+                <li>Two addresses per subnet are reserved (network address and broadcast address)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
