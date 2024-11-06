@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .container {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .title {
+      color: #2d3748;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    .ip-structure {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bits-ruler {
+      display: flex;
+      justify-content: space-between;
+      color: #4a5568;
+      font-size: 14px;
+      padding: 0 10px;
+    }
+
+    .address-box {
+      display: flex;
+      height: 80px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      text-align: center;
+      color: white;
+    }
+
+    .net-number {
+      background-color: #4299e1;
+      flex: 16;
+    }
+
+    .subnet-id {
+      background-color: #48bb78;
+      flex: 8;
+    }
+
+    .host-id {
+      background-color: #ed8936;
+      flex: 8;
+    }
+
+    .label {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .bits {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .allocation-labels {
+      display: flex;
+      justify-content: space-between;
+      color: #4a5568;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .notes {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f7fafc;
+      border-radius: 8px;
+      color: #4a5568;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Class B IP Address Structure</h1>
+    
+    <div class="ip-structure">
+      <div class="bits-ruler">
+        <span>0</span>
+        <span>15 16</span>
+        <span>31</span>
+      </div>
+      
+      <div class="address-box">
+        <div class="section net-number">
+          <div class="label">Net Number</div>
+          <div class="bits">16 bits (14 free)</div>
+        </div>
+        <div class="section subnet-id">
+          <div class="label">Subnet ID</div>
+          <div class="bits">8 bits</div>
+        </div>
+        <div class="section host-id">
+          <div class="label">Host ID</div>
+          <div class="bits">8 bits</div>
+        </div>
+      </div>
+      
+      <div class="allocation-labels">
+        <span>Centrally Allocated</span>
+        <span>Locally Managed at Site</span>
+      </div>
+    </div>
+
+    <div class="notes">
+      <strong>Key Points:</strong>
+      <ul>
+        <li>This structure allows for 256 subnets (8 bits for subnet ID)</li>
+        <li>Each subnet can host 254 devices (8 bits for host ID, minus network and broadcast addresses)</li>
+        <li>Network administrators can modify this partitioning based on needs</li>
+        <li>The first 16 bits are centrally allocated, while the remaining bits are managed locally</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
