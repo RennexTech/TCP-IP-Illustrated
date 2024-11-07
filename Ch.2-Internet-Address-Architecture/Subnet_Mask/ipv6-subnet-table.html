@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPv6 Subnet Mask Examples</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif; /* Applying Poppins font */
+            font-size: 16px; /* Slightly larger font size */
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            background: #f5f7fa;
+            color: #333;
+        }
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2d3748;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        th, td {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            font-size: 1rem;
+        }
+        th {
+            background: #4299e1;
+            color: white;
+            font-weight: 600;
+        }
+        .binary {
+            font-family: monospace;
+            color: #4a5568;
+            letter-spacing: 1px;
+            font-size: 0.9rem; /* Adjust font size for binary */
+        }
+        .explanation {
+            background: #ebf8ff;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        .hex {
+            color: #805ad5;
+            font-weight: 600;
+        }
+        .prefix {
+            color: #38a169;
+            font-weight: 600;
+        }
+        ul {
+            margin-left: 1.5rem;
+        }
+        ul li {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="table-container">
+        <h1>IPv6 Subnet Mask Examples</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Hex Notation</th>
+                    <th>Shorthand (Prefix Length)</th>
+                    <th>Binary Representation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="hex">ffff:ffff:ffff:ffff::</td>
+                    <td class="prefix">/64</td>
+                    <td class="binary">
+                        1111111111111111 1111111111111111<br>
+                        1111111111111111 1111111111111111<br>
+                        0000000000000000 0000000000000000<br>
+                        0000000000000000 0000000000000000
+                    </td>
+                </tr>
+                <tr>
+                    <td class="hex">ff00::</td>
+                    <td class="prefix">/8</td>
+                    <td class="binary">
+                        1111111100000000 0000000000000000<br>
+                        0000000000000000 0000000000000000<br>
+                        0000000000000000 0000000000000000<br>
+                        0000000000000000 0000000000000000
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="explanation">
+            <h3>Understanding IPv6 Subnet Masks</h3>
+            <p>IPv6 subnet masks are typically represented in three different ways:</p>
+            <ul>
+                <li><strong>Hex Notation:</strong> The most common way to write IPv6 addresses and masks, using hexadecimal numbers and colons.</li>
+                <li><strong>Prefix Length:</strong> A simpler way to represent the mask, showing how many bits from the left are set to 1. For example, /64 means the first 64 bits are 1's.</li>
+                <li><strong>Binary:</strong> Shows the actual pattern of 1's and 0's that make up the mask. This is the most detailed but least practical representation.</li>
+            </ul>
+            <p>The /64 prefix is very common in IPv6 networks as it follows the standard practice of using the first 64 bits for the network portion and the last 64 bits for the host portion of the address.</p>
+        </div>
+    </div>
+</body>
+</html>
