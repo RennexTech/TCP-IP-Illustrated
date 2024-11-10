@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary to Decimal IP Address Conversion (Hover over the powers to see corresponding bits)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #000000; /* Dark background for high contrast */
+      color: #00bcd4; /* Light cyan text */
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    /* Container for the diagram */
+    .container {
+      background-color: #ffffff; /* White background for better visibility */
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 900px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    /* Title */
+    h1 {
+      text-align: center;
+      font-size: 30px;
+      color: #007BFF; /* Bright blue */
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    /* Section Title */
+    h2 {
+      font-size: 24px;
+      color: #008080; /* Teal */
+      margin-top: 20px;
+      font-weight: 600;
+    }
+
+    /* Wrapper for binary and powers of 2 */
+    .binary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .binary-bit {
+      display: inline-block;
+      padding: 12px;
+      background-color: #e1f5fe; /* Light blue */
+      border-radius: 8px;
+      width: 50px;
+      text-align: center;
+      font-family: monospace;
+      font-size: 22px;
+      color: #2e3e50;
+      margin: 4px;
+      transition: transform 0.3s ease;
+    }
+
+    .binary-bit:hover {
+      transform: scale(1.1);
+      background-color: #00bcd4; /* Cyan on hover */
+      color: white;
+    }
+
+    /* Explanation section for binary to decimal breakdown */
+    .calculation {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #34493e;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .calculation p {
+      margin-bottom: 10px;
+    }
+
+    .decimal-value {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 700;
+      color: #FF4081; /* Pink for the final decimal value */
+      margin-top: 20px;
+    }
+
+    .caption {
+      margin-top: 30px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #7f8c8d;
+      background-color: #f9fafb;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #dcdfe1;
+    }
+
+    /* Responsive layout adjustments */
+    @media (max-width: 768px) {
+      .binary-row {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .binary-bit {
+        width: auto;
+        margin-bottom: 6px;
+      }
+    }
+
+    /* Power of 2 hover styling */
+    .power-bit {
+      cursor: pointer;
+      font-weight: bold;
+      padding: 10px;
+      background-color: #FF9800; /* Orange for power of 2 */
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+      color: white;
+    }
+
+    .power-bit:hover {
+      background-color: #FF5722; /* Darker orange */
+    }
+
+    /* Highlight active bits */
+    .highlighted {
+      background-color: #4CAF50; /* Green */
+      color: white !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Binary to Decimal Conversion of IP Address</h1>
+
+    <h2>Step 1: Convert Binary Octet to Decimal</h2>
+    <!-- Binary representation of the octet (e.g., 10000000) -->
+    <div class="binary-row" id="binary-row">
+      <div class="binary-bit" id="bit-0">1</div>
+      <div class="binary-bit" id="bit-1">0</div>
+      <div class="binary-bit" id="bit-2">0</div>
+      <div class="binary-bit" id="bit-3">0</div>
+      <div class="binary-bit" id="bit-4">0</div>
+      <div class="binary-bit" id="bit-5">0</div>
+      <div class="binary-bit" id="bit-6">0</div>
+      <div class="binary-bit" id="bit-7">0</div>
+    </div>
+
+    <h2>Step 2: Evaluate Powers of 2</h2>
+    <div class="calculation">
+      <p>Each bit in the binary number represents a power of 2, starting from 2<sup>7</sup> (on the left) down to 2<sup>0</sup> (on the right). Here's the breakdown:</p>
+      <div class="binary-row">
+        <div class="binary-bit power-bit" data-bit="0">2<sup>7</sup></div>
+        <div class="binary-bit power-bit" data-bit="1">2<sup>6</sup></div>
+        <div class="binary-bit power-bit" data-bit="2">2<sup>5</sup></div>
+        <div class="binary-bit power-bit" data-bit="3">2<sup>4</sup></div>
+        <div class="binary-bit power-bit" data-bit="4">2<sup>3</sup></div>
+        <div class="binary-bit power-bit" data-bit="5">2<sup>2</sup></div>
+        <div class="binary-bit power-bit" data-bit="6">2<sup>1</sup></div>
+        <div class="binary-bit power-bit" data-bit="7">2<sup>0</sup></div>
+      </div>
+      <p>Now, let's calculate the decimal equivalent of this octet.</p>
+    </div>
+
+    <h2>Step 3: Perform the Calculation</h2>
+    <div class="calculation">
+      <p>The binary value <code>10000000</code> corresponds to:</p>
+      <p>1 * 2<sup>7</sup> + 0 * 2<sup>6</sup> + 0 * 2<sup>5</sup> + 0 * 2<sup>4</sup> + 0 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 0 * 2<sup>0</sup></p>
+      <p>This simplifies to: 1 * 128 = 128</p>
+    </div>
+
+    <div class="decimal-value">128</div>
+    <div class="caption">
+      The first octet <code>10000000</code> converts to 128 in decimal. This is the first portion of the IP address.
+    </div>
+
+    <h2>Step 4: Repeat for Other Octets</h2>
+    <div class="calculation">
+      <p>You can repeat this process for the remaining octets in the IP address (32.1.14). Each octet will follow the same method, and by performing the calculations for each one, you'll arrive at the full IP address in decimal.</p>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript to handle the highlighting of corresponding bits
+    const powerBits = document.querySelectorAll('.power-bit');
+    const binaryBits = document.querySelectorAll('.binary-bit');
+
+    powerBits.forEach(powerBit => {
+      powerBit.addEventListener('mouseover', () => {
+        const bitIndex = powerBit.getAttribute('data-bit');
+        const correspondingBit = document.getElementById('bit-' + bitIndex);
+        correspondingBit.classList.add('highlighted');
+      });
+
+      powerBit.addEventListener('mouseout', () => {
+        const bitIndex = powerBit.getAttribute('data-bit');
+        const correspondingBit = document.getElementById('bit-' + bitIndex);
+        correspondingBit.classList.remove('highlighted');
+      });
+    });
+  </script>
+</body>
+</html>
