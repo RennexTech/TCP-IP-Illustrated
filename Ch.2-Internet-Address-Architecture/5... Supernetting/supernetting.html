@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subnetting vs Supernetting Explained</title>
+    <!-- Google Fonts link for Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Body and basic layout */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f8f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #2d3e50;
+            margin-bottom: 20px;
+        }
+        
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #008CBA;
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        td {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .note {
+            background-color: #FFEB99;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            color: #333;
+            border-left: 5px solid #FF9900;
+        }
+
+        /* Add alternating colors for rows */
+        .even-row {
+            background-color: #e1f7f3;
+        }
+        .odd-row {
+            background-color: #f7fbfb;
+        }
+        
+        .highlight {
+            color: #ff4500;
+            font-weight: bold;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            font-size: 1em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Subnetting vs Supernetting: A Detailed Comparison</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Basis for Comparison</th>
+                    <th>Subnetting</th>
+                    <th>Supernetting</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="odd-row">
+                    <td><strong>Basic</strong></td>
+                    <td>A process of dividing a network into subnetworks.</td>
+                    <td>A process of combining small networks into a larger network.</td>
+                </tr>
+                <tr class="even-row">
+                    <td><strong>Procedure</strong></td>
+                    <td>The number of bits of network addresses is increased.</td>
+                    <td>The number of bits of host addresses is increased.</td>
+                </tr>
+                <tr class="odd-row">
+                    <td><strong>Mask bits are moved towards</strong></td>
+                    <td>Right of the default mask.</td>
+                    <td>Left of the default mask.</td>
+                </tr>
+                <tr class="even-row">
+                    <td><strong>Implementation</strong></td>
+                    <td>VLSM (Variable-length subnet masking).</td>
+                    <td>CIDR (Classless interdomain routing).</td>
+                </tr>
+                <tr class="odd-row">
+                    <td><strong>Purpose</strong></td>
+                    <td>Used to reduce the address depletion.</td>
+                    <td>To simplify and fasten the routing process.</td>
+                </tr>
+                <tr class="even-row">
+                    <td><strong>Definition</strong></td>
+                    <td>Subnetting is the process of dividing a larger network into smaller, manageable subnetworks.</td>
+                    <td>Supernetting is the process of combining multiple smaller networks into a larger network.</td>
+                </tr>
+                <tr class="odd-row">
+                    <td><strong>Network Size</strong></td>
+                    <td>Results in smaller networks with fewer hosts.</td>
+                    <td>Results in a larger network with more available addresses.</td>
+                </tr>
+                <tr class="even-row">
+                    <td><strong>Example</strong></td>
+                    <td>Dividing the network 192.168.1.0/24 into smaller subnets like 192.168.1.0/26, 192.168.1.64/26, etc.</td>
+                    <td>Combining the networks 192.168.1.0/24 and 192.168.2.0/24 into a supernet, such as 192.168.0.0/23.</td>
+                </tr>
+                <tr class="odd-row">
+                    <td><strong>Routing</strong></td>
+                    <td>Creates more routing entries due to more networks being created.</td>
+                    <td>Reduces the number of routing entries by consolidating multiple networks.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <strong>Note:</strong> 
+            Subnetting helps organize networks into smaller, more secure and manageable units, while supernetting helps optimize routing by reducing the number of routes. Subnetting generally increases the number of network segments, whereas supernetting decreases the number of networks needed. It is important to understand when to use each technique based on network needs and size.
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Networking 101. All Rights Reserved.</p>
+        </div>
+    </div>
+
+</body>
+</html>
