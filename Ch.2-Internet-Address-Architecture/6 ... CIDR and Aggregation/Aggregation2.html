@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIDR Aggregation Calculation</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fb;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007acc;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 30px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #007acc;
+            padding-bottom: 5px;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin-top: 15px;
+            color: #555;
+        }
+
+        .highlight {
+            color: #007acc;
+            font-weight: bold;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007acc;
+            color: white;
+            font-size: 1.1em;
+        }
+
+        td {
+            background-color: #ffffff;
+            font-size: 1.1em;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+        }
+
+        td:hover {
+            background-color: #f1f1f1;
+            transition: background-color 0.3s;
+        }
+
+        /* Code styling */
+        pre {
+            background-color: #f4f4f4;
+            border-left: 5px solid #007acc;
+            padding: 15px;
+            font-size: 1.1em;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 20px;
+        }
+
+        /* Container for content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>CIDR Aggregation Calculation</h1>
+        <p>This page explains how we aggregate multiple smaller IP address blocks into a larger network using CIDR notation. We’ll take the following networks:</p>
+        <ul>
+            <li>192.168.1.0/24</li>
+            <li>192.168.2.0/24</li>
+            <li>192.168.3.0/24</li>
+            <li>192.168.4.0/24</li>
+        </ul>
+
+        <h2>Step-by-Step Calculation</h2>
+
+        <h3>1. Convert to Binary</h3>
+        <p>First, convert the IP addresses of each network to binary format:</p>
+        <pre>
+192.168.1.0 -> 11000000.10101000.00000001.00000000
+192.168.2.0 -> 11000000.10101000.00000010.00000000
+192.168.3.0 -> 11000000.10101000.00000011.00000000
+192.168.4.0 -> 11000000.10101000.00000100.00000000
+        </pre>
+        <p>Notice that the first 22 bits are common for all the addresses. This indicates that the first 22 bits can be used for the new aggregated network.</p>
+
+        <h3>2. Find the Common Network Prefix</h3>
+        <p>The first 22 bits of each of these addresses are identical. So, the aggregated network will have a `/22` prefix. This means we combine these four `/24` networks into a single `/22` network.</p>
+        
+        <h3>3. Aggregated Network</h3>
+        <p>The aggregated network address is:</p>
+        <pre>
+192.168.0.0/22
+        </pre>
+        <p>The subnet mask for this network is 255.255.252.0. This gives us the new range from 192.168.0.0 to 192.168.3.255, which encompasses all the original subnets.</p>
+
+        <h2>Conclusion</h2>
+        <p>By applying CIDR aggregation, we’ve reduced four entries in the routing table (one for each /24 network) into a single entry for the <code>192.168.0.0/22</code> network. This helps to reduce the size of the global routing table and improves routing efficiency.</p>
+
+        <p><strong class="highlight">Summary:</strong></p>
+        <ul>
+            <li>Original networks: <code>192.168.1.0/24</code>, <code>192.168.2.0/24</code>, <code>192.168.3.0/24</code>, <code>192.168.4.0/24</code></li>
+            <li>Aggregated network: <code>192.168.0.0/22</code></li>
+            <li>Subnet Mask for /22: <code>255.255.252.0</code></li>
+        </ul>
+    </div>
+
+</body>
+</html>
