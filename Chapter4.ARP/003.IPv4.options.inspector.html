@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --bg-color: #1a1a2e;
+        --panel-bg: #16213e;
+        --accent-cyan: #0fbcf9;
+        --accent-pink: #ef5777;
+        --accent-yellow: #ffd32a;
+        --accent-green: #05c46b;
+        --text-main: #d2dae2;
+        --text-sub: #808e9b;
+        --border-col: #2c3a47;
+    }
+
+    body {
+        font-family: 'Segoe UI', 'Roboto Mono', system-ui, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .analyzer-container {
+        width: 100%;
+        max-width: 950px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .header-section {
+        text-align: left;
+        border-left: 4px solid var(--accent-cyan);
+        padding-left: 20px;
+    }
+    h2 { margin: 0; font-size: 1.8rem; color: #fff; }
+    .subtitle { color: var(--text-sub); margin-top: 5px; font-size: 0.95rem; }
+
+    /* --- SECTION 1: BIT DECODER --- */
+    .decoder-panel {
+        background: var(--panel-bg);
+        border: 1px solid var(--border-col);
+        border-radius: 8px;
+        padding: 25px;
+    }
+    
+    .panel-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--text-sub);
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .bit-strip {
+        display: flex;
+        width: 100%;
+        height: 60px;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+
+    .bit-block {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #1e272e;
+        position: relative;
+        transition: opacity 0.2s;
+    }
+    .bit-block:hover { opacity: 0.9; cursor: help; }
+
+    .b-copy { width: 12.5%; background: var(--accent-pink); }
+    .b-class { width: 25%; background: var(--accent-yellow); }
+    .b-number { width: 62.5%; background: var(--accent-cyan); }
+
+    .legend-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        font-size: 0.85rem;
+    }
+    .legend-item strong { display: block; margin-bottom: 4px; }
+    
+    /* --- SECTION 2: OPTIONS TABLE --- */
+    .table-container {
+        background: var(--panel-bg);
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border-col);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    th {
+        background: #0f1526;
+        padding: 15px;
+        text-align: left;
+        color: var(--text-sub);
+        font-weight: 600;
+        border-bottom: 2px solid var(--border-col);
+    }
+
+    td {
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        vertical-align: top;
+    }
+    
+    tr:last-child td { border-bottom: none; }
+    tr:hover { background: rgba(255,255,255,0.02); }
+
+    /* Status Badges */
+    .badge {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .st-ctl { background: rgba(5, 196, 107, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); }
+    .st-hist { background: rgba(128, 142, 155, 0.2); color: #808e9b; border: 1px solid #808e9b; }
+    .st-rare { background: rgba(255, 211, 42, 0.2); color: var(--accent-yellow); border: 1px solid var(--accent-yellow); }
+    .st-alert { background: rgba(239, 87, 119, 0.2); color: var(--accent-pink); border: 1px solid var(--accent-pink); }
+
+    .code-val {
+        font-family: 'Consolas', monospace;
+        color: var(--accent-cyan);
+    }
+
+</style>
+</head>
+<body>
+
+<div class="analyzer-container">
+    <div class="header-section">
+        <h2>IPv4 Options Inspector</h2>
+        <div class="subtitle">Field Analysis & Registry (RFC 791 / 2113)</div>
+    </div>
+
+    <div class="decoder-panel">
+        <span class="panel-label">8-Bit Option Type Structure</span>
+        
+        <div class="bit-strip">
+            <div class="bit-block b-copy">Copy (1)</div>
+            <div class="bit-block b-class">Class (2)</div>
+            <div class="bit-block b-number">Number (5)</div>
+        </div>
+
+        <div class="legend-grid">
+            <div class="legend-item" style="color: var(--accent-pink);">
+                <strong>Copy Bit (1 bit)</strong>
+                0 = Don't copy to fragments<br>
+                1 = Copy to all fragments
+            </div>
+            <div class="legend-item" style="color: var(--accent-yellow);">
+                <strong>Class (2 bits)</strong>
+                00 = Control / Monitor<br>
+                10 = Debug / Measure
+            </div>
+            <div class="legend-item" style="color: var(--accent-cyan);">
+                <strong>Number (5 bits)</strong>
+                Identifies the specific option type (0-31).
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th width="80">Val</th>
+                    <th width="160">Option Name</th>
+                    <th width="80">Len</th>
+                    <th>Description & Usage</th>
+                    <th width="100">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="code-val">0</td>
+                    <td><strong>End of List</strong> (EOOL)</td>
+                    <td>1</td>
+                    <td>Marks the end of the options area. Used if options don't align to 32-bit boundary.</td>
+                    <td><span class="badge st-ctl">Control</span></td>
+                </tr>
+                <tr>
+                    <td class="code-val">1</td>
+                    <td><strong>No Op</strong> (NOP)</td>
+                    <td>1</td>
+                    <td>Used for padding to align options to 4-byte boundaries.</td>
+                    <td><span class="badge st-ctl">Control</span></td>
+                </tr>
+
+                <tr>
+                    <td class="code-val">7</td>
+                    <td><strong>Record Route</strong></td>
+                    <td>Var</td>
+                    <td>Records the IP address of every router the packet passes through. (Limited space!)</td>
+                    <td><span class="badge st-rare">Rare</span></td>
+                </tr>
+                <tr>
+                    <td class="code-val">131/137</td>
+                    <td><strong>Source Routing</strong></td>
+                    <td>Var</td>
+                    <td>
+                        Sender dictates the path.<br>
+                        <em>Loose (131):</em> Must visit list, but can hop between.<br>
+                        <em>Strict (137):</em> Must follow list exactly.
+                    </td>
+                    <td><span class="badge st-alert">Filtered</span></td>
+                </tr>
+                <tr>
+                    <td class="code-val">68</td>
+                    <td><strong>Timestamp</strong></td>
+                    <td>Var</td>
+                    <td>Records time of day at source, destination, and hops.</td>
+                    <td><span class="badge st-rare">Rare</span></td>
+                </tr>
+                <tr>
+                    <td class="code-val">148</td>
+                    <td><strong>Router Alert</strong></td>
+                    <td>4</td>
+                    <td>"Look at me!" Flags router to examine payload (used by IGMP/RSVP).</td>
+                    <td><span class="badge st-ctl">Active</span></td>
+                </tr>
+
+                <tr>
+                    <td class="code-val">25</td>
+                    <td><strong>Quick-Start</strong></td>
+                    <td>8</td>
+                    <td>Experimental negotiation for transport protocols.</td>
+                    <td><span class="badge st-hist">Exp</span></td>
+                </tr>
+                <tr>
+                    <td class="code-val">130</td>
+                    <td><strong>Security</strong></td>
+                    <td>11</td>
+                    <td>US Military security labels (Historic).</td>
+                    <td><span class="badge st-hist">Historic</span></td>
+                </tr>
+                 <tr>
+                    <td class="code-val">82</td>
+                    <td><strong>Traceroute</strong></td>
+                    <td>Var</td>
+                    <td>Experimental route tracing (Historic).</td>
+                    <td><span class="badge st-hist">Historic</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
