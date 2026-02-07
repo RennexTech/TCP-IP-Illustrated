@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --bg-color: #121212;
+        --card-bg: #1e1e1e;
+        --accent-blue: #64b5f6;
+        --accent-purple: #ba68c8;
+        --accent-green: #81c784;
+        --accent-orange: #ffb74d;
+        --accent-red: #e57373;
+        --text-main: #eceff1;
+        --text-sub: #b0bec5;
+        --math-bg: #263238;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        line-height: 1.6;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .main-header {
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #333;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 2rem;
+        background: linear-gradient(90deg, #64b5f6, #ba68c8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+        color: var(--text-sub);
+        font-size: 1rem;
+        margin-top: 8px;
+    }
+
+    /* Card Styling */
+    .axiom-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 25px;
+        border-left: 5px solid #555;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s;
+    }
+
+    .axiom-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+
+    /* Colors for borders */
+    .border-blue { border-left-color: var(--accent-blue); }
+    .border-purple { border-left-color: var(--accent-purple); }
+    .border-green { border-left-color: var(--accent-green); }
+    .border-orange { border-left-color: var(--accent-orange); }
+    .border-red { border-left-color: var(--accent-red); }
+
+    /* Header inside card */
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .axiom-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .title-blue { color: var(--accent-blue); }
+    .title-purple { color: var(--accent-purple); }
+    .title-green { color: var(--accent-green); }
+    .title-orange { color: var(--accent-orange); }
+    .title-red { color: var(--accent-red); }
+
+    /* Math Box */
+    .math-box {
+        background: var(--math-bg);
+        padding: 15px;
+        border-radius: 8px;
+        font-family: 'Consolas', 'Monaco', monospace;
+        font-size: 1.1rem;
+        text-align: center;
+        color: #fff;
+        margin-bottom: 15px;
+        border: 1px solid #37474f;
+    }
+
+    /* Explanation List */
+    ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--text-sub);
+    }
+
+    li {
+        margin-bottom: 8px;
+    }
+    
+    li strong {
+        color: var(--text-main);
+    }
+
+    .note {
+        font-size: 0.85rem;
+        background: rgba(255,255,255,0.05);
+        padding: 8px 12px;
+        border-radius: 4px;
+        margin-top: 10px;
+        color: #cfd8dc;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="main-header">
+        <h1>Abelian Group: (V, +)</h1>
+        <div class="subtitle">Why One's Complement Math Works for Networking</div>
+    </div>
+
+    <div class="axiom-card border-blue">
+        <div class="card-header">
+            <span class="axiom-title title-blue">1. Closure</span>
+        </div>
+        <div class="math-box">
+            ∀ X, Y ∈ V  &nbsp;➔&nbsp;  (X + Y) ∈ V
+        </div>
+        <ul>
+            <li><strong>Stays in the Family:</strong> If you add two 16-bit numbers, the result is <em>always</em> a valid 16-bit number.</li>
+            <li><strong>No Lost Bits:</strong> Any "overflow" isn't thrown away; it is wrapped around and added back to the start (End-Around Carry).</li>
+        </ul>
+    </div>
+
+    <div class="axiom-card border-purple">
+        <div class="card-header">
+            <span class="axiom-title title-purple">2. Associativity</span>
+        </div>
+        <div class="math-box">
+            X + (Y + Z)  =  (X + Y) + Z
+        </div>
+        <ul>
+            <li><strong>Grouping doesn't matter:</strong> You can sum the first half of the packet, then the second half, or vice versa.</li>
+            <li><strong>Parallel Processing:</strong> Routers can split the data into chunks, calculate sums in parallel, and combine them later. The result is identical.</li>
+        </ul>
+    </div>
+
+    <div class="axiom-card border-green">
+        <div class="card-header">
+            <span class="axiom-title title-green">3. Identity Element</span>
+        </div>
+        <div class="math-box">
+            X + FFFF = X
+        </div>
+        <ul>
+            <li><strong>The "Magic" Zero:</strong> In this system, <code>FFFF</code> (all ones) acts like Zero.</li>
+            <li><strong>Neutral Action:</strong> If you add <code>FFFF</code> to any checksum, the value does not change.</li>
+            <div class="note">Note: We use <code>FFFF</code> (-0) instead of <code>0000</code> (+0) to ensure robust error detection.</div>
+        </ul>
+    </div>
+
+    <div class="axiom-card border-orange">
+        <div class="card-header">
+            <span class="axiom-title title-orange">4. Inverses</span>
+        </div>
+        <div class="math-box">
+            X + X' = FFFF
+        </div>
+        <ul>
+            <li><strong>Every Number has a Partner:</strong> For every value <em>X</em>, there is a complement <em>X'</em> (bitwise NOT).</li>
+            <li><strong>The Result is Identity:</strong> When you add a number and its inverse, you get the Identity (<code>FFFF</code>). This allows easy verification (if Sum == FFFF, data is good).</li>
+        </ul>
+    </div>
+
+    <div class="axiom-card border-red">
+        <div class="card-header">
+            <span class="axiom-title title-red">5. Commutativity</span>
+        </div>
+        <div class="math-box">
+            X + Y  =  Y + X
+        </div>
+        <ul>
+            <li><strong>Order doesn't matter:</strong> <code>Header + Data</code> is the same as <code>Data + Header</code>.</li>
+            <li><strong>Robustness:</strong> The router doesn't need to process bytes in a strict sequence to get the correct checksum.</li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
