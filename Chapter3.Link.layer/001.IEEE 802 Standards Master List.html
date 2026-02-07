@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEEE 802 Standards Master List</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+        :root {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --border-color: #cbd5e1;
+            
+            /* Section Headers */
+            --sec-mgmt-bg: #e0e7ff; --sec-mgmt-text: #3730a3; /* Indigo */
+            --sec-eth-bg: #dcfce7;  --sec-eth-text: #166534;  /* Green */
+            --sec-wifi-bg: #f3e8ff; --sec-wifi-text: #6b21a8; /* Purple */
+            --sec-wmax-bg: #ffe4e6; --sec-wmax-text: #9f1239; /* Rose */
+
+            /* Badges */
+            --badge-speed-bg: #f1f5f9; --badge-speed-text: #475569;
+            --badge-sec-bg: #fee2e2;   --badge-sec-text: #991b1b;
+            --badge-qos-bg: #fef3c7;   --badge-qos-text: #92400e;
+            --badge-poe-bg: #ffedd5;   --badge-poe-text: #ea580c;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 1100px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            background: #0f172a;
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 { margin: 0; font-size: 20px; font-weight: 700; }
+        .header span { font-size: 13px; opacity: 0.7; font-family: 'JetBrains Mono', monospace; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Compact Header */
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 12px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748b;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 10px 20px; /* Tighter padding for density */
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        /* Section Separators */
+        .section-row td {
+            font-weight: 700;
+            font-size: 14px;
+            padding: 12px 20px;
+            border-top: 2px solid white;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .sec-mgmt { background: var(--sec-mgmt-bg); color: var(--sec-mgmt-text); }
+        .sec-eth  { background: var(--sec-eth-bg);  color: var(--sec-eth-text); }
+        .sec-wifi { background: var(--sec-wifi-bg); color: var(--sec-wifi-text); }
+        .sec-wmax { background: var(--sec-wmax-bg); color: var(--sec-wmax-text); }
+
+        /* Columns */
+        .col-std {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            white-space: nowrap;
+            width: 15%;
+        }
+        
+        .col-ref {
+            font-size: 11px;
+            color: #94a3b8;
+            text-align: right;
+            width: 15%;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-right: 6px;
+        }
+
+        .b-speed { background: var(--badge-speed-bg); color: var(--badge-speed-text); border: 1px solid #e2e8f0; }
+        .b-sec   { background: var(--badge-sec-bg); color: var(--badge-sec-text); }
+        .b-qos   { background: var(--badge-qos-bg); color: var(--badge-qos-text); }
+        .b-poe   { background: var(--badge-poe-bg); color: var(--badge-poe-text); }
+
+        .emoji { margin-right: 5px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>📜 IEEE 802 Protocols Master List</h1>
+            <span>LAN/MAN Standards • TCP/IP Context</span>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Standard</th>
+                    <th>Description & Key Features</th>
+                    <th style="text-align: right;">Ref</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class="section-row sec-mgmt">
+                    <td colspan="3">802.1 • Management, Bridging & Security</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.1ak</td>
+                    <td>Multiple Registration Protocol (MRP)</td>
+                    <td class="col-ref">[802.1AK]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.1AE</td>
+                    <td><span class="badge b-sec">Security</span> MACSec (MAC Security) 🔒</td>
+                    <td class="col-ref">[802.1AE]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.1AX</td>
+                    <td>Link Aggregation (LAG) <span style="color:#94a3b8; font-size:11px;">(Was 802.3ad)</span></td>
+                    <td class="col-ref">[802.1AX]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.1d</td>
+                    <td>MAC Bridges & Spanning Tree (STP) 🌉</td>
+                    <td class="col-ref">[802.1D]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.1p</td>
+                    <td><span class="badge b-qos">QoS</span> Traffic Classes / Priority</td>
+                    <td class="col-ref">[802.1D]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.1q</td>
+                    <td>Virtual Bridged LANs (VLANs) 🏷️</td>
+                    <td class="col-ref">[802.1Q]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.1s</td>
+                    <td>Multiple Spanning Tree (MSTP)</td>
+                    <td class="col-ref">[802.1Q]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.1w</td>
+                    <td>Rapid Spanning Tree (RSTP) ⚡</td>
+                    <td class="col-ref">[802.1D]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.1X</td>
+                    <td><span class="badge b-sec">Security</span> Port-Based Access Control (PNAC) 🛡️</td>
+                    <td class="col-ref">[802.1X]</td>
+                </tr>
+
+                <tr class="section-row sec-eth">
+                    <td colspan="3">802.3 • Wired Ethernet</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.2</td>
+                    <td>Logical Link Control (LLC) <span style="font-size:11px; color:#64748b;">(Upper Data Link Layer)</span></td>
+                    <td class="col-ref">[802.2]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.3</td>
+                    <td><span class="badge b-speed">10 Mbps</span> Baseline Ethernet</td>
+                    <td class="col-ref">[802.3]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.3u</td>
+                    <td><span class="badge b-speed">100 Mbps</span> Fast Ethernet</td>
+                    <td class="col-ref">[802.3]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.3x</td>
+                    <td>Full-Duplex Operation & Flow Control ⇄</td>
+                    <td class="col-ref">[802.3]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.3z/ab</td>
+                    <td><span class="badge b-speed">1 Gbps</span> Gigabit Ethernet</td>
+                    <td class="col-ref">[802.3]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.3ae</td>
+                    <td><span class="badge b-speed">10 Gbps</span> 10-Gigabit Ethernet</td>
+                    <td class="col-ref">[802.3]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.3af</td>
+                    <td><span class="badge b-poe">PoE</span> Power over Ethernet (15.4W) 🔋</td>
+                    <td class="col-ref">[802.3]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.3at</td>
+                    <td><span class="badge b-poe">PoE+</span> PoE Enhancements (30W) ⚡</td>
+                    <td class="col-ref">[802.3at]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.3ba</td>
+                    <td><span class="badge b-speed">40/100 G</span> High Speed Ethernet 🚀</td>
+                    <td class="col-ref">[802.3ba]</td>
+                </tr>
+
+                <tr class="section-row sec-wifi">
+                    <td colspan="3">802.11 • Wireless LAN (Wi-Fi)</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.11a</td>
+                    <td><span class="badge b-speed">54 Mbps</span> 5GHz Legacy</td>
+                    <td class="col-ref">[802.11]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.11b</td>
+                    <td><span class="badge b-speed">11 Mbps</span> 2.4GHz Legacy</td>
+                    <td class="col-ref">[802.11]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.11e</td>
+                    <td><span class="badge b-qos">QoS</span> Enhancements for Voice/Video</td>
+                    <td class="col-ref">[802.11]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.11g</td>
+                    <td><span class="badge b-speed">54 Mbps</span> 2.4GHz Standard</td>
+                    <td class="col-ref">[802.11]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.11i</td>
+                    <td><span class="badge b-sec">Security</span> WPA2 / Security Enhancements 🔐</td>
+                    <td class="col-ref">[802.11]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.11n</td>
+                    <td><span class="badge b-speed">600 Mbps</span> MIMO (2.4 & 5GHz) 📶</td>
+                    <td class="col-ref">[802.11n]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.11s</td>
+                    <td>Mesh Networking 🕸️</td>
+                    <td class="col-ref">[Draft]</td>
+                </tr>
+
+                <tr class="section-row sec-wmax">
+                    <td colspan="3">802.16 & 802.21 • WiMAX & Mobility</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.16d</td>
+                    <td>Fixed Wireless MAN (WiMAX) 🏢</td>
+                    <td class="col-ref">[802.16]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.16e</td>
+                    <td>Mobile Wireless MAN (WiMAX) 📱</td>
+                    <td class="col-ref">[802.16]</td>
+                </tr>
+                <tr>
+                    <td class="col-std">802.21</td>
+                    <td>Media Independent Handovers 🤝</td>
+                    <td class="col-ref">[802.21]</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
