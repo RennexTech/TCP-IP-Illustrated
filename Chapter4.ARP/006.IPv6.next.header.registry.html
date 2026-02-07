@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --bg-color: #f3f4f6;
+        --card-bg: #ffffff;
+        --header-bg: #2d3748;
+        --ipv6-blue: #3182ce;
+        --ext-purple: #805ad5;
+        --sec-red: #e53e3e;
+        --trans-green: #38a169;
+        --text-main: #2d3748;
+        --text-sub: #718096;
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 900px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .header-section {
+        text-align: center;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 20px;
+    }
+    h2 { margin: 0; color: var(--header-bg); font-size: 1.8rem; }
+    .subtitle { color: var(--text-sub); margin-top: 5px; font-size: 1rem; }
+
+    /* --- VISUAL CHAIN --- */
+    .chain-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+        padding: 20px;
+        background: #e2e8f0;
+        border-radius: 12px;
+    }
+
+    .chain-node {
+        background: var(--card-bg);
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        min-width: 120px;
+        border-top: 4px solid #ccc;
+    }
+
+    /* Node Connectors (Arrows) */
+    .chain-node::after {
+        content: "➔";
+        position: absolute;
+        right: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #a0aec0;
+        font-size: 1.2rem;
+    }
+    .chain-node:last-child::after { content: none; }
+
+    /* Node Colors */
+    .node-ipv6 { border-color: var(--ipv6-blue); }
+    .node-ext { border-color: var(--ext-purple); }
+    .node-sec { border-color: var(--sec-red); }
+    .node-trans { border-color: var(--trans-green); }
+
+    .node-val {
+        font-family: monospace;
+        font-weight: bold;
+        background: #edf2f7;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+        color: #4a5568;
+    }
+    
+    .node-title { font-weight: bold; font-size: 0.9rem; }
+    .node-sub { font-size: 0.75rem; color: var(--text-sub); }
+
+
+    /* --- TABLE --- */
+    .table-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    th {
+        background: var(--header-bg);
+        color: white;
+        text-align: left;
+        padding: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
+
+    td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #edf2f7;
+        vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover { background-color: #f7fafc; }
+
+    /* Badges */
+    .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        min-width: 30px;
+        text-align: center;
+    }
+    
+    .bg-blue { background: rgba(49, 130, 206, 0.15); color: var(--ipv6-blue); }
+    .bg-purple { background: rgba(128, 90, 213, 0.15); color: var(--ext-purple); }
+    .bg-red { background: rgba(229, 62, 62, 0.15); color: var(--sec-red); }
+    .bg-green { background: rgba(56, 161, 105, 0.15); color: var(--trans-green); }
+    .bg-gray { background: #edf2f7; color: #718096; }
+
+    .order-num {
+        font-weight: bold;
+        color: #a0aec0;
+        font-size: 0.85rem;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <h2>IPv6 Next Header Registry</h2>
+        <div class="subtitle">Protocol Extensions & Upper Layers (RFC 2460)</div>
+    </div>
+
+    <div class="chain-container">
+        <div class="chain-node node-ipv6">
+            <span class="node-val">41</span>
+            <span class="node-title">IPv6 Hdr</span>
+        </div>
+        <div class="chain-node node-ext">
+            <span class="node-val">0</span>
+            <span class="node-title">Hop-by-Hop</span>
+            <span class="node-sub">Must be 1st</span>
+        </div>
+        <div class="chain-node node-ext">
+            <span class="node-val">43</span>
+            <span class="node-title">Routing</span>
+        </div>
+        <div class="chain-node node-sec">
+            <span class="node-val">50/51</span>
+            <span class="node-title">IPSec</span>
+        </div>
+        <div class="chain-node node-trans">
+            <span class="node-val">6 / 17</span>
+            <span class="node-title">TCP / UDP</span>
+            <span class="node-sub">Payload</span>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th width="10%">Order</th>
+                    <th width="10%">Value</th>
+                    <th width="40%">Header Type</th>
+                    <th width="40%">Category / Function</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="order-num">1</td>
+                    <td><span class="badge bg-blue">41</span></td>
+                    <td><strong>IPv6 Header</strong></td>
+                    <td>Core Tunneling [RFC2460]</td>
+                </tr>
+                
+                <tr>
+                    <td class="order-num">2</td>
+                    <td><span class="badge bg-purple">0</span></td>
+                    <td><strong>Hop-by-Hop Options</strong></td>
+                    <td>Must follow IPv6 Header immediately. Used for "Jumbo Payloads" etc.</td>
+                </tr>
+                <tr>
+                    <td class="order-num">3, 8</td>
+                    <td><span class="badge bg-purple">60</span></td>
+                    <td><strong>Destination Options</strong></td>
+                    <td>Processed only by the final destination node.</td>
+                </tr>
+                <tr>
+                    <td class="order-num">4</td>
+                    <td><span class="badge bg-purple">43</span></td>
+                    <td><strong>Routing Header</strong></td>
+                    <td>Lists intermediate nodes to visit (Source Routing).</td>
+                </tr>
+                <tr>
+                    <td class="order-num">5</td>
+                    <td><span class="badge bg-purple">44</span></td>
+                    <td><strong>Fragment Header</strong></td>
+                    <td>Used when packet size exceeds MTU. (Unlike IPv4, routers don't fragment; hosts do).</td>
+                </tr>
+
+                <tr>
+                    <td class="order-num">6</td>
+                    <td><span class="badge bg-red">51</span></td>
+                    <td><strong>Authentication (AH)</strong></td>
+                    <td>Verifies sender identity & integrity (Non-encrypted).</td>
+                </tr>
+                <tr>
+                    <td class="order-num">7</td>
+                    <td><span class="badge bg-red">50</span></td>
+                    <td><strong>Encapsulating Security (ESP)</strong></td>
+                    <td>Encrypted payload data (VPNs).</td>
+                </tr>
+
+                <tr>
+                    <td class="order-num">9</td>
+                    <td><span class="badge bg-purple">135</span></td>
+                    <td><strong>Mobility (MIPv6)</strong></td>
+                    <td>Support for Mobile IPv6 Roaming.</td>
+                </tr>
+                <tr>
+                    <td class="order-num">Last</td>
+                    <td><span class="badge bg-green">58</span></td>
+                    <td><strong>ICMPv6</strong></td>
+                    <td>Ping, Neighbor Discovery, Error Reporting.</td>
+                </tr>
+                <tr>
+                    <td class="order-num">Last</td>
+                    <td><span class="badge bg-green">6</span></td>
+                    <td><strong>TCP</strong></td>
+                    <td>Reliable Transport Stream.</td>
+                </tr>
+                <tr>
+                    <td class="order-num">Last</td>
+                    <td><span class="badge bg-green">17</span></td>
+                    <td><strong>UDP</strong></td>
+                    <td>Unreliable Datagrams.</td>
+                </tr>
+                <tr>
+                    <td class="order-num">-</td>
+                    <td><span class="badge bg-gray">59</span></td>
+                    <td><strong>No Next Header</strong></td>
+                    <td>Explicit terminator. There is no payload after this.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
