@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --bg-body: #f0f4f8;
+        --bg-card: #ffffff;
+        
+        /* Modern Color Palette */
+        --col-primary: #3b82f6;   /* Blue - Core */
+        --col-sec: #10b981;       /* Green - Security */
+        --col-warn: #ef4444;      /* Red - Errors */
+        --col-info: #8b5cf6;      /* Purple - Info */
+        --col-dark: #1e293b;      /* Text Main */
+        --col-gray: #64748b;      /* Text Sub */
+        
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-body);
+        color: var(--col-dark);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .stun-container {
+        width: 100%;
+        max-width: 900px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    /* HEADER */
+    .header-section {
+        text-align: center;
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        border-bottom: 4px solid var(--col-primary);
+    }
+    
+    h2 { margin: 0; font-size: 2rem; color: var(--col-dark); }
+    .subtitle { color: var(--col-gray); margin-top: 8px; font-size: 1rem; }
+    .rfc-tag { 
+        display: inline-block; 
+        background: #dbeafe; 
+        color: #1e40af; 
+        padding: 4px 12px; 
+        border-radius: 20px; 
+        font-size: 0.8rem; 
+        font-weight: bold; 
+        margin-top: 10px;
+    }
+
+    /* GRID LAYOUT */
+    .attr-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .attr-card {
+        background: var(--bg-card);
+        border-radius: 12px;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 80px 1fr 1.5fr; /* Value | Name | Desc */
+        align-items: center;
+        gap: 20px;
+        box-shadow: var(--shadow);
+        transition: all 0.2s ease;
+        border-left: 5px solid transparent;
+    }
+
+    .attr-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    /* Column Styles */
+    .val-box {
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        background: #f1f5f9;
+        color: var(--col-gray);
+        padding: 8px 10px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+
+    .name-box {
+        display: flex;
+        flex-direction: column;
+    }
+    .name-text { font-weight: 700; font-size: 1rem; color: var(--col-dark); }
+    .category-tag { font-size: 0.75rem; text-transform: uppercase; font-weight: bold; margin-top: 2px; }
+
+    .desc-text { color: var(--col-gray); font-size: 0.95rem; line-height: 1.4; }
+
+    /* CATEGORY THEMES */
+    
+    /* 1. Addressing (Blue) */
+    .theme-addr { border-left-color: var(--col-primary); }
+    .theme-addr .category-tag { color: var(--col-primary); }
+    .theme-addr .icon { background: #dbeafe; color: var(--col-primary); }
+
+    /* 2. Security (Green) */
+    .theme-sec { border-left-color: var(--col-sec); }
+    .theme-sec .category-tag { color: var(--col-sec); }
+
+    /* 3. Error/Info (Red/Purple) */
+    .theme-err { border-left-color: var(--col-warn); }
+    .theme-err .category-tag { color: var(--col-warn); }
+    
+    .theme-info { border-left-color: var(--col-info); }
+    .theme-info .category-tag { color: var(--col-info); }
+
+    /* EMOJI ICONS */
+    .emoji { margin-right: 8px; font-size: 1.2rem; vertical-align: middle; }
+
+</style>
+</head>
+<body>
+
+<div class="stun-container">
+    <div class="header-section">
+        <h2>STUN Attributes Registry</h2>
+        <div class="subtitle">Session Traversal Utilities for NAT (RFC 5389)</div>
+        <span class="rfc-tag">STUN2 Compliant</span>
+    </div>
+
+    <div class="attr-grid">
+        
+        <div class="attr-card theme-addr">
+            <div class="val-box">0x0001</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">📍</span>MAPPED-ADDRESS</span>
+                <span class="category-tag">Addressing</span>
+            </div>
+            <div class="desc-text">Returns the public IP/Port the server saw. <br><em>(Note: Older method. Issues with some NATs modifying payload).</em></div>
+        </div>
+
+        <div class="attr-card theme-addr">
+            <div class="val-box">0x0020</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">🛡️</span>XOR-MAPPED-ADDRESS</span>
+                <span class="category-tag">Addressing (Preferred)</span>
+            </div>
+            <div class="desc-text"><strong>The Gold Standard.</strong> Returns the public IP XORed with the transaction ID. Prevents "smart" NATs from interfering with the payload.</div>
+        </div>
+
+        <div class="attr-card theme-addr">
+            <div class="val-box">0x8023</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">🔄</span>ALTERNATE-SERVER</span>
+                <span class="category-tag">Redirection</span>
+            </div>
+            <div class="desc-text">"Please try this other server instead." Used for load balancing or redirection.</div>
+        </div>
+
+        <div class="attr-card theme-sec">
+            <div class="val-box">0x0006</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">👤</span>USERNAME</span>
+                <span class="category-tag">Security</span>
+            </div>
+            <div class="desc-text">Used for message integrity checks. Often a temporary credential exchanged via signaling (SIP/WebRTC).</div>
+        </div>
+
+        <div class="attr-card theme-sec">
+            <div class="val-box">0x0008</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">🔒</span>MESSAGE-INTEGRITY</span>
+                <span class="category-tag">Security</span>
+            </div>
+            <div class="desc-text">HMAC-SHA1 hash of the message. Ensures no one tampered with the packet in transit.</div>
+        </div>
+
+        <div class="attr-card theme-sec">
+            <div class="val-box">0x0014</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">🏰</span>REALM</span>
+                <span class="category-tag">Authentication</span>
+            </div>
+            <div class="desc-text">The "Realm" or domain name for long-term credentials.</div>
+        </div>
+
+        <div class="attr-card theme-sec">
+            <div class="val-box">0x0015</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">🎫</span>NONCE</span>
+                <span class="category-tag">Anti-Replay</span>
+            </div>
+            <div class="desc-text">A unique number used once to prevent Replay Attacks.</div>
+        </div>
+
+        <div class="attr-card theme-sec">
+            <div class="val-box">0x8028</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">🖐️</span>FINGERPRINT</span>
+                <span class="category-tag">Validation</span>
+            </div>
+            <div class="desc-text">CRC-32 Checksum. Helps distinguish STUN packets from other traffic on the same port.</div>
+        </div>
+
+        <div class="attr-card theme-err">
+            <div class="val-box">0x0009</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">⚠️</span>ERROR-CODE</span>
+                <span class="category-tag">Error Handling</span>
+            </div>
+            <div class="desc-text">Similar to HTTP errors (e.g., 400 Bad Request, 500 Server Error). Contains Class + Code + Reason Phrase.</div>
+        </div>
+
+        <div class="attr-card theme-err">
+            <div class="val-box">0x000A</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">❓</span>UNKNOWN-ATTRS</span>
+                <span class="category-tag">Error Handling</span>
+            </div>
+            <div class="desc-text">Lists which attributes the server didn't understand (used in 420 Unknown Attribute errors).</div>
+        </div>
+
+        <div class="attr-card theme-info">
+            <div class="val-box">0x8022</div>
+            <div class="name-box">
+                <span class="name-text"><span class="emoji">💻</span>SOFTWARE</span>
+                <span class="category-tag">Metadata</span>
+            </div>
+            <div class="desc-text">"I am a Cisco Router" or "I am a Firefox Client". Description of the agent sending the message.</div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
