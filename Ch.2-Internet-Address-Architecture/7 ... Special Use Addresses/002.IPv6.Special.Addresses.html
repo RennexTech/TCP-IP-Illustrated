@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPv6 Special Addresses</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+        :root {
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-secondary: #4b5563;
+            --border-color: #e5e7eb;
+            --accent-blue: #eff6ff;
+            --text-blue: #1e40af;
+            --accent-purple: #f5f3ff;
+            --text-purple: #5b21b6;
+            --accent-green: #ecfdf5;
+            --text-green: #065f46;
+            --accent-red: #fef2f2;
+            --text-red: #991b1b;
+            --accent-yellow: #fffbeb;
+            --text-yellow: #92400e;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .notes-container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 900px; /* Perfect width for screenshots */
+            border-radius: 16px;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            margin: 8px 0 0 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f9fafb;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            padding: 16px 24px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            color: var(--text-main);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Styling the Prefix Column */
+        .prefix-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Row-specific styling for visual grouping */
+        
+        /* Default / Unspecified */
+        .type-default .prefix-code { background: var(--accent-blue); color: var(--text-blue); }
+        
+        /* Local / Loopback */
+        .type-local .prefix-code { background: var(--accent-green); color: var(--text-green); }
+        
+        /* Mapped / Translation */
+        .type-mapped .prefix-code { background: var(--accent-purple); color: var(--text-purple); }
+        
+        /* Teredo / Documentation */
+        .type-doc .prefix-code { background: var(--accent-yellow); color: var(--text-yellow); }
+        
+        /* Multicast / Link-Local */
+        .type-multi .prefix-code { background: var(--accent-red); color: var(--text-red); }
+
+        .ref-tag {
+            font-size: 11px;
+            color: #9ca3af;
+            border: 1px solid #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Hover effect for screenshot aesthetics */
+        tr:hover {
+            background-color: #fdfdfd;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="notes-container">
+        <div class="header">
+            <h1>🌐 IPv6 Special Address Registry</h1>
+            <p>Prefixes, Use Cases & References • Cheat Sheet</p>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 25%">Prefix</th>
+                    <th style="width: 60%">Special Use & Description</th>
+                    <th style="width: 15%">Ref</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="type-default">
+                    <td><span class="prefix-code">::/0</span></td>
+                    <td><b>Default Route</b> 🛣️<br>The "catch-all" route. Not used for specific addressing.</td>
+                    <td><span class="ref-tag">RFC5156</span></td>
+                </tr>
+                <tr class="type-default">
+                    <td><span class="prefix-code">::/128</span></td>
+                    <td><b>Unspecified Address</b> 🚫<br>Used as a source IP during initialization (e.g., DHCPv6). Never a destination.</td>
+                    <td><span class="ref-tag">RFC4291</span></td>
+                </tr>
+                <tr class="type-local">
+                    <td><span class="prefix-code">::1/128</span></td>
+                    <td><b>Loopback Address</b> 🏠<br>The "localhost" of IPv6. Never leaves the device.</td>
+                    <td><span class="ref-tag">RFC4291</span></td>
+                </tr>
+                <tr class="type-mapped">
+                    <td><span class="prefix-code">::ffff:0:0/96</span></td>
+                    <td><b>IPv4-Mapped</b> 🗺️<br>Representing IPv4 addresses inside IPv6 sockets.</td>
+                    <td><span class="ref-tag">RFC4291</span></td>
+                </tr>
+                <tr class="type-mapped">
+                    <td><span class="prefix-code">64:ff9b::/96</span></td>
+                    <td><b>IPv4/IPv6 Translation</b> 🔄<br>Used for automatic translation (NAT64) globally.</td>
+                    <td><span class="ref-tag">RFC6052</span></td>
+                </tr>
+                <tr class="type-doc">
+                    <td><span class="prefix-code">2001::/32</span></td>
+                    <td><b>Teredo Tunneling</b> 🚇<br>Transition mechanism for IPv6 over IPv4 UDP.</td>
+                    <td><span class="ref-tag">RFC4380</span></td>
+                </tr>
+                <tr class="type-doc">
+                    <td><span class="prefix-code">2001:20::/28</span></td>
+                    <td><b>ORCHIDv2</b> 🆔<br>Overlay Routable Cryptographic Hash Identifiers.</td>
+                    <td><span class="ref-tag">RFC7343</span></td>
+                </tr>
+                <tr class="type-doc">
+                    <td><span class="prefix-code">2001:db8::/32</span></td>
+                    <td><b>Documentation</b> 📝<br>Reserved for examples, books, and manuals. Like "555" in phone numbers.</td>
+                    <td><span class="ref-tag">RFC3849</span></td>
+                </tr>
+                <tr class="type-mapped">
+                    <td><span class="prefix-code">2002::/16</span></td>
+                    <td><b>6to4 Scheme</b> 🌉<br>Legacy transition mechanism for IPv6 over IPv4 networks.</td>
+                    <td><span class="ref-tag">RFC3056</span></td>
+                </tr>
+                <tr class="type-multi">
+                    <td><span class="prefix-code">fc00::/7</span></td>
+                    <td><b>Unique-Local</b> 🔒<br>Private addresses (LAN). Similar to IPv4's 10.x.x.x or 192.168.x.x.</td>
+                    <td><span class="ref-tag">RFC4193</span></td>
+                </tr>
+                <tr class="type-multi">
+                    <td><span class="prefix-code">fe80::/10</span></td>
+                    <td><b>Link-Local</b> 🔗<br>Used for communication on the same link (network segment). Auto-configured.</td>
+                    <td><span class="ref-tag">RFC4291</span></td>
+                </tr>
+                <tr class="type-multi">
+                    <td><span class="prefix-code">ff00::/8</span></td>
+                    <td><b>Multicast</b> 📢<br>One-to-many communication. Replaces Broadcast in IPv6.</td>
+                    <td><span class="ref-tag">RFC4291</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

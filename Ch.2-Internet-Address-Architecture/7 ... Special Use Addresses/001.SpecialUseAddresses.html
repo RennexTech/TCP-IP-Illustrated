@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --header-bg: #2c3e50;
+        --private-bg: #27ae60;  /* Green for Usable Private IPs */
+        --special-bg: #e67e22;  /* Orange for System/Special */
+        --doc-bg: #3498db;      /* Blue for Documentation/Test */
+        --bad-bg: #c0392b;      /* Red for Reserved/Restricted */
+        --text-color: #2f3640;
+        --row-hover: #f1f2f6;
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background-color: #ecf0f1;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .ip-container {
+        width: 100%;
+        max-width: 950px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+        border-top: 5px solid var(--header-bg);
+    }
+
+    .ip-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .ip-table thead th {
+        background-color: #34495e;
+        color: white;
+        padding: 12px 20px; /* Compact padding */
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .ip-table td {
+        padding: 12px 20px; /* Compact padding to fit one page */
+        border-bottom: 1px solid #dfe6e9;
+        color: var(--text-color);
+        vertical-align: middle;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .ip-table tr:hover { background-color: var(--row-hover); }
+    .ip-table tr:last-child td { border-bottom: none; }
+
+    /* Columns */
+    .col-prefix { font-family: 'Consolas', monospace; font-weight: 700; color: #2c3e50; width: 18%; }
+    .col-use { width: 15%; }
+    .col-ref { font-size: 11px; color: #7f8c8d; font-family: 'Consolas', monospace; width: 10%; text-align: right; }
+
+    /* Badges */
+    .badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 4px;
+        color: white;
+        font-weight: 700;
+        font-size: 11px;
+        text-transform: uppercase;
+        width: 100px;
+        text-align: center;
+    }
+
+    .b-private { background-color: var(--private-bg); }
+    .b-special { background-color: var(--special-bg); }
+    .b-doc { background-color: var(--doc-bg); }
+    .b-res { background-color: var(--bad-bg); }
+    .b-link { background-color: #9b59b6; } /* Purple for Link Local */
+
+</style>
+</head>
+<body>
+
+<div class="ip-container">
+    <table class="ip-table">
+        <thead>
+            <tr>
+                <th>Prefix (CIDR)</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th style="text-align:right;">Reference</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-prefix">0.0.0.0/8</td>
+                <td class="col-use"><span class="badge b-special">Source Only</span></td>
+                <td>Hosts on local network. Used only as a source IP (e.g., DHCP discovery).</td>
+                <td class="col-ref">RFC1122</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">10.0.0.0/8</td>
+                <td class="col-use"><span class="badge b-private">Private</span></td>
+                <td><strong>Class A Private Network.</strong> Used for large Intranets. Never public.</td>
+                <td class="col-ref">RFC1918</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">127.0.0.0/8</td>
+                <td class="col-use"><span class="badge b-special">Loopback</span></td>
+                <td><strong>Localhost.</strong> Addresses the computer itself. Typically only <code>127.0.0.1</code> is used.</td>
+                <td class="col-ref">RFC1122</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">169.254.0.0/16</td>
+                <td class="col-use"><span class="badge b-link">Link-Local</span></td>
+                <td><strong>APIPA.</strong> Assigned automatically when DHCP fails. Works only on the local link.</td>
+                <td class="col-ref">RFC3927</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">172.16.0.0/12</td>
+                <td class="col-use"><span class="badge b-private">Private</span></td>
+                <td><strong>Class B Private Network.</strong> Used for medium-sized Intranets.</td>
+                <td class="col-ref">RFC1918</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">192.0.0.0/24</td>
+                <td class="col-use"><span class="badge b-res">Reserved</span></td>
+                <td>IETF protocol assignments (IANA reserved).</td>
+                <td class="col-ref">RFC5736</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">192.0.2.0/24</td>
+                <td class="col-use"><span class="badge b-doc">Doc / Test</span></td>
+                <td><strong>TEST-NET-1.</strong> Approved for documentation/examples. Never routing.</td>
+                <td class="col-ref">RFC5737</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">192.88.99.0/24</td>
+                <td class="col-use"><span class="badge b-special">Relay</span></td>
+                <td>Used for IPv6-to-IPv4 relays (6to4 anycast addresses).</td>
+                <td class="col-ref">RFC3068</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">192.168.0.0/16</td>
+                <td class="col-use"><span class="badge b-private">Private</span></td>
+                <td><strong>Class C Private Network.</strong> The standard for home routers/small business.</td>
+                <td class="col-ref">RFC1918</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">198.18.0.0/15</td>
+                <td class="col-use"><span class="badge b-doc">Benchmark</span></td>
+                <td>Used strictly for performance testing and benchmarks.</td>
+                <td class="col-ref">RFC2544</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">198.51.100.0/24</td>
+                <td class="col-use"><span class="badge b-doc">Doc / Test</span></td>
+                <td><strong>TEST-NET-2.</strong> Approved for documentation/examples.</td>
+                <td class="col-ref">RFC5737</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">203.0.113.0/24</td>
+                <td class="col-use"><span class="badge b-doc">Doc / Test</span></td>
+                <td><strong>TEST-NET-3.</strong> Approved for documentation/examples.</td>
+                <td class="col-ref">RFC5737</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">224.0.0.0/4</td>
+                <td class="col-use"><span class="badge b-special">Multicast</span></td>
+                <td><strong>Class D.</strong> Used for Multicast destination addresses (one-to-many).</td>
+                <td class="col-ref">RFC5771</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">240.0.0.0/4</td>
+                <td class="col-use"><span class="badge b-res">Reserved</span></td>
+                <td><strong>Class E.</strong> Reserved space for future use / R&D.</td>
+                <td class="col-ref">RFC1112</td>
+            </tr>
+            <tr>
+                <td class="col-prefix">255.255.255.255</td>
+                <td class="col-use"><span class="badge b-special">Broadcast</span></td>
+                <td>Limited Broadcast address. Sent to <strong>everyone</strong> on the local network.</td>
+                <td class="col-ref">RFC0919</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
