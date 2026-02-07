@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --bg-body: #f1f5f9;
+        --card-bg: #ffffff;
+        
+        /* Protocol Colors */
+        --c-v4: #ef4444;    /* Red for Legacy IPv4 */
+        --c-v6: #3b82f6;    /* Blue for Modern IPv6 */
+        --c-frag: #8b5cf6;  /* Purple for Fragmentation */
+        --c-warn: #f59e0b;  /* Warning/Attention */
+        
+        --text-dark: #1e293b;
+        --text-sub: #64748b;
+        
+        --border-rad: 12px;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-body);
+        color: var(--text-dark);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .siit-container {
+        width: 100%;
+        max-width: 1000px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    /* HEADER */
+    .main-header {
+        text-align: center;
+        background: var(--card-bg);
+        padding: 30px;
+        border-radius: var(--border-rad);
+        box-shadow: var(--shadow);
+        border-bottom: 5px solid #0f172a;
+    }
+    h1 { margin: 0; font-size: 2rem; }
+    .subtitle { color: var(--text-sub); margin-top: 10px; font-size: 1.1rem; }
+    .rfc-badge { background: #e2e8f0; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; }
+
+    /* SECTION TITLES */
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: var(--text-dark);
+    }
+    .arrow-icon { font-size: 1.5rem; color: var(--text-sub); }
+
+    /* TABLE STYLING */
+    .data-table {
+        width: 100%;
+        background: var(--card-bg);
+        border-radius: var(--border-rad);
+        border-collapse: collapse;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        font-size: 0.95rem;
+    }
+
+    .data-table th {
+        text-align: left;
+        padding: 15px;
+        color: white;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    .data-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: top;
+        line-height: 1.5;
+    }
+    
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover { background-color: #f8fafc; }
+
+    /* Specific Table Colors */
+    .th-v4-to-v6 { background: linear-gradient(90deg, var(--c-v4), var(--c-v6)); }
+    .th-frag { background: linear-gradient(90deg, var(--c-v4), var(--c-frag)); }
+    .th-v6-to-v4 { background: linear-gradient(90deg, var(--c-v6), var(--c-v4)); }
+
+    /* Field Highlighting */
+    .field-name { font-weight: bold; color: var(--text-dark); }
+    .method-text { color: var(--text-sub); }
+    
+    .hl-v4 { color: var(--c-v4); font-weight: bold; font-family: monospace; background: rgba(239, 68, 68, 0.1); padding: 2px 6px; border-radius: 4px; }
+    .hl-v6 { color: var(--c-v6); font-weight: bold; font-family: monospace; background: rgba(59, 130, 246, 0.1); padding: 2px 6px; border-radius: 4px; }
+    .hl-val { font-family: monospace; font-weight: bold; color: #0f172a; }
+
+    /* NOTE BOXES */
+    .note-box {
+        background: #fffbeb;
+        border-left: 4px solid var(--c-warn);
+        padding: 15px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        color: #92400e;
+        margin-top: 10px;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="siit-container">
+    
+    <div class="main-header">
+        <h1>Stateless IP/ICMP Translation (SIIT)</h1>
+        <div class="subtitle">Header Translation Mechanisms <span class="rfc-badge">RFC 6145</span></div>
+    </div>
+
+    <div>
+        <div class="section-title">
+            <span style="color:var(--c-v4)">IPv4</span>
+            <span class="arrow-icon">➔</span>
+            <span style="color:var(--c-v6)">IPv6</span>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th class="th-v4-to-v6" width="30%">IPv6 Field (Created)</th>
+                    <th class="th-v4-to-v6" width="70%">Assignment Method (From IPv4)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="field-name">Version</td>
+                    <td class="method-text">Set to <span class="hl-val">6</span>.</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Traffic Class (DS/ECN)</td>
+                    <td class="method-text">Copied directly from <span class="hl-v4">Type of Service (TOS)</span> field.</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Flow Label</td>
+                    <td class="method-text">Set to <span class="hl-val">0</span>.</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Payload Length</td>
+                    <td class="method-text"><span class="hl-v4">Total Length</span> minus IPv4 Header Length.</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Next Header</td>
+                    <td class="method-text">
+                        Set to <span class="hl-v4">Protocol</span> field.<br>
+                        <em>Exception 1:</em> If Protocol was 1 (ICMPv4), change to <span class="hl-val">58</span> (ICMPv6).<br>
+                        <em>Exception 2:</em> If fragmentation is needed (or DF=0), set to <span class="hl-val">44</span> (Fragment Header).
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-name">Hop Limit</td>
+                    <td class="method-text"><span class="hl-v4">TTL</span> minus 1. (If result is 0, drop packet & send ICMP Time Exceeded).</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Source Address</td>
+                    <td class="method-text">Converted via mapping function: <code>To6(IPv4 Source, Prefix)</code></td>
+                </tr>
+                <tr>
+                    <td class="field-name">Dest Address</td>
+                    <td class="method-text">Converted via mapping function: <code>To6(IPv4 Dest, Prefix)</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note-box" style="margin-top:20px; background: #f3e8ff; border-color: var(--c-frag); color: #581c87;">
+            <strong>Fragmentation Note:</strong> If the IPv4 <span class="hl-v4">DF</span> (Don't Fragment) bit is 0, an IPv6 Fragment Header is <em>always</em> added to warn the receiver that PMTUD was likely not used.
+        </div>
+
+        <table class="data-table" style="margin-top:15px;">
+            <thead>
+                <tr>
+                    <th class="th-frag" width="30%">IPv6 Fragment Header Field</th>
+                    <th class="th-frag" width="70%">Assignment Method (From IPv4)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="field-name">Next Header</td>
+                    <td class="method-text">Set to original <span class="hl-v4">Protocol</span> field.</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Fragment Offset</td>
+                    <td class="method-text">Copied from <span class="hl-v4">Fragment Offset</span>.</td>
+                </tr>
+                <tr>
+                    <td class="field-name">M Bit (More Fragments)</td>
+                    <td class="method-text">Copied from <span class="hl-v4">MF</span> bit.</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Identification</td>
+                    <td class="method-text">Low 16 bits = <span class="hl-v4">Identification</span>. High 16 bits = <span class="hl-val">0</span>.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <div class="section-title">
+            <span style="color:var(--c-v6)">IPv6</span>
+            <span class="arrow-icon">➔</span>
+            <span style="color:var(--c-v4)">IPv4</span>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th class="th-v6-to-v4" width="30%">IPv4 Field (Created)</th>
+                    <th class="th-v6-to-v4" width="70%">Assignment Method (From IPv6)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="field-name">Version</td>
+                    <td class="method-text">Set to <span class="hl-val">4</span>.</td>
+                </tr>
+                <tr>
+                    <td class="field-name">IHL</td>
+                    <td class="method-text">Set to <span class="hl-val">5</span> (No Options).</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Type of Service</td>
+                    <td class="method-text">Copied from <span class="hl-v6">Traffic Class</span> (DS/ECN).</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Total Length</td>
+                    <td class="method-text"><span class="hl-v6">Payload Length</span> + 20 (IPv4 Header size).</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Identification</td>
+                    <td class="method-text">
+                        If unfragmented: Set to <span class="hl-val">0</span>.<br>
+                        If fragmented: Copied from low 16 bits of IPv6 <span class="hl-v6">Fragment ID</span>.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-name">Flags (DF / MF)</td>
+                    <td class="method-text">
+                        <strong>Unfragmented:</strong> MF=0, DF=1.<br>
+                        <strong>Fragmented:</strong> MF=Copied from IPv6 M-bit, DF=0.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-name">TTL</td>
+                    <td class="method-text"><span class="hl-v6">Hop Limit</span> minus 1.</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Protocol</td>
+                    <td class="method-text">
+                        Copied from <span class="hl-v6">Next Header</span>.<br>
+                        <em>Exception:</em> If value is 58 (ICMPv6), change to <span class="hl-val">1</span> (ICMPv4).
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-name">Header Checksum</td>
+                    <td class="method-text">Recomputed entirely (IPv6 has no checksum).</td>
+                </tr>
+                <tr>
+                    <td class="field-name">Source/Dest IP</td>
+                    <td class="method-text">Converted via mapping function: <code>To4(IPv6 Addr, Prefix)</code></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="note-box">
+            <strong>Risk Factor:</strong> When translating fragmented IPv6 packets to IPv4, the Identification field shrinks from 32-bits to 16-bits. There is a small risk of ID collisions if distinct packets share the same lower 16 bits.
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

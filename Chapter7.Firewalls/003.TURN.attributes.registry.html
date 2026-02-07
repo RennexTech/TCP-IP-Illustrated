@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --bg-body: #f8fafc;
+        --bg-card: #ffffff;
+        
+        /* Palette */
+        --c-relay: #0ea5e9;    /* Cyan - Relaying */
+        --c-time: #f59e0b;     /* Orange - Time/Life */
+        --c-data: #8b5cf6;     /* Purple - Payload */
+        --c-config: #10b981;   /* Green - Settings */
+        --c-token: #ec4899;    /* Pink - Tokens */
+        
+        --text-dark: #1e293b;
+        --text-light: #64748b;
+        
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-body);
+        color: var(--text-dark);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .turn-container {
+        width: 100%;
+        max-width: 950px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    /* HEADER SECTION */
+    .header-box {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: var(--shadow);
+        border-top: 6px solid var(--c-relay);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .header-box::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 6px;
+        background: linear-gradient(90deg, var(--c-relay), var(--c-data), var(--c-time));
+    }
+
+    h2 { margin: 0; font-size: 2rem; color: var(--text-dark); letter-spacing: -0.5px; }
+    .subtitle { color: var(--text-light); margin-top: 8px; font-size: 1.1rem; }
+    .badge-rfc { 
+        background: #e0f2fe; color: #0369a1; 
+        padding: 4px 12px; border-radius: 12px; 
+        font-size: 0.8rem; font-weight: bold; 
+        display: inline-block; margin-top: 10px;
+    }
+
+    /* GRID LAYOUT */
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    /* Card Internals */
+    .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .val-badge {
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        background: #f1f5f9;
+        color: var(--text-light);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+    }
+
+    .icon-wrapper {
+        font-size: 1.5rem;
+        width: 40px; height: 40px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%;
+    }
+
+    .card-title {
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 8px;
+        color: var(--text-dark);
+    }
+
+    .card-desc {
+        font-size: 0.9rem;
+        color: var(--text-light);
+        line-height: 1.5;
+    }
+
+    /* COLOR THEMES */
+    
+    /* 1. Addressing/Relay (Blue) */
+    .theme-relay .icon-wrapper { background: #e0f2fe; color: var(--c-relay); }
+    .theme-relay { border-bottom: 4px solid var(--c-relay); }
+
+    /* 2. Time/Channels (Orange) */
+    .theme-time .icon-wrapper { background: #ffedd5; color: var(--c-time); }
+    .theme-time { border-bottom: 4px solid var(--c-time); }
+
+    /* 3. Data (Purple) */
+    .theme-data .icon-wrapper { background: #ede9fe; color: var(--c-data); }
+    .theme-data { border-bottom: 4px solid var(--c-data); }
+
+    /* 4. Config (Green) */
+    .theme-config .icon-wrapper { background: #d1fae5; color: var(--c-config); }
+    .theme-config { border-bottom: 4px solid var(--c-config); }
+    
+    /* 5. Token (Pink) */
+    .theme-token .icon-wrapper { background: #fce7f3; color: var(--c-token); }
+    .theme-token { border-bottom: 4px solid var(--c-token); }
+
+</style>
+</head>
+<body>
+
+<div class="turn-container">
+    <div class="header-box">
+        <h2>TURN Attributes Registry</h2>
+        <div class="subtitle">Traversal Using Relays around NAT</div>
+        <span class="badge-rfc">Extends RFC 5389</span>
+    </div>
+
+    <div class="grid-container">
+
+        <div class="card theme-relay">
+            <div class="card-top">
+                <div class="icon-wrapper">📡</div>
+                <span class="val-badge">0x0016</span>
+            </div>
+            <div>
+                <div class="card-title">XOR-RELAYED-ADDRESS</div>
+                <div class="card-desc">The "Public IP" the server has allocated for you. You give this address to peers so they can send data to the relay.</div>
+            </div>
+        </div>
+
+        <div class="card theme-relay">
+            <div class="card-top">
+                <div class="icon-wrapper">👥</div>
+                <span class="val-badge">0x0012</span>
+            </div>
+            <div>
+                <div class="card-title">XOR-PEER-ADDRESS</div>
+                <div class="card-desc">The address of the remote peer you want to talk to. Used to create permissions on the relay.</div>
+            </div>
+        </div>
+
+        <div class="card theme-time">
+            <div class="card-top">
+                <div class="icon-wrapper">📺</div>
+                <span class="val-badge">0x000C</span>
+            </div>
+            <div>
+                <div class="card-title">CHANNEL-NUMBER</div>
+                <div class="card-desc">An optimization. Instead of full headers, data is sent on a specific "Channel Number" (0x4000-0x7FFF) to save bandwidth.</div>
+            </div>
+        </div>
+
+        <div class="card theme-time">
+            <div class="card-top">
+                <div class="icon-wrapper">⏳</div>
+                <span class="val-badge">0x000D</span>
+            </div>
+            <div>
+                <div class="card-title">LIFETIME</div>
+                <div class="card-desc">How long (in seconds) the relay allocation remains active. You must refresh this before it expires.</div>
+            </div>
+        </div>
+
+        <div class="card theme-data">
+            <div class="card-top">
+                <div class="icon-wrapper">📦</div>
+                <span class="val-badge">0x0013</span>
+            </div>
+            <div>
+                <div class="card-title">DATA</div>
+                <div class="card-desc">The actual payload. If you aren't using Channel Numbers, your data sits inside this attribute.</div>
+            </div>
+        </div>
+
+        <div class="card theme-config">
+            <div class="card-top">
+                <div class="icon-wrapper">🚆</div>
+                <span class="val-badge">0x0019</span>
+            </div>
+            <div>
+                <div class="card-title">REQUESTED-TRANSPORT</div>
+                <div class="card-desc">Protocol requested (UDP or TCP). Drawn from IPv4 Protocol or IPv6 Next Header fields.</div>
+            </div>
+        </div>
+
+        <div class="card theme-config">
+            <div class="card-top">
+                <div class="icon-wrapper">🧱</div>
+                <span class="val-badge">0x001A</span>
+            </div>
+            <div>
+                <div class="card-title">DONT-FRAGMENT</div>
+                <div class="card-desc">Instructs the server to set the DF (Don't Fragment) bit on outgoing packets. Crucial for Path MTU Discovery.</div>
+            </div>
+        </div>
+
+        <div class="card theme-config">
+            <div class="card-top">
+                <div class="icon-wrapper">⚖️</div>
+                <span class="val-badge">0x0018</span>
+            </div>
+            <div>
+                <div class="card-title">EVEN-PORT</div>
+                <div class="card-desc">Requests an even-numbered port (often needed for older RTP/RTCP pairing). Can also request the next sequential port.</div>
+            </div>
+        </div>
+
+        <div class="card theme-token">
+            <div class="card-top">
+                <div class="icon-wrapper">🎟️</div>
+                <span class="val-badge">0x0022</span>
+            </div>
+            <div>
+                <div class="card-title">RESERVATION-TOKEN</div>
+                <div class="card-desc">A "ticket" to reclaim a specific reserved address/port in a subsequent request.</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
