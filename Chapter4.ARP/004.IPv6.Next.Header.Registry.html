@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --bg-color: #f0f2f5;
+        --card-bg: #ffffff;
+        --header-bg: #2c3e50;
+        --link-color: #34495e;
+        
+        /* Protocol Colors */
+        --ipv6-col: #3498db;   /* Blue */
+        --ext-col: #9b59b6;    /* Purple */
+        --upper-col: #2ecc71;  /* Green */
+        --sec-col: #e74c3c;    /* Red */
+        
+        --text-main: #2c3e50;
+        --text-sub: #7f8c8d;
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 900px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .header-section {
+        text-align: center;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 20px;
+    }
+    h2 { margin: 0; color: var(--header-bg); }
+    .subtitle { color: var(--text-sub); margin-top: 5px; }
+
+
+    /* --- VISUAL CHAIN DEMO --- */
+    .chain-demo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        overflow-x: auto;
+        padding: 20px 0;
+    }
+
+    .packet-block {
+        background: var(--card-bg);
+        border: 2px solid;
+        border-radius: 8px;
+        padding: 15px;
+        min-width: 120px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        position: relative;
+    }
+
+    .pb-ipv6 { border-color: var(--ipv6-col); color: var(--ipv6-col); }
+    .pb-ext { border-color: var(--ext-col); color: var(--ext-col); }
+    .pb-upper { border-color: var(--upper-col); color: var(--upper-col); }
+
+    .block-title { font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; }
+    .next-ptr { 
+        font-family: monospace; 
+        font-size: 0.8rem; 
+        background: #eee; 
+        padding: 2px 6px; 
+        border-radius: 4px;
+        color: #333;
+    }
+
+    .arrow {
+        font-size: 1.5rem;
+        color: var(--link-color);
+        margin: 0 10px;
+    }
+
+
+    /* --- REFERENCE TABLE --- */
+    .table-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    th {
+        background: var(--header-bg);
+        color: white;
+        text-align: left;
+        padding: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+
+    td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover { background-color: #f9f9f9; }
+
+    /* Values */
+    .val-badge {
+        font-family: monospace;
+        font-weight: bold;
+        background: #edf2f7;
+        padding: 4px 8px;
+        border-radius: 4px;
+        color: var(--header-bg);
+        display: inline-block;
+        min-width: 30px;
+        text-align: center;
+    }
+
+    /* Type Dots */
+    .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+    .d-ipv6 { background: var(--ipv6-col); }
+    .d-ext { background: var(--ext-col); }
+    .d-sec { background: var(--sec-col); }
+    .d-up { background: var(--upper-col); }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <h2>IPv6 Next Header Registry</h2>
+        <div class="subtitle">The Daisy Chain of Protocols</div>
+    </div>
+
+    <div class="chain-demo">
+        <div class="packet-block pb-ipv6">
+            <div class="block-title">IPv6 Header</div>
+            <div class="next-ptr">Next: 43</div>
+        </div>
+        <div class="arrow">➔</div>
+        
+        <div class="packet-block pb-ext">
+            <div class="block-title">Routing (43)</div>
+            <div class="next-ptr">Next: 51</div>
+        </div>
+        <div class="arrow">➔</div>
+
+        <div class="packet-block pb-ext" style="border-color: var(--sec-col); color: var(--sec-col);">
+            <div class="block-title">AH (51)</div>
+            <div class="next-ptr">Next: 6</div>
+        </div>
+        <div class="arrow">➔</div>
+
+        <div class="packet-block pb-upper">
+            <div class="block-title">TCP (6)</div>
+            <div class="next-ptr">Payload</div>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th width="50">Ord</th>
+                    <th width="80">Value</th>
+                    <th>Header Type</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><span class="val-badge">41</span></td>
+                    <td><strong>IPv6 Header</strong> (Tunneling)</td>
+                    <td><span class="dot d-ipv6"></span>Basic</td>
+                </tr>
+                
+                <tr>
+                    <td>2</td>
+                    <td><span class="val-badge">0</span></td>
+                    <td><strong>Hop-by-Hop Options</strong></td>
+                    <td><span class="dot d-ext"></span>Must be first!</td>
+                </tr>
+                <tr>
+                    <td>3,8</td>
+                    <td><span class="val-badge">60</span></td>
+                    <td>Destination Options</td>
+                    <td><span class="dot d-ext"></span>Extension</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><span class="val-badge">43</span></td>
+                    <td>Routing Header</td>
+                    <td><span class="dot d-ext"></span>Extension</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><span class="val-badge">44</span></td>
+                    <td>Fragment Header</td>
+                    <td><span class="dot d-ext"></span>Extension</td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td><span class="val-badge">51</span></td>
+                    <td>Authentication Header (AH)</td>
+                    <td><span class="dot d-sec"></span>Security</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><span class="val-badge">50</span></td>
+                    <td>Encapsulating Security Payload (ESP)</td>
+                    <td><span class="dot d-sec"></span>Security</td>
+                </tr>
+                 <tr>
+                    <td>9</td>
+                    <td><span class="val-badge">135</span></td>
+                    <td>Mobility (MIPv6)</td>
+                    <td><span class="dot d-ext"></span>Extension</td>
+                </tr>
+
+                <tr>
+                    <td>Last</td>
+                    <td><span class="val-badge">6</span></td>
+                    <td>TCP</td>
+                    <td><span class="dot d-up"></span>Transport</td>
+                </tr>
+                <tr>
+                    <td>Last</td>
+                    <td><span class="val-badge">17</span></td>
+                    <td>UDP</td>
+                    <td><span class="dot d-up"></span>Transport</td>
+                </tr>
+                <tr>
+                    <td>Last</td>
+                    <td><span class="val-badge">58</span></td>
+                    <td>ICMPv6</td>
+                    <td><span class="dot d-up"></span>Control</td>
+                </tr>
+                 <tr>
+                    <td>Last</td>
+                    <td><span class="val-badge">59</span></td>
+                    <td><strong>No Next Header</strong></td>
+                    <td><span class="dot" style="background:#bdc3c7;"></span>Terminator</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

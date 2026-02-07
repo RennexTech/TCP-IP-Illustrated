@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --bg-color: #2c3e50;
+        --table-bg: #34495e;
+        --header-bg: #2c3e50;
+        --accent-gold: #f1c40f;
+        --accent-red: #e74c3c;
+        --accent-green: #2ecc71;
+        --accent-blue: #3498db;
+        --text-white: #ecf0f1;
+        --text-muted: #bdc3c7;
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background-color: #ecf0f1;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        color: #2c3e50;
+    }
+
+    .options-container {
+        width: 100%;
+        max-width: 950px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .header {
+        background: var(--header-bg);
+        color: white;
+        padding: 25px;
+        border-bottom: 4px solid var(--accent-gold);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    h2 { margin: 0; font-size: 1.5rem; }
+    .subtitle { opacity: 0.8; font-size: 0.9rem; margin-top: 5px; }
+
+    .tag-ipv4 {
+        background: var(--accent-gold);
+        color: #2c3e50;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.8rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    th {
+        background: #f8f9fa;
+        text-align: left;
+        padding: 15px;
+        color: #7f8c8d;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        border-bottom: 2px solid #ddd;
+    }
+
+    td {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        vertical-align: top;
+    }
+
+    tr:hover { background-color: #fcfcfc; }
+
+    /* Column Specifics */
+    .col-val { font-family: 'Consolas', monospace; color: var(--accent-blue); font-weight: bold; }
+    .col-len { font-family: 'Consolas', monospace; color: #7f8c8d; }
+    
+    /* Status Badges */
+    .status-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .st-common { background: rgba(46, 204, 113, 0.15); color: var(--accent-green); }
+    .st-rare { background: rgba(241, 196, 15, 0.15); color: #f39c12; }
+    .st-hist { background: rgba(189, 195, 199, 0.3); color: #7f8c8d; }
+    .st-warn { background: rgba(231, 76, 60, 0.15); color: var(--accent-red); }
+
+    .ref-link { font-size: 0.75rem; color: var(--accent-blue); text-decoration: none; display: block; margin-top: 4px;}
+
+</style>
+</head>
+<body>
+
+<div class="options-container">
+    <div class="header">
+        <div>
+            <h2>IPv4 Options Registry</h2>
+            <div class="subtitle">Variable-length fields at the end of the IPv4 Header</div>
+        </div>
+        <span class="tag-ipv4">IPv4 Only</span>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="15%">Name</th>
+                <th width="10%">Value</th>
+                <th width="10%">Length</th>
+                <th width="40%">Description</th>
+                <th width="15%">Usage</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>End of List</strong></td>
+                <td class="col-val">0</td>
+                <td class="col-len">1</td>
+                <td>Indicates the end of the options list (padding terminator).<span class="ref-link">[RFC0791]</span></td>
+                <td><span class="status-badge st-common">Required</span></td>
+            </tr>
+            <tr>
+                <td><strong>No Op</strong></td>
+                <td class="col-val">1</td>
+                <td class="col-len">1</td>
+                <td>"No Operation" - used as padding to align fields.<span class="ref-link">[RFC0791]</span></td>
+                <td><span class="status-badge st-common">Padding</span></td>
+            </tr>
+
+            <tr>
+                <td><strong>Source Routing</strong></td>
+                <td class="col-val">131, 137</td>
+                <td class="col-len">Var</td>
+                <td>
+                    Sender dictates the path.<br>
+                    <em>131: Loose</em> (Specific hops, any path between)<br>
+                    <em>137: Strict</em> (Exact hops only)
+                </td>
+                <td><span class="status-badge st-warn">Filtered</span></td>
+            </tr>
+            <tr>
+                <td><strong>Record Route</strong></td>
+                <td class="col-val">7</td>
+                <td class="col-len">Var</td>
+                <td>Records the IP of every router the packet passes through.<span class="ref-link">[RFC0791]</span></td>
+                <td><span class="status-badge st-rare">Rare</span></td>
+            </tr>
+            <tr>
+                <td><strong>Router Alert</strong></td>
+                <td class="col-val">148</td>
+                <td class="col-len">4</td>
+                <td>Flags router to examine the payload (e.g., for IGMP).<span class="ref-link">[RFC2113]</span></td>
+                <td><span class="status-badge st-common">Occasional</span></td>
+            </tr>
+
+            <tr>
+                <td><strong>Timestamp</strong></td>
+                <td class="col-val">68</td>
+                <td class="col-len">Var</td>
+                <td>Records time of arrival at each hop.<span class="ref-link">[RFC0791]</span></td>
+                <td><span class="status-badge st-rare">Rare</span></td>
+            </tr>
+            <tr>
+                <td><strong>Quick-Start</strong></td>
+                <td class="col-val">25</td>
+                <td class="col-len">8</td>
+                <td>Negotiates transport parameters (bandwidth) on startup.<span class="ref-link">[RFC4782]</span></td>
+                <td><span class="status-badge st-rare">Rare</span></td>
+            </tr>
+
+            <tr>
+                <td><strong>Stream ID</strong></td>
+                <td class="col-val">136</td>
+                <td class="col-len">4</td>
+                <td>Carries 16-bit SATNET stream identifier.<span class="ref-link">[RFC0791]</span></td>
+                <td><span class="status-badge st-hist">Historic</span></td>
+            </tr>
+            <tr>
+                <td><strong>Security</strong></td>
+                <td class="col-val">130, 133</td>
+                <td class="col-len">11</td>
+                <td>U.S. Military security labels and handling.<span class="ref-link">[RFC1108]</span></td>
+                <td><span class="status-badge st-hist">Historic</span></td>
+            </tr>
+            <tr>
+                <td><strong>EIP</strong></td>
+                <td class="col-val">145</td>
+                <td class="col-len">Var</td>
+                <td>Extended Internet Protocol (Early 90s experiment).<span class="ref-link">[RFC1385]</span></td>
+                <td><span class="status-badge st-hist">Historic</span></td>
+            </tr>
+            <tr>
+                <td><strong>Traceroute</strong></td>
+                <td class="col-val">82</td>
+                <td class="col-len">Var</td>
+                <td>Experimental route tracing option.<span class="ref-link">[RFC1393]</span></td>
+                <td><span class="status-badge st-hist">Historic</span></td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
