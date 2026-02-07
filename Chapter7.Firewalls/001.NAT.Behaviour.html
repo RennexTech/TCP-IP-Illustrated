@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --bg-color: #2d3436;
+        --card-bg: #353b48;
+        --text-main: #dfe6e9;
+        --text-sub: #b2bec3;
+        
+        --safe-green: #00b894;
+        --warn-yellow: #fdcb6e;
+        --strict-red: #d63031;
+        --link-blue: #0984e3;
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .nat-dashboard {
+        width: 100%;
+        max-width: 1000px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .header-box {
+        grid-column: 1 / -1;
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #636e72;
+        padding-bottom: 20px;
+    }
+    h2 { margin: 0; font-size: 1.8rem; }
+    .subtitle { color: var(--text-sub); margin-top: 5px; }
+
+    /* CARD DESIGN */
+    .nat-card {
+        background: var(--card-bg);
+        border-top: 5px solid;
+        border-radius: 8px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        position: relative;
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 1.1rem;
+        text-align: center;
+        margin-bottom: 10px;
+        height: 50px; /* fixed height for alignment */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* VISUAL DEMO BOX */
+    .demo-box {
+        background: rgba(0,0,0,0.2);
+        border-radius: 6px;
+        padding: 15px;
+        font-size: 0.85rem;
+    }
+
+    .demo-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        color: var(--text-sub);
+        margin-bottom: 8px;
+        display: block;
+        letter-spacing: 1px;
+    }
+
+    .traffic-flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+    
+    .arrow { font-size: 1.2rem; color: var(--text-sub); }
+    .status-badge {
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.75rem;
+    }
+    
+    .st-allow { background: rgba(0, 184, 148, 0.2); color: var(--safe-green); border: 1px solid var(--safe-green); }
+    .st-block { background: rgba(214, 48, 49, 0.2); color: var(--strict-red); border: 1px solid var(--strict-red); }
+
+    /* Translation Logic */
+    .logic-text {
+        font-family: monospace;
+        background: #2d3436;
+        padding: 8px;
+        border-radius: 4px;
+        text-align: center;
+        border: 1px dashed #636e72;
+        color: var(--link-blue);
+        font-size: 0.8rem;
+    }
+
+    /* SPECIFIC CARDS */
+    .card-indep { border-color: var(--safe-green); }
+    .card-addr { border-color: var(--warn-yellow); }
+    .card-strict { border-color: var(--strict-red); }
+
+    .icon-symbol {
+        font-size: 2rem;
+        display: block;
+        text-align: center;
+        margin-bottom: 10px;
+        opacity: 0.8;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="nat-dashboard">
+    <div class="header-box">
+        <h2>NAT Behavior Matrix</h2>
+        <div class="subtitle">Translation vs. Filtering Logic</div>
+    </div>
+
+    <div class="nat-card card-indep">
+        <div class="icon-symbol" style="color: var(--safe-green);">🔓</div>
+        <div class="card-title">Endpoint-Independent<br>(Full Cone)</div>
+        
+        <div class="demo-box">
+            <span class="demo-label">Translation Behavior</span>
+            <div style="text-align:center; margin-bottom:10px;">
+                I use the <strong>SAME</strong> Public Port for everyone.
+            </div>
+            <div class="logic-text">X1':x1' = Fixed</div>
+        </div>
+
+        <div class="demo-box">
+            <span class="demo-label">Filtering Behavior</span>
+            <div class="traffic-flow">
+                <span>From Y1 (Talked to)</span>
+                <span class="arrow">➔</span>
+                <span class="status-badge st-allow">Allow</span>
+            </div>
+            <div class="traffic-flow">
+                <span>From Y2 (New)</span>
+                <span class="arrow">➔</span>
+                <span class="status-badge st-allow">Allow</span>
+            </div>
+            <div style="font-size:0.8rem; color:var(--safe-green); margin-top:5px; text-align:center;">
+                "Once the door is open, anyone can enter."
+            </div>
+        </div>
+    </div>
+
+    <div class="nat-card card-addr">
+        <div class="icon-symbol" style="color: var(--warn-yellow);">🛡️</div>
+        <div class="card-title">Address-Dependent<br>(Restricted Cone)</div>
+
+        <div class="demo-box">
+            <span class="demo-label">Translation Behavior</span>
+            <div style="text-align:center; margin-bottom:10px;">
+                I use the <strong>SAME</strong> Public Port (usually).
+            </div>
+            <div class="logic-text">X1':x1' = Fixed*</div>
+        </div>
+
+        <div class="demo-box">
+            <span class="demo-label">Filtering Behavior</span>
+            <div class="traffic-flow">
+                <span>From Y1 (Talked to)</span>
+                <span class="arrow">➔</span>
+                <span class="status-badge st-allow">Allow</span>
+            </div>
+            <div class="traffic-flow">
+                <span>From Y2 (New IP)</span>
+                <span class="arrow">➔</span>
+                <span class="status-badge st-block">Block</span>
+            </div>
+             <div class="traffic-flow">
+                <span>From Y1 (New Port)</span>
+                <span class="arrow">➔</span>
+                <span class="status-badge st-allow">Allow</span>
+            </div>
+            <div style="font-size:0.8rem; color:var(--warn-yellow); margin-top:5px; text-align:center;">
+                "Only Y1 is allowed inside."
+            </div>
+        </div>
+    </div>
+
+    <div class="nat-card card-strict">
+        <div class="icon-symbol" style="color: var(--strict-red);">🚫</div>
+        <div class="card-title">Address & Port Dependent<br>(Symmetric)</div>
+
+        <div class="demo-box">
+            <span class="demo-label">Translation Behavior</span>
+            <div style="text-align:center; margin-bottom:10px;">
+                I use a <strong>DIFFERENT</strong> Public Port for every destination.
+            </div>
+            <div class="logic-text">X1':x1' ≠ X2':x2'</div>
+        </div>
+
+        <div class="demo-box">
+            <span class="demo-label">Filtering Behavior</span>
+            <div class="traffic-flow">
+                <span>From Y1:y1 (Exact)</span>
+                <span class="arrow">➔</span>
+                <span class="status-badge st-allow">Allow</span>
+            </div>
+            <div class="traffic-flow">
+                <span>From Y1:y2 (Diff Port)</span>
+                <span class="arrow">➔</span>
+                <span class="status-badge st-block">Block</span>
+            </div>
+            <div style="font-size:0.8rem; color:var(--strict-red); margin-top:5px; text-align:center;">
+                "Only the exact socket I talked to can reply."
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
