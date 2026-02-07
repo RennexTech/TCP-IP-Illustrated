@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    :root {
+        --header-bg: #2c3e50;
+        --prefix-color: #e74c3c; /* Red for the "11111111" Marker */
+        --flag-color: #f39c12;   /* Orange for Flags */
+        --scope-color: #27ae60;  /* Green for Scope */
+        --group-color: #3498db;  /* Blue for Group ID */
+        --text-dark: #2c3e50;
+        --bg-color: #ecf0f1;
+        --border-color: #bdc3c7;
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background-color: #dfe6e9;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .multi-container {
+        width: 100%;
+        max-width: 900px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        border-top: 5px solid var(--prefix-color);
+    }
+
+    .header-section {
+        padding: 25px 30px;
+        border-bottom: 1px solid #eee;
+    }
+
+    h2 { margin: 0; color: var(--header-bg); font-size: 1.5rem; }
+    .subtitle { color: #7f8c8d; font-size: 0.95rem; margin-top: 5px; }
+
+    /* The Bit Bar */
+    .bit-bar-wrapper {
+        padding: 30px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #eee;
+    }
+
+    .bit-bar {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        border-radius: 6px;
+        overflow: hidden;
+        font-family: 'Consolas', monospace;
+        font-weight: 700;
+        color: white;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .segment {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        transition: transform 0.2s;
+        border-right: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .segment:last-child { border-right: none; }
+    .segment:hover { transform: scale(1.02); z-index: 2; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+    .seg-prefix { background-color: var(--prefix-color); width: 15%; }
+    .seg-flags  { background-color: var(--flag-color); width: 15%; }
+    .seg-scope  { background-color: var(--scope-color); width: 15%; }
+    .seg-group  { background-color: var(--group-color); width: 55%; }
+
+    .seg-label { font-size: 14px; margin-bottom: 2px; }
+    .seg-bits { font-size: 10px; opacity: 0.8; font-weight: 400; text-transform: uppercase; }
+
+    /* Bit Ruler */
+    .ruler {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        color: #7f8c8d;
+        font-family: 'Consolas', monospace;
+        font-size: 11px;
+        padding: 0 2px;
+    }
+
+    /* Detail Tables */
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+    }
+
+    .detail-box {
+        padding: 25px;
+        border-right: 1px solid #eee;
+    }
+    .detail-box:last-child { border-right: none; }
+
+    .box-title {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .flag-table, .scope-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    .flag-table td, .scope-table td { padding: 6px 0; color: #2c3e50; }
+    
+    .bit-char {
+        display: inline-block;
+        font-family: 'Consolas', monospace;
+        background: #eee;
+        padding: 2px 6px;
+        border-radius: 3px;
+        margin-right: 8px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .highlight-desc { color: #7f8c8d; font-style: italic; }
+
+    /* Flag Visualization */
+    .flag-bits-visual {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 10px;
+    }
+    .f-bit {
+        background: var(--flag-color);
+        color: white;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        font-weight: 700;
+        border-radius: 3px;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="multi-container">
+    <div class="header-section">
+        <h2>IPv6 Multicast Address Format</h2>
+        <div class="subtitle">128-Bit Structure breakdown (RFC 4291)</div>
+    </div>
+
+    <div class="bit-bar-wrapper">
+        <div class="ruler">
+            <span>0</span>
+            <span>8</span>
+            <span>12</span>
+            <span>16</span>
+            <span>128</span>
+        </div>
+        
+        <div class="bit-bar">
+            <div class="segment seg-prefix">
+                <span class="seg-label">1111 1111</span>
+                <span class="seg-bits">8 Bits</span>
+            </div>
+            <div class="segment seg-flags">
+                <span class="seg-label">Flags</span>
+                <span class="seg-bits">4 Bits</span>
+            </div>
+            <div class="segment seg-scope">
+                <span class="seg-label">Scope</span>
+                <span class="seg-bits">4 Bits</span>
+            </div>
+            <div class="segment seg-group">
+                <span class="seg-label">Group ID</span>
+                <span class="seg-bits">112 Bits</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="details-grid">
+        <div class="detail-box">
+            <div class="box-title" style="color: var(--flag-color);">
+                The 4 Flag Bits
+            </div>
+            
+            <div class="flag-bits-visual">
+                <div class="f-bit" title="Reserved (Must be 0)">0</div>
+                <div class="f-bit" title="Rendezvous Point">R</div>
+                <div class="f-bit" title="Prefix-Based">P</div>
+                <div class="f-bit" title="Transient">T</div>
+            </div>
+
+            <table class="flag-table">
+                <tr>
+                    <td><span class="bit-char">0</span></td>
+                    <td><strong>Reserved.</strong> Must be zero.</td>
+                </tr>
+                <tr>
+                    <td><span class="bit-char">R</span></td>
+                    <td><strong>Rendezvous.</strong> Contains rendezvous point info.</td>
+                </tr>
+                <tr>
+                    <td><span class="bit-char">P</span></td>
+                    <td><strong>Prefix.</strong> Address based on unicast prefix.</td>
+                </tr>
+                <tr>
+                    <td><span class="bit-char">T</span></td>
+                    <td><strong>Transient.</strong> <br>
+                        0 = Permanent (Well-known)<br>
+                        1 = Temporary (Dynamic)
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="detail-box" style="background-color: #fdfdfd;">
+            <div class="box-title" style="color: var(--scope-color);">
+                The Scope (4 Bits)
+            </div>
+            <p style="font-size:13px; color:#555; margin-bottom:12px;">
+                Defines how far the packet can travel. The Group ID is encoded in the low-order 112 bits.
+            </p>
+            <table class="scope-table">
+                <tr>
+                    <td><span class="bit-char" style="background:var(--scope-color); color:white;">1</span></td>
+                    <td><strong>Interface-Local</strong> (Loopback only)</td>
+                </tr>
+                <tr>
+                    <td><span class="bit-char" style="background:var(--scope-color); color:white;">2</span></td>
+                    <td><strong>Link-Local</strong> (Same LAN segment)</td>
+                </tr>
+                <tr>
+                    <td><span class="bit-char" style="background:var(--scope-color); color:white;">5</span></td>
+                    <td><strong>Site-Local</strong> (Within the organization)</td>
+                </tr>
+                <tr>
+                    <td><span class="bit-char" style="background:var(--scope-color); color:white;">E</span></td>
+                    <td><strong>Global</strong> (The entire Internet)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
