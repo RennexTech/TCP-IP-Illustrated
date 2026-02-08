@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+        :root {
+            --bg-body: #f8fafc;
+            --table-border: #e2e8f0;
+            --header-bg: #0f172a;
+            
+            /* Type Colors */
+            --type3-bg: #fff1f2; --type3-text: #9f1239; /* Unreachable */
+            --type5-bg: #f0f9ff; --type5-text: #075985; /* Redirect */
+            --type11-bg: #fefce8; --type11-text: #854d0e; /* Time Exceeded */
+            --type-other: #f1f5f9; --type-other-text: #475569;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 1100px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--table-border);
+        }
+
+        .header {
+            background: var(--header-bg);
+            color: white;
+            padding: 24px 30px;
+        }
+
+        .header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+        .header p { margin: 5px 0 0; opacity: 0.7; font-size: 0.85rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #f1f5f9;
+            padding: 12px 20px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            border-bottom: 2px solid var(--table-border);
+        }
+
+        td {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--table-border);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .type-cell { font-weight: 800; text-align: center; width: 60px; }
+        .code-cell { font-family: 'JetBrains Mono', monospace; font-weight: 600; text-align: center; width: 60px; }
+        .name-cell { font-weight: 700; color: #1e293b; width: 300px; }
+        .comment-cell { color: #475569; font-size: 0.85rem; }
+
+        /* Row Highlighting */
+        .row-type-3 { background-color: var(--type3-bg); }
+        .row-type-5 { background-color: var(--type5-bg); }
+        .row-type-11 { background-color: var(--type11-bg); }
+
+        .common-star {
+            color: #ef4444;
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        .deprecated {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🛠️ Common ICMPv4 Message Types (Table 8-2)</h1>
+        <p>Diagnostic codes used for error reporting and network control</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Code</th>
+                <th>Official Name</th>
+                <th>Use / Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="row-type-3"><td class="type-cell">3</td><td class="code-cell">0</td><td class="name-cell">Net Unreachable</td><td class="comment-cell">No route (at all) to destination</td></tr>
+            <tr class="row-type-3"><td class="type-cell">3</td><td class="code-cell">1</td><td class="name-cell">Host Unreachable<span class="common-star">(*)</span></td><td class="comment-cell">Known but unreachable host</td></tr>
+            <tr class="row-type-3"><td class="type-cell">3</td><td class="code-cell">2</td><td class="name-cell">Protocol Unreachable</td><td class="comment-cell">Unknown (transport) protocol</td></tr>
+            <tr class="row-type-3"><td class="type-cell">3</td><td class="code-cell">3</td><td class="name-cell">Port Unreachable<span class="common-star">(*)</span></td><td class="comment-cell">Unknown/unused (transport) port</td></tr>
+            <tr class="row-type-3"><td class="type-cell">3</td><td class="code-cell">4</td><td class="name-cell">Fragmentation Needed (PTB)<span class="common-star">(*)</span></td><td class="comment-cell">Needed fragmentation prohibited by DF bit; used by PMTUD [RFC1191]</td></tr>
+            <tr class="row-type-3"><td class="type-cell">3</td><td class="code-cell">13</td><td class="name-cell">Admin Prohibited</td><td class="comment-cell">Communication prohibited by filtering policy (Firewall)</td></tr>
+            <tr class="deprecated"><td class="type-cell">3</td><td class="code-cell">6-10</td><td class="name-cell">Various Deprecated</td><td class="comment-cell">Deprecated/Historic [RFC1812]</td></tr>
+
+            <tr class="row-type-5"><td class="type-cell">5</td><td class="code-cell">0</td><td class="name-cell">Redirect (Network)</td><td class="comment-cell">Indicates alternate router for a subnet</td></tr>
+            <tr class="row-type-5"><td class="type-cell">5</td><td class="code-cell">1</td><td class="name-cell">Redirect (Host)<span class="common-star">(*)</span></td><td class="comment-cell">Indicates alternate router for a specific host</td></tr>
+
+            <tr><td class="type-cell" style="background:#f1f5f9">9</td><td class="code-cell">0</td><td class="name-cell">Router Advertisement</td><td class="comment-cell">Router’s address and config info</td></tr>
+
+            <tr class="row-type-11"><td class="type-cell">11</td><td class="code-cell">0</td><td class="name-cell">TTL Exceeded in Transit<span class="common-star">(*)</span></td><td class="comment-cell">Hop limit/TTL exceeded (Traceroute uses this)</td></tr>
+            <tr class="row-type-11"><td class="type-cell">11</td><td class="code-cell">1</td><td class="name-cell">Fragment Reassembly Timeout</td><td class="comment-cell">Not all fragments arrived before timer expired</td></tr>
+
+            <tr><td class="type-cell" style="background:#f1f5f9">12</td><td class="code-cell">0</td><td class="name-cell">Parameter Problem<span class="common-star">(*)</span></td><td class="comment-cell">Byte offset (pointer) indicates first problem field</td></tr>
+            <tr><td class="type-cell" style="background:#f1f5f9">12</td><td class="code-cell">2</td><td class="name-cell">Bad Length</td><td class="comment-cell">Packet had invalid Total Length field</td></tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+        :root {
+            --bg: #f8fafc;
+            --border: #e2e8f0;
+            --header-dark: #1e293b;
+            
+            /* Type-specific accents */
+            --unreachable: #be123c; /* Crimson */
+            --time-exceeded: #b45309; /* Amber */
+            --parameter: #1e40af; /* Blue */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            background: var(--header-dark);
+            color: white;
+            padding: 24px 30px;
+        }
+
+        .header h1 { margin: 0; font-size: 1.25rem; }
+        .header p { margin: 5px 0 0; opacity: 0.7; font-size: 0.85rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f1f5f9;
+            padding: 12px 20px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            vertical-align: top;
+        }
+
+        .type-num { font-weight: 800; font-size: 1.1rem; text-align: center; }
+        .code-num { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #334155; text-align: center; }
+        .name-cell { font-weight: 700; color: #0f172a; }
+        .comment-cell { color: #475569; font-size: 0.85rem; line-height: 1.5; }
+
+        /* Row Groups */
+        .group-1 { border-left: 6px solid var(--unreachable); }
+        .group-3 { border-left: 6px solid var(--time-exceeded); }
+        .group-4 { border-left: 6px solid var(--parameter); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🛠️ ICMPv6 Standard Error Codes</h1>
+        <p>Detailed mapping of Error Types to specific failure reasons (Table 8-4)</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th width="80px">Type</th>
+                <th width="80px">Code</th>
+                <th width="280px">Name</th>
+                <th>Use / Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="group-1"><td class="type-num" style="color:var(--unreachable)">1</td><td class="code-num">0</td><td class="name-cell">No Route to Destination</td><td class="comment-cell">Route not present in the routing table.</td></tr>
+            <tr class="group-1"><td class="type-num" style="color:var(--unreachable)">1</td><td class="code-num">1</td><td class="name-cell">Administratively Prohibited</td><td class="comment-cell">Policy (e.g., firewall) blocked the traffic.</td></tr>
+            <tr class="group-1"><td class="type-num" style="color:var(--unreachable)">1</td><td class="code-num">2</td><td class="name-cell">Beyond Scope of Source</td><td class="comment-cell">Destination scope exceeds the source's scope (e.g., link-local to global).</td></tr>
+            <tr class="group-1"><td class="type-num" style="color:var(--unreachable)">1</td><td class="code-num">3</td><td class="name-cell">Address Unreachable</td><td class="comment-cell">Catch-all for unreachable addresses not covered by 0-2.</td></tr>
+            <tr class="group-1"><td class="type-num" style="color:var(--unreachable)">1</td><td class="code-num">4</td><td class="name-cell">Port Unreachable</td><td class="comment-cell">No application is listening on that transport port.</td></tr>
+            <tr class="group-1"><td class="type-num" style="color:var(--unreachable)">1</td><td class="code-num">5</td><td class="name-cell">Source Address Failed Policy</td><td class="comment-cell">Ingress or egress policy violation (often source-guard related).</td></tr>
+            <tr class="group-1"><td class="type-num" style="color:var(--unreachable)">1</td><td class="code-num">6</td><td class="name-cell">Reject Route to Destination</td><td class="comment-cell">A specific "reject" route was hit in the routing table.</td></tr>
+
+            <tr class="group-3"><td class="type-num" style="color:var(--time-exceeded)">3</td><td class="code-num">0</td><td class="name-cell">Hop Limit Exceeded</td><td class="comment-cell">Hop Limit field reached 0 in transit. Used by Traceroute.</td></tr>
+            <tr class="group-3"><td class="type-num" style="color:var(--time-exceeded)">3</td><td class="code-num">1</td><td class="name-cell">Reassembly Time Exceeded</td><td class="comment-cell">Timer expired before all fragments arrived at destination.</td></tr>
+
+            <tr class="group-4"><td class="type-num" style="color:var(--parameter)">4</td><td class="code-num">0</td><td class="name-cell">Erroneous Header Field</td><td class="comment-cell">General error in header processing.</td></tr>
+            <tr class="group-4"><td class="type-num" style="color:var(--parameter)">4</td><td class="code-num">1</td><td class="name-cell">Unrecognized Next Header</td><td class="comment-cell">Unknown value in the "Next Header" field.</td></tr>
+            <tr class="group-4"><td class="type-num" style="color:var(--parameter)">4</td><td class="code-num">2</td><td class="name-cell">Unrecognized IPv6 Option</td><td class="comment-cell">Unknown Hop-by-Hop or Destination option found.</td></tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
