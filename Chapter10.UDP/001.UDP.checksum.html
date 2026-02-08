@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Consolas', 'Courier New', monospace;
+            background-color: #f4f4f9;
+            padding: 30px;
+            color: #333;
+        }
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: #fff;
+            border: 2px solid #2c3e50;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        .title {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .layer {
+            border-bottom: 2px solid #eee;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .layer-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        .block-row {
+            display: flex;
+            gap: 5px;
+        }
+        .block {
+            padding: 12px 5px;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            flex: 1;
+        }
+        /* Color Coding */
+        .pseudo { background-color: #fff3cd; color: #856404; border: 1.5px dashed #ffeeba; }
+        .header { background-color: #d1ecf1; color: #0c5460; font-weight: bold; }
+        .payload { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .pad { background-color: #f8d7da; color: #721c24; font-style: italic; max-width: 150px; }
+
+        .checksum-math {
+            background: #2d3436;
+            color: #fab1a0;
+            padding: 15px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .note { padding: 10px; font-size: 0.8rem; color: #636e72; background: #fdfdfd; }
+        .highlight { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="title">UDP Checksum "Coverage" Map</div>
+
+    <div class="layer">
+        <span class="layer-title">Layer 3 Pseudo-Header (Included in Math, not sent on wire)</span>
+        <div class="block-row">
+            <div class="block pseudo">Source IP Address</div>
+            <div class="block pseudo">Destination IP Address</div>
+        </div>
+        <div class="block-row">
+            <div class="block pseudo">Zero (8 bits)</div>
+            <div class="block pseudo">Protocol (17)</div>
+            <div class="block pseudo">UDP Length</div>
+        </div>
+    </div>
+
+    <div class="layer">
+        <span class="layer-title">UDP Header (Calculated with Checksum = 0)</span>
+        <div class="block-row">
+            <div class="block header">Src Port</div>
+            <div class="block header">Dst Port</div>
+            <div class="block header">Length</div>
+            <div class="block header" style="border: 2px solid #e74c3c;">Checksum</div>
+        </div>
+    </div>
+
+    <div class="layer" style="border-bottom: none;">
+        <span class="layer-title">Application Payload & Padding</span>
+        <div class="block-row">
+            <div class="block payload">Application Data (Variable Length)</div>
+            <div class="block pad">Virtual Pad Byte (0x00)</div>
+        </div>
+    </div>
+
+    <div class="checksum-math">
+        <strong>The Algorithm:</strong><br>
+        1. All 16-bit words are added using 1's complement arithmetic.<br>
+        2. If data length is odd, a <strong>0x00 pad byte</strong> is appended to complete the last 16-bit word.<br>
+        3. The result is bitwise inverted (NOT) and placed into the Checksum field.
+    </div>
+
+    <div class="note">
+        💡 <strong>Note:</strong> If the calculated checksum is <span class="highlight">0x0000</span>, it is changed to <span class="highlight">0xFFFF</span> to avoid confusion with "No Checksum" (which is 0x0000 in IPv4).
+    </div>
+</div>
+
+</body>
+</html>
