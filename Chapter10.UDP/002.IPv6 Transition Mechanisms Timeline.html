@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+        :root {
+            --bg-page: #f8fafc;
+            --border: #e2e8f0;
+            --header-dark: #1e293b;
+            
+            /* Status Colors */
+            --dead-bg: #fee2e2; --dead-text: #991b1b;   /* Red: Dead/Deprecated */
+            --warn-bg: #fef3c7; --warn-text: #92400e;   /* Amber: Niche/Legacy */
+            --live-bg: #dcfce7; --live-text: #166534;   /* Green: Active/Standard */
+            --goal-bg: #eff6ff; --goal-text: #1e40af;   /* Blue: The Endgame */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            background: var(--header-dark);
+            color: white;
+            padding: 24px 30px;
+        }
+
+        .header h1 { margin: 0; font-size: 1.25rem; }
+        .header p { margin: 5px 0 0; opacity: 0.8; font-size: 0.9rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #f1f5f9;
+            padding: 12px 20px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .mech-name { font-weight: 700; color: #0f172a; font-size: 1rem; }
+        .era-text { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #64748b; }
+        
+        /* Status Badges */
+        .status-badge {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        
+        .b-dead { background: var(--dead-bg); color: var(--dead-text); }
+        .b-warn { background: var(--warn-bg); color: var(--warn-text); }
+        .b-live { background: var(--live-bg); color: var(--live-text); }
+        .b-goal { background: var(--goal-bg); color: var(--goal-text); }
+
+        .list-item { display: block; margin-bottom: 4px; font-size: 0.85rem; color: #334155; }
+        .list-item::before { content: "• "; color: #cbd5e1; }
+
+        .section-row {
+            background: #f8fafc;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            padding: 10px 20px;
+            border-top: 2px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>📉 IPv6 Transition Mechanisms Timeline</h1>
+        <p>Evolution from early tunneling experiments to modern mobile standards.</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th width="20%">Mechanism</th>
+                <th width="15%">Peak Era</th>
+                <th width="15%">Status</th>
+                <th width="30%">Modern Status (2020s+)</th>
+                <th width="20%">Replaced By</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr><td colspan="5" class="section-row">Legacy / Deprecated Mechanisms</td></tr>
+
+            <tr>
+                <td><div class="mech-name">Teredo</div></td>
+                <td><span class="era-text">2000s-2010s</span></td>
+                <td><span class="status-badge b-dead">❌ Deprecated</span></td>
+                <td>
+                    <span class="list-item">Disabled by default in Win 10/11</span>
+                    <span class="list-item">Removed from macOS/Linux</span>
+                    <span class="list-item">Microsoft servers largely offline</span>
+                </td>
+                <td>Native IPv6, 464XLAT</td>
+            </tr>
+
+            <tr>
+                <td><div class="mech-name">6to4</div></td>
+                <td><span class="era-text">2000s-2010s</span></td>
+                <td><span class="status-badge b-dead">❌ Obsolete</span></td>
+                <td>
+                    <span class="list-item">RFC 7526 discourages use</span>
+                    <span class="list-item">Anycast (192.88.99.1) blocked</span>
+                    <span class="list-item">High failure rates</span>
+                </td>
+                <td>6rd, Native IPv6</td>
+            </tr>
+
+            <tr>
+                <td><div class="mech-name">ISATAP</div></td>
+                <td><span class="era-text">2000s</span></td>
+                <td><span class="status-badge b-dead">❌ Legacy</span></td>
+                <td>
+                    <span class="list-item">Enterprise internal use only</span>
+                    <span class="list-item">Not used for Internet transit</span>
+                    <span class="list-item">Complex to secure</span>
+                </td>
+                <td>Native IPv6, VXLAN</td>
+            </tr>
+
+            <tr>
+                <td><div class="mech-name">6rd</div><span style="font-size:0.75rem; color:#64748b">Rapid Deployment</span></td>
+                <td><span class="era-text">2010s</span></td>
+                <td><span class="status-badge b-warn">⚠️ Niche</span></td>
+                <td>
+                    <span class="list-item">Specific ISPs (e.g., Free France)</span>
+                    <span class="list-item">Being phased out for Native</span>
+                </td>
+                <td>Native Dual-Stack</td>
+            </tr>
+
+            <tr><td colspan="5" class="section-row">Modern / Active Standards</td></tr>
+
+            <tr>
+                <td><div class="mech-name">464XLAT</div></td>
+                <td><span class="era-text">2010s-Now</span></td>
+                <td><span class="status-badge b-live">✅ Active</span></td>
+                <td>
+                    <span class="list-item">Standard on Mobile (T-Mobile/VZW)</span>
+                    <span class="list-item">RFC 6877 Standard</span>
+                    <span class="list-item">Allows v4 apps on v6-only net</span>
+                </td>
+                <td>(Still Current)</td>
+            </tr>
+
+            <tr>
+                <td><div class="mech-name">DS-Lite</div><span style="font-size:0.75rem; color:#64748b">Dual-Stack Lite</span></td>
+                <td><span class="era-text">2010s-Now</span></td>
+                <td><span class="status-badge b-live">✅ Common</span></td>
+                <td>
+                    <span class="list-item">Used by ISPs with IPv4 exhaustion</span>
+                    <span class="list-item">RFC 6333 Standard</span>
+                    <span class="list-item">Uses Carrier-Grade NAT (CGNAT)</span>
+                </td>
+                <td>MAP-E / MAP-T</td>
+            </tr>
+
+            <tr>
+                <td><div class="mech-name">MAP-E / MAP-T</div></td>
+                <td><span class="era-text">2010s-Now</span></td>
+                <td><span class="status-badge b-live">✅ Growing</span></td>
+                <td>
+                    <span class="list-item">Stateless translation (Faster)</span>
+                    <span class="list-item">More scalable than DS-Lite</span>
+                    <span class="list-item">Current ISP standard</span>
+                </td>
+                <td>(Current Standard)</td>
+            </tr>
+
+            <tr>
+                <td><div class="mech-name">NAT64 + DNS64</div></td>
+                <td><span class="era-text">2010s-Now</span></td>
+                <td><span class="status-badge b-live">✅ Standard</span></td>
+                <td>
+                    <span class="list-item">Mandatory for Apple App Store</span>
+                    <span class="list-item">Core of Mobile/Enterprise IPv6</span>
+                </td>
+                <td>(Current Best Practice)</td>
+            </tr>
+
+            <tr style="background-color:#eff6ff">
+                <td><div class="mech-name" style="color:var(--goal-text)">Native Dual-Stack</div></td>
+                <td><span class="era-text">2010s-Now</span></td>
+                <td><span class="status-badge b-goal">⭐ GOAL</span></td>
+                <td>
+                    <span class="list-item">45%+ Global Adoption</span>
+                    <span class="list-item">All major OS platforms support</span>
+                    <span class="list-item">No translation overhead</span>
+                </td>
+                <td><strong>The Endgame!</strong></td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
