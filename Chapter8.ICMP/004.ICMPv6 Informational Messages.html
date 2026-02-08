@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+        :root {
+            --mobile-bg: #fefce8; --mobile-text: #854d0e; --mobile-border: #fde047;
+            --secure-bg: #f5f3ff; --secure-text: #5b21b6; --secure-border: #ddd6fe;
+            --multicast-bg: #f0fdf4; --multicast-text: #166534; --multicast-border: #bbf7d0;
+            --header-bg: #334155;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .table-card {
+            background: white;
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            background: var(--header-bg);
+            color: white;
+            padding: 24px 30px;
+        }
+
+        .header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+        .header p { margin: 5px 0 0; opacity: 0.8; font-size: 0.85rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #f1f5f9;
+            padding: 12px 20px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .type-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            background: #f1f5f9;
+            color: #475569;
+            display: inline-block;
+        }
+
+        .name-col { font-weight: 700; color: #1e293b; width: 280px; }
+        .ref-col { font-family: 'JetBrains Mono', monospace; color: #94a3b8; font-size: 0.8rem; width: 110px; }
+        
+        /* Row Highlighting */
+        .row-mobile { background-color: #fffdf5; }
+        .row-secure { background-color: #f9f8ff; }
+        .row-multi { background-color: #f7fff9; }
+
+        .category-pill {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="table-card">
+    <div class="header">
+        <h1>📲 Specialized ICMPv6 Informational Messages</h1>
+        <p>Mobile IPv6, Secure ND, and Multicast Router operations</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th width="10%">Type</th>
+                <th width="35%">Official Name</th>
+                <th width="15%">Reference</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="row-mobile">
+                <td><span class="type-tag">144</span></td>
+                <td class="name-col"><span class="category-pill" style="background:var(--mobile-border); color:var(--mobile-text)">Mobile IPv6</span><br>Home Agent Discovery Request</td>
+                <td class="ref-col">[RFC6275]</td>
+                <td>Mobile node requesting its Home Agent address.</td>
+            </tr>
+            <tr class="row-mobile">
+                <td><span class="type-tag">145</span></td>
+                <td class="name-col">Home Agent Discovery Reply</td>
+                <td class="ref-col">[RFC6275]</td>
+                <td>Sent by Home Agent; contains eligible HA addresses.</td>
+            </tr>
+            <tr class="row-mobile">
+                <td><span class="type-tag">146</span></td>
+                <td class="name-col">Mobile Prefix Solicitation</td>
+                <td class="ref-col">[RFC6275]</td>
+                <td>Sent by mobile node to request home prefix while roaming.</td>
+            </tr>
+            <tr class="row-mobile">
+                <td><span class="type-tag">147</span></td>
+                <td class="name-col">Mobile Prefix Advertisement</td>
+                <td class="ref-col">[RFC6275]</td>
+                <td>Sent by Home Agent providing prefix to the mobile node.</td>
+            </tr>
+
+            <tr class="row-secure">
+                <td><span class="type-tag">148</span></td>
+                <td class="name-col"><span class="category-pill" style="background:var(--secure-border); color:var(--secure-text)">SEND</span><br>Certification Path Solicitation</td>
+                <td class="ref-col">[RFC3971]</td>
+                <td>Secure Neighbor Discovery (SEND) request for certificate path.</td>
+            </tr>
+            <tr class="row-secure">
+                <td><span class="type-tag">149</span></td>
+                <td class="name-col">Certification Path Advertisement</td>
+                <td class="ref-col">[RFC3971]</td>
+                <td>SEND response containing the certification path.</td>
+            </tr>
+
+            <tr class="row-multi">
+                <td><span class="type-tag">151</span></td>
+                <td class="name-col"><span class="category-pill" style="background:var(--multicast-border); color:var(--multicast-text)">Multicast</span><br>Multicast Router Advertisement</td>
+                <td class="ref-col">[RFC4286]</td>
+                <td>Announces the presence of a multicast router.</td>
+            </tr>
+            <tr class="row-multi">
+                <td><span class="type-tag">152</span></td>
+                <td class="name-col">Multicast Router Solicitation</td>
+                <td class="ref-col">[RFC4286]</td>
+                <td>Requests address of a multicast router on the link.</td>
+            </tr>
+
+            <tr>
+                <td><span class="type-tag" style="background:#fee2e2">200-201</span></td>
+                <td class="name-col">Private Experimentation</td>
+                <td class="ref-col">[RFC4443]</td>
+                <td>Reserved for private tests; not used in standard production.</td>
+            </tr>
+            <tr>
+                <td><span class="type-tag" style="background:#e2e8f0">255</span></td>
+                <td class="name-col">Reserved for Expansion</td>
+                <td class="ref-col">[RFC4443]</td>
+                <td>Held for future ICMPv6 informational message types.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
