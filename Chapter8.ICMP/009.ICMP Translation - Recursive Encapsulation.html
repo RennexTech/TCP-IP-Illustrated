@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .nested-container {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #0d1117;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #30363d;
+            max-width: 850px;
+            color: #c9d1d9;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .header-section {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 10px;
+        }
+        .packet-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .layer {
+            border: 2px solid;
+            border-radius: 8px;
+            padding: 18px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+        /* Outer ICMPv6 Container */
+        .outer-icmp { 
+            border-color: #f1e05a; 
+            background: rgba(241, 224, 90, 0.03); 
+        }
+        /* Inner IPv6 Header */
+        .inner-ip { 
+            border-color: #79c0ff; 
+            background: rgba(121, 192, 255, 0.05); 
+            margin-left: 30px;
+            border-style: solid;
+        }
+        /* Inner Transport Payload */
+        .inner-payload { 
+            border-color: #ff7b72; 
+            background: rgba(255, 123, 114, 0.05); 
+            margin-left: 30px;
+            border-style: dashed;
+        }
+        
+        .layer-label {
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            background: #0d1117;
+            padding: 0 8px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .data-line { 
+            font-family: 'Cascadia Code', 'Fira Code', 'Courier New', monospace; 
+            font-size: 0.9rem; 
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .action { 
+            color: #50fa7b; 
+            font-weight: bold; 
+            font-size: 0.8rem; 
+            background: rgba(80, 250, 123, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        .hex-val { color: #8b949e; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<div class="nested-container">
+    <div class="header-section">
+        <h3 style="margin: 0; color: #f0f6fc;">📦 ICMP Translation: Recursive Encapsulation</h3>
+        <p style="margin: 5px 0 0; font-size: 0.85rem; color: #8b949e;">Translating the error AND the packet that caused it.</p>
+    </div>
+    
+    <div class="packet-stack">
+        <div class="layer outer-icmp">
+            <span class="layer-label" style="color: #f1e05a;">1. New ICMPv6 Error Message</span>
+            <div class="data-line">
+                <span>Type: 1 (Destination Unreachable)</span>
+                <span class="hex-val">Code: 0</span>
+            </div>
+            <div class="action">⚙️ CHECKSUM: Recomputed using IPv6 Pseudo-Header</div>
+            
+            <div class="layer inner-ip" style="margin-top: 15px;">
+                <span class="layer-label" style="color: #79c0ff;">2. Translated Inner IP Header</span>
+                <div class="data-line">
+                    <span>Src: 2001:db8:a::100</span>
+                    <span class="hex-val">Hop Limit: 63</span>
+                </div>
+                <div class="data-line">
+                    <span>Dst: 2001:db8:b::1</span>
+                    <span class="hex-val">NextHdr: 6 (TCP)</span>
+                </div>
+                <div class="action">🔄 CONVERSION: IPv4 Header (20B) ➜ IPv6 Header (40B)</div>
+
+                <div class="layer inner-payload" style="margin-top: 15px;">
+                    <span class="layer-label" style="color: #ff7b72;">3. L4 Payload (Original Packet)</span>
+                    <div class="data-line">
+                        <span>TCP Port: 443 (HTTPS)</span>
+                        <span class="hex-val">Seq: 0xAF32B</span>
+                    </div>
+                    <div class="action">⚖️ INTEGRITY: Inner L4 Checksum adjusted for Address Change</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

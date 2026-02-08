@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .icmp-master-container {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #30363d;
+            max-width: 1000px;
+        }
+        .full-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #161b22;
+        }
+        .full-table th {
+            background-color: #21262d;
+            color: #58a6ff;
+            text-align: left;
+            padding: 12px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid #30363d;
+            position: sticky;
+            top: 0;
+        }
+        .full-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #21262d;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            vertical-align: top;
+        }
+        .category-row {
+            background-color: rgba(88, 166, 255, 0.05);
+            font-weight: bold;
+            color: #8b949e;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .v4-code { color: #ffa657; font-family: 'Consolas', monospace; font-weight: bold; }
+        .v6-code { color: #79c0ff; font-family: 'Consolas', monospace; font-weight: bold; }
+        .drop { color: #ff7b72; font-weight: bold; font-style: italic; }
+        .note-text { font-size: 0.75rem; color: #8b949e; display: block; margin-top: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="icmp-master-container">
+    <h2 style="margin: 0; color: #f0f6fc;">📋 Table 8-6: Complete ICMPv4 to ICMPv6 Mappings</h2>
+    
+    <table class="full-table">
+        <thead>
+            <tr>
+                <th>ICMPv4 T/C</th>
+                <th>ICMPv4 Descriptive Name</th>
+                <th>ICMPv6 T/C</th>
+                <th>ICMPv6 Descriptive Name & (Notes)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="category-row"><td colspan="4">Destination Unreachable: Connectivity</td></tr>
+            <tr>
+                <td class="v4-code">3/0</td>
+                <td>Network Unreachable</td>
+                <td class="v6-code">1/0</td>
+                <td>No Route to Destination</td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/1</td>
+                <td>Host Unreachable</td>
+                <td class="v6-code">1/0</td>
+                <td>No Route to Destination</td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/2</td>
+                <td>Protocol Unreachable</td>
+                <td class="v6-code">4/1</td>
+                <td>Parameter Problem—Unrecognized Next Header <span class="note-text">(Set Pointer to indicate Next Header)</span></td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/3</td>
+                <td>Port Unreachable</td>
+                <td class="v6-code">1/4</td>
+                <td>Port Unreachable</td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/4</td>
+                <td>Frag Required (PTB)</td>
+                <td class="v6-code">2/0</td>
+                <td>Packet Too Big <span class="note-text">(Adjust MTU for larger IPv6 header)</span></td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/5</td>
+                <td>Source Route Failed</td>
+                <td class="v6-code">1/0</td>
+                <td>No Route to Destination</td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/{6,7}</td>
+                <td>Network/Host Unknown</td>
+                <td class="v6-code">1/0</td>
+                <td>No Route to Destination</td>
+            </tr>
+
+            <tr class="category-row"><td colspan="4">Destination Unreachable: Security & Admin</td></tr>
+            <tr>
+                <td class="v4-code">3/8</td>
+                <td>Source Host Isolated</td>
+                <td class="v6-code">1/0</td>
+                <td>No Route to Destination</td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/{9,10}</td>
+                <td>Net/Host Admin Prohibited</td>
+                <td class="v6-code">1/1</td>
+                <td>Communication Administratively Prohibited</td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/{11,12}</td>
+                <td>ToS Unavailable</td>
+                <td class="v6-code">1/0</td>
+                <td>No Route to Destination</td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/13</td>
+                <td>Admin Prohibited</td>
+                <td class="v6-code">1/1</td>
+                <td>Communication Administratively Prohibited</td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/14</td>
+                <td>Host Precedence Violation</td>
+                <td colspan="2" class="drop">N/A (Drop Packet)</td>
+            </tr>
+            <tr>
+                <td class="v4-code">3/15</td>
+                <td>Precedence Cutoff</td>
+                <td class="v6-code">1/1</td>
+                <td>Communication Administratively Prohibited</td>
+            </tr>
+
+            <tr class="category-row"><td colspan="4">Time Exceeded</td></tr>
+            <tr>
+                <td class="v4-code">11/{0,1}</td>
+                <td>TTL/Frag Reassembly Exceeded</td>
+                <td class="v6-code">3/{0,1}</td>
+                <td>Time Exceeded <span class="note-text">(Codes 0 and 1 remain unchanged)</span></td>
+            </tr>
+
+            <tr class="category-row"><td colspan="4">Parameter Problem</td></tr>
+            <tr>
+                <td class="v4-code">12/0</td>
+                <td>Pointer Indicates Error</td>
+                <td class="v6-code">4/0</td>
+                <td>Erroneous Header Field <span class="note-text">(Update Pointer per Table 8-7)</span></td>
+            </tr>
+            <tr>
+                <td class="v4-code">12/1</td>
+                <td>Missing Option</td>
+                <td colspan="2" class="drop">N/A (Drop Packet)</td>
+            </tr>
+            <tr>
+                <td class="v4-code">12/2</td>
+                <td>Bad Length</td>
+                <td class="v6-code">4/0</td>
+                <td>Erroneous Header Field <span class="note-text">(Update Pointer per Table 8-7)</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

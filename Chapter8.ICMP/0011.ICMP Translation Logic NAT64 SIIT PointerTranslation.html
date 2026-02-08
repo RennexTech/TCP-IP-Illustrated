@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICMP Translation Tables</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+        :root {
+            --bg-page: #f8fafc;
+            --border: #e2e8f0;
+            --header-bg: #0f172a;
+            
+            /* Directional Colors */
+            --v4-bg: #eff6ff; --v4-text: #1d4ed8; /* Blue */
+            --v6-bg: #f3e8ff; --v6-text: #7e22ce; /* Purple */
+            --neutral-bg: #f1f5f9; --neutral-text: #475569;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .master-container {
+            background: white;
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .main-header {
+            background: var(--header-bg);
+            color: white;
+            padding: 24px 30px;
+            text-align: center;
+        }
+        .main-header h1 { margin: 0; font-size: 1.5rem; }
+        .main-header p { margin: 8px 0 0; opacity: 0.8; font-size: 0.9rem; }
+
+        /* Section Dividers */
+        .section-title {
+            background: #f1f5f9;
+            padding: 16px 30px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #334155;
+            border-top: 1px solid var(--border);
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-v4 { background: var(--v4-bg); color: var(--v4-text); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; }
+        .badge-v6 { background: var(--v6-bg); color: var(--v6-text); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; }
+        .arrow { color: #94a3b8; font-weight: bold; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #fafafa;
+            padding: 12px 20px;
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #64748b;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .code-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #334155; }
+        .field-name { font-weight: 600; color: #1e293b; }
+        .desc-text { color: #475569; font-size: 0.85rem; }
+        .na-text { color: #94a3b8; font-style: italic; }
+
+    </style>
+</head>
+<body>
+
+<div class="master-container">
+    <div class="main-header">
+        <h1>🔄 ICMP Translation Logic (NAT64/SIIT)</h1>
+        <p>Mapping Error Pointers and Message Types between IPv4 and IPv6</p>
+    </div>
+
+    <div class="section-title">
+        <span>Table 8-7: Pointer Translation</span>
+        <span class="badge-v4">IPv4</span>
+        <span class="arrow">→</span>
+        <span class="badge-v6">IPv6</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th width="15%">IPv4 Pointer</th>
+                <th width="35%">IPv4 Field</th>
+                <th width="15%">IPv6 Pointer</th>
+                <th>IPv6 Field (Mapped To)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="code-val">0</td><td class="field-name">Version/IHL</td><td class="code-val">0</td><td class="field-name">Version / Traffic Class</td></tr>
+            <tr><td class="code-val">1</td><td class="field-name">ToS (DS Field)</td><td class="code-val">1</td><td class="field-name">Traffic Class / Flow Label</td></tr>
+            <tr><td class="code-val">2, 3</td><td class="field-name">Total Length</td><td class="code-val">4</td><td class="field-name">Payload Length</td></tr>
+            <tr><td class="code-val">4, 5</td><td class="field-name">Identification</td><td class="code-val">N/A</td><td class="na-text">No Equivalent</td></tr>
+            <tr><td class="code-val">6</td><td class="field-name">Flags/Frag Offset</td><td class="code-val">N/A</td><td class="na-text">No Equivalent</td></tr>
+            <tr><td class="code-val">8</td><td class="field-name">Time to Live (TTL)</td><td class="code-val">7</td><td class="field-name">Hop Limit</td></tr>
+            <tr><td class="code-val">9</td><td class="field-name">Protocol</td><td class="code-val">6</td><td class="field-name">Next Header</td></tr>
+            <tr><td class="code-val">10, 11</td><td class="field-name">Header Checksum</td><td class="code-val">N/A</td><td class="na-text">No Equivalent</td></tr>
+            <tr><td class="code-val">12–15</td><td class="field-name">Source IP Address</td><td class="code-val">8</td><td class="field-name">Source IP Address</td></tr>
+            <tr><td class="code-val">16–19</td><td class="field-name">Dest IP Address</td><td class="code-val">24</td><td class="field-name">Dest IP Address</td></tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">
+        <span>Table 8-8: Error Message Mapping</span>
+        <span class="badge-v6">IPv6</span>
+        <span class="arrow">→</span>
+        <span class="badge-v4">IPv4</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th width="15%">v6 Type/Code</th>
+                <th width="35%">IPv6 Name</th>
+                <th width="15%">v4 Type/Code</th>
+                <th>IPv4 Name (Translated)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="code-val">1 / 0</td>
+                <td class="field-name">No Route</td>
+                <td class="code-val">3 / 1</td>
+                <td>Dest Unreachable — Host</td>
+            </tr>
+            <tr>
+                <td class="code-val">1 / 1</td>
+                <td class="field-name">Admin Prohibited</td>
+                <td class="code-val">3 / 10</td>
+                <td>Dest Unreachable — Host Admin Prohibited</td>
+            </tr>
+            <tr>
+                <td class="code-val">1 / 2</td>
+                <td class="field-name">Beyond Scope</td>
+                <td class="code-val">3 / 1</td>
+                <td>Dest Unreachable — Host</td>
+            </tr>
+            <tr>
+                <td class="code-val">1 / 3</td>
+                <td class="field-name">Addr Unreachable</td>
+                <td class="code-val">3 / 1</td>
+                <td>Dest Unreachable — Host</td>
+            </tr>
+            <tr>
+                <td class="code-val">1 / 4</td>
+                <td class="field-name">Port Unreachable</td>
+                <td class="code-val">3 / 3</td>
+                <td>Dest Unreachable — Port</td>
+            </tr>
+            <tr>
+                <td class="code-val">2 / 0</td>
+                <td class="field-name">Packet Too Big (PTB)</td>
+                <td class="code-val">3 / 4</td>
+                <td>Fragmentation Needed (DF Set)</td>
+            </tr>
+            <tr>
+                <td class="code-val">3 / 0,1</td>
+                <td class="field-name">Time Exceeded</td>
+                <td class="code-val">11 / 0,1</td>
+                <td>Time Exceeded (TTL / Reassembly)</td>
+            </tr>
+            <tr>
+                <td class="code-val">4 / 0</td>
+                <td class="field-name">Param Problem (Header)</td>
+                <td class="code-val">12 / 0</td>
+                <td>Param Problem (Update Pointer per Table 8-9)</td>
+            </tr>
+            <tr>
+                <td class="code-val">4 / 1</td>
+                <td class="field-name">Unrecognized Next Header</td>
+                <td class="code-val">3 / 2</td>
+                <td>Dest Unreachable — Protocol</td>
+            </tr>
+            <tr>
+                <td class="code-val">4 / 2</td>
+                <td class="field-name">Unrecognized Option</td>
+                <td class="code-val">N/A</td>
+                <td class="na-text">Drop Packet (No Equivalent)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">
+        <span>Table 8-9: Pointer Translation</span>
+        <span class="badge-v6">IPv6</span>
+        <span class="arrow">→</span>
+        <span class="badge-v4">IPv4</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th width="15%">IPv6 Pointer</th>
+                <th width="35%">IPv6 Field</th>
+                <th width="15%">IPv4 Pointer</th>
+                <th>IPv4 Field (Mapped To)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="code-val">0</td><td class="field-name">Ver / Traffic Class</td><td class="code-val">0</td><td class="field-name">Version / IHL / ToS</td></tr>
+            <tr><td class="code-val">1</td><td class="field-name">Traffic Class / Flow</td><td class="code-val">1</td><td class="field-name">ToS (DS Field)</td></tr>
+            <tr><td class="code-val">2, 3</td><td class="field-name">Flow Label</td><td class="code-val">N/A</td><td class="na-text">No Equivalent</td></tr>
+            <tr><td class="code-val">4, 5</td><td class="field-name">Payload Length</td><td class="code-val">N/A</td><td class="na-text">Mapped to Total Length (Complex)</td></tr>
+            <tr><td class="code-val">6</td><td class="field-name">Next Header</td><td class="code-val">9</td><td class="field-name">Protocol</td></tr>
+            <tr><td class="code-val">7</td><td class="field-name">Hop Limit</td><td class="code-val">8</td><td class="field-name">Time to Live (TTL)</td></tr>
+            <tr><td class="code-val">8–23</td><td class="field-name">Source IP Address</td><td class="code-val">12</td><td class="field-name">Source IP Address</td></tr>
+            <tr><td class="code-val">24–39</td><td class="field-name">Dest IP Address</td><td class="code-val">16</td><td class="field-name">Dest IP Address</td></tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
