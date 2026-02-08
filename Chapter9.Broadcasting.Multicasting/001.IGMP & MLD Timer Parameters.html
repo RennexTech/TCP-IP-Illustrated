@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, Segoe UI, Roboto, sans-serif;
+            background-color: #eef2f3;
+            padding: 30px;
+            color: #2d3436;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid #d1d8e0;
+        }
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
+        
+        .math-legend {
+            display: flex;
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-item b { color: #0984e3; font-family: monospace; font-size: 1.1rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            line-height: 1.5;
+        }
+        th {
+            background: #f1f2f6;
+            text-align: left;
+            padding: 15px 20px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #7f8c8d;
+            border-bottom: 2px solid #dfe4ea;
+        }
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f1f2f6;
+            vertical-align: top;
+            font-size: 0.9rem;
+        }
+        tr:hover { background: #fdfdfd; }
+        
+        .name { font-weight: 700; color: #2d3436; display: block; margin-bottom: 4px; }
+        .desc { color: #636e72; font-size: 0.85rem; display: block; }
+        
+        .value-box {
+            display: inline-block;
+            background: #dfe6e9;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2d3436;
+        }
+        .formula {
+            color: #d63031;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        .restriction {
+            display: block;
+            margin-top: 5px;
+            color: #d63031;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .mld-alias {
+            font-size: 0.75rem;
+            background: #e1f5fe;
+            color: #0288d1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Table 9-3: IGMP & MLD Timer Parameters</h1>
+        <div style="font-size: 0.8rem; opacity: 0.8;">Standard Reference Architecture</div>
+    </div>
+
+    <div class="math-legend">
+        <div class="legend-item"><b>RV</b> Robustness Variable</div>
+        <div class="legend-item"><b>QI</b> Query Interval</div>
+        <div class="legend-item"><b>QRI</b> Query Response Interval</div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="55%">Parameter Name & Meaning</th>
+                <th width="45%">Default Value & Restrictions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span class="name">Robustness Variable (RV)</span>
+                    <span class="desc">Arranges for up to RV - 1 retransmissions for state-change reports/queries.</span>
+                </td>
+                <td>
+                    <span class="value-box">2</span>
+                    <span class="restriction">(Must not be 0; Should not be 1)</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="name">Query Interval (QI)</span>
+                    <span class="desc">Time between general queries sent by the current querier.</span>
+                </td>
+                <td><span class="value-box">125s</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="name">Query Response Interval (QRI)</span>
+                    <span class="desc">Maximum response time to wait for generation of reports. (Max Response field).</span>
+                </td>
+                <td><span class="value-box">10s</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="name">Group Membership Interval (GMI) <span class="mld-alias">MLD: MALI</span></span>
+                    <span class="desc">Time passed without a report before declaring no remaining interest in a group.</span>
+                </td>
+                <td>
+                    <span class="formula">RV * QI + QRI</span>
+                    <span class="restriction">(Cannot be changed)</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="name">Other Querier Present Interval <span class="mld-alias">MLD: Timeout</span></span>
+                    <span class="desc">Time without a general request before a non-querier declares the active querier gone.</span>
+                </td>
+                <td>
+                    <span class="formula">RV * QI + (0.5) * QRI</span>
+                    <span class="restriction">(Cannot be changed)</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="name">Startup Query Interval / Count</span>
+                    <span class="desc">Interval and number of queries used by a querier just starting up.</span>
+                </td>
+                <td>
+                    <span class="formula">(0.25) * QI</span> & <span class="formula">RV</span> (Count)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="name">Last Member Query Interval (LMQI) <span class="mld-alias">MLD: LLQI</span></span>
+                    <span class="desc">Max response time for specific queries (Max Response field in specific queries).</span>
+                </td>
+                <td>
+                    <span class="value-box">1s</span> & <span class="formula">RV</span> (Count)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="name">Unsolicited Report Interval</span>
+                    <span class="desc">Time between retransmissions of a host’s initial state-change report.</span>
+                </td>
+                <td><span class="value-box">1s</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="name">Older Version Querier Present Timeout</span>
+                    <span class="desc">Time a host waits without IGMPv1/v2 requests to revert back to IGMPv3.</span>
+                </td>
+                <td>
+                    <span class="formula">RV * QI + QRI</span>
+                    <span class="restriction">(Cannot be changed)</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="name">Older Host Present Interval <span class="mld-alias">MLD: Timeout</span></span>
+                    <span class="desc">Time a querier waits without IGMPv1/v2 reports to revert back to IGMPv3.</span>
+                </td>
+                <td>
+                    <span class="formula">RV * QI + QRI</span>
+                    <span class="restriction">(Cannot be changed)</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
