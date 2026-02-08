@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .icmp-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 900px;
+        }
+        .icmp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+        }
+        .icmp-table th {
+            background-color: #21262d;
+            color: #58a6ff;
+            text-align: left;
+            padding: 12px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid #30363d;
+        }
+        .icmp-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #30363d;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .icmp-table tr:hover {
+            background-color: #1c2128;
+        }
+        .v4-cell {
+            color: #ffa657; /* Orange for IPv4 */
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .v6-cell {
+            color: #79c0ff; /* Light Blue for IPv6 */
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .note {
+            font-size: 0.8rem;
+            color: #8b949e;
+            font-style: italic;
+            margin-top: 4px;
+            display: block;
+        }
+        .highlight {
+            background: rgba(88, 166, 255, 0.1);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="icmp-container">
+    <h2 style="margin-top: 0; border-bottom: 1px solid #30363d; padding-bottom: 10px;">🔄 Table 8-6: ICMPv4 to ICMPv6 Translation</h2>
+    
+    <table class="icmp-table">
+        <thead>
+            <tr>
+                <th>ICMPv4 Type/Code</th>
+                <th>IPv4 Descriptive Name</th>
+                <th>ICMPv6 Type/Code</th>
+                <th>IPv6 Descriptive Name & Logic</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="v4-cell">3 / 0</td>
+                <td>Destination Unreachable: Network</td>
+                <td class="v6-cell">1 / 0</td>
+                <td>Destination Unreachable: No Route</td>
+            </tr>
+            <tr>
+                <td class="v4-cell">3 / 1</td>
+                <td>Destination Unreachable: Host</td>
+                <td class="v6-cell">1 / 0</td>
+                <td>Destination Unreachable: No Route</td>
+            </tr>
+            <tr>
+                <td class="v4-cell">3 / 2</td>
+                <td>Destination Unreachable: Protocol</td>
+                <td class="v6-cell">4 / 1</td>
+                <td>Parameter Problem: Unrecognized Next Header
+                    <span class="note">Pointer indicates the "Next Header" field</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="v4-cell">3 / 3</td>
+                <td>Destination Unreachable: Port</td>
+                <td class="v6-cell">1 / 4</td>
+                <td>Destination Unreachable: Port</td>
+            </tr>
+            <tr>
+                <td class="v4-cell">3 / 4</td>
+                <td>Fragmentation Required (PTB)</td>
+                <td class="v6-cell">2 / 0</td>
+                <td>Packet Too Big (PTB)
+                    <span class="note">Adjust MTU field for larger IPv6 header (+20 bytes)</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="v4-cell">3 / 5</td>
+                <td>Source Route Failed</td>
+                <td class="v6-cell">1 / 0</td>
+                <td>Destination Unreachable: No Route
+                    <span class="note">Note: Source routing is deprecated in IPv6</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="v4-cell">3 / {6,7}</td>
+                <td>Dest. Network/Host Unknown</td>
+                <td class="v6-cell">1 / 0</td>
+                <td>Destination Unreachable: No Route</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
