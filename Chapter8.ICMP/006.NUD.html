@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+        :root {
+            --bg-page: #f1f5f9;
+            --border: #cbd5e1;
+            /* State Colors */
+            --col-new: #64748b;
+            --col-inc: #f59e0b; /* Amber */
+            --col-rch: #10b981; /* Green */
+            --col-stl: #6366f1; /* Indigo */
+            --col-dly: #f43f5e; /* Rose */
+            --col-prb: #8b5cf6; /* Violet */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .nud-card {
+            background: #fff;
+            width: 100%;
+            max-width: 950px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            background: #0f172a;
+            color: white;
+            padding: 24px 30px;
+        }
+
+        .header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+        .header p { margin: 5px 0 0; opacity: 0.7; font-size: 0.85rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 14px 20px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .state-name {
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .math {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+
+        /* State Markers */
+        .marker { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+    </style>
+</head>
+<body>
+
+    <div class="nud-card">
+        <div class="header">
+            <h1>🛡️ IPv6 Neighbor Unreachability Detection (NUD)</h1>
+            <p>State transitions for the Neighbor Cache (RFC 4861)</p>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">State</th>
+                    <th width="30%">Trigger / Event</th>
+                    <th>Action & Behavior</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="state-name" style="color:var(--col-inc)">
+                            <span class="marker" style="background:var(--col-inc)"></span>
+                            Incomplete
+                        </div>
+                    </td>
+                    <td>First communication attempt.</td>
+                    <td>Address resolution is in progress. The host sends a <b>Neighbor Solicitation (NS)</b> and waits for a <b>Neighbor Advertisement (NA)</b>.</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="state-name" style="color:var(--col-rch)">
+                            <span class="marker" style="background:var(--col-rch)"></span>
+                            Reachable
+                        </div>
+                    </td>
+                    <td>Valid NA received.</td>
+                    <td>Neighbor is confirmed alive. Packets flow normally. Entry stays here for <span class="math">ReachableTime</span> (default ~30s).</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="state-name" style="color:var(--col-stl)">
+                            <span class="marker" style="background:var(--col-stl)"></span>
+                            Stale
+                        </div>
+                    </td>
+                    <td>Timer expires in REACHABLE.</td>
+                    <td>Contact has not been confirmed recently. The host does <b>not</b> probe yet; it waits until it actually needs to send a packet.</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="state-name" style="color:var(--col-dly)">
+                            <span class="marker" style="background:var(--col-dly)"></span>
+                            Delay
+                        </div>
+                    </td>
+                    <td>Packet sent while in STALE.</td>
+                    <td>Host waits <span class="math">DELAY_FIRST_PROBE_TIME</span> (5s) for upper-layer hints (like TCP ACKs) to confirm reachability before sending an ICMPv6 probe.</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="state-name" style="color:var(--col-prb)">
+                            <span class="marker" style="background:var(--col-prb)"></span>
+                            Probe
+                        </div>
+                    </td>
+                    <td>No confirmation during DELAY.</td>
+                    <td>Active probing. Sends <b>Unicast NS</b> messages every <span class="math">RetransTimer</span> (1s). Max attempts: 3.</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="state-name" style="color:var(--col-new)">
+                            <span class="marker" style="background:var(--col-new)"></span>
+                            Deleted 💀
+                        </div>
+                    </td>
+                    <td>No replies in PROBE.</td>
+                    <td>Neighbor is considered dead. Entry is removed from the cache. Next packet will restart the <b>INCOMPLETE</b> phase.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
