@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPv6 ND Options Table</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+        :root {
+            --primary: #0f172a;
+            --secondary: #64748b;
+            --border: #e2e8f0;
+            --bg: #f8fafc;
+            
+            /* Logic Highlighting */
+            --tag-std: #0ea5e9;
+            --tag-mobile: #f59e0b;
+            --tag-security: #8b5cf6;
+            --tag-dns: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: #334155;
+            padding: 40px 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 24px 30px;
+        }
+
+        .header h1 { margin: 0; font-size: 1.5rem; font-weight: 700; }
+        .header p { margin: 8px 0 0; opacity: 0.8; font-size: 0.9rem; }
+
+        .table-section-title {
+            background: #f1f5f9;
+            padding: 12px 30px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            text-align: left;
+            background: #fafafa;
+            color: var(--secondary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 12px 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .type-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--primary);
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .name-cell { font-weight: 600; color: #1e293b; width: 220px; }
+        .ref-cell { font-family: 'JetBrains Mono', monospace; color: #94a3b8; font-size: 0.8rem; width: 100px; }
+
+        /* Status Badges */
+        .badge {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+        .b-std { background: #e0f2fe; color: #0369a1; }
+        .b-mob { background: #fef3c7; color: #92400e; }
+        .b-sec { background: #f3e8ff; color: #6b21a8; }
+        .b-dns { background: #dcfce7; color: #166534; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>📋 Table 8-5: IPv6 Neighbor Discovery Options</h1>
+            <p>Comprehensive list of ND option types, references, and descriptions.</p>
+        </div>
+
+        <div class="table-section-title">Part 1: Types 1 — 12</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="80px">Type</th>
+                    <th>Name</th>
+                    <th>Reference</th>
+                    <th>Use / Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="type-id">1</span></td>
+                    <td class="name-cell"><span class="badge b-std">Standard</span><br>Source Link-Layer Address</td>
+                    <td class="ref-cell">[RFC4861]</td>
+                    <td>Sender’s link-layer address; used with NS, RS, and RA messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">2</span></td>
+                    <td class="name-cell"><span class="badge b-std">Standard</span><br>Target Link-Layer Address</td>
+                    <td class="ref-cell">[RFC4861]</td>
+                    <td>Target’s link-layer address; used with NA and Redirect messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">3</span></td>
+                    <td class="name-cell"><span class="badge b-std">Standard</span><br>Prefix Information</td>
+                    <td class="ref-cell">[RFC4861]</td>
+                    <td>An IPv6 prefix or address; used with RA messages for SLAAC.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">4</span></td>
+                    <td class="name-cell"><span class="badge b-std">Standard</span><br>Redirected Header</td>
+                    <td class="ref-cell">[RFC4861]</td>
+                    <td>Portion of original IPv6 datagram; used with Redirect messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">5</span></td>
+                    <td class="name-cell"><span class="badge b-std">Standard</span><br>MTU</td>
+                    <td class="ref-cell">[RFC4861]</td>
+                    <td>Recommended MTU; used with RA and IND Advertisement messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">6</span></td>
+                    <td class="name-cell"><span class="badge b-std">NBMA</span><br>NMBA Shortcut Limit</td>
+                    <td class="ref-cell">[RFC2491]</td>
+                    <td>Hop limit for “shortcut attempt”; used with NS messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">7</span></td>
+                    <td class="name-cell"><span class="badge b-mob">Mobile</span><br>Advertisement Interval</td>
+                    <td class="ref-cell">[RFC6275]</td>
+                    <td>Sending interval of unsolicited RA messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">8</span></td>
+                    <td class="name-cell"><span class="badge b-mob">Mobile</span><br>Home Agent Information</td>
+                    <td class="ref-cell">[RFC6275]</td>
+                    <td>Preference and lifetime to be an MIPv6 HA; used with RA messages (H bit on).</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">9</span></td>
+                    <td class="name-cell"><span class="badge b-std">IND</span><br>Source Address List</td>
+                    <td class="ref-cell">[RFC3122]</td>
+                    <td>Host’s addresses; used with Inverse Neighbor Discovery messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">10</span></td>
+                    <td class="name-cell"><span class="badge b-std">IND</span><br>Target Address List</td>
+                    <td class="ref-cell">[RFC3122]</td>
+                    <td>Target addresses; used with Inverse Neighbor Discovery messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">11</span></td>
+                    <td class="name-cell"><span class="badge b-sec">SEND</span><br>CGA</td>
+                    <td class="ref-cell">[RFC3971]</td>
+                    <td>Crypto-based address; used with secure Neighbor Discovery messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">12</span></td>
+                    <td class="name-cell"><span class="badge b-sec">SEND</span><br>RSA Signature</td>
+                    <td class="ref-cell">[RFC3971]</td>
+                    <td>Credential for host signature (SEND).</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="table-section-title">Part 2: Types 13 — 254</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="80px">Type</th>
+                    <th>Name</th>
+                    <th>Reference</th>
+                    <th>Use / Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="type-id">13</span></td>
+                    <td class="name-cell"><span class="badge b-sec">SEND</span><br>Timestamp</td>
+                    <td class="ref-cell">[RFC3971]</td>
+                    <td>Anti-replay timestamp (SEND).</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">14</span></td>
+                    <td class="name-cell"><span class="badge b-sec">SEND</span><br>Nonce</td>
+                    <td class="ref-cell">[RFC3971]</td>
+                    <td>Anti-replay random number (SEND).</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">15</span></td>
+                    <td class="name-cell"><span class="badge b-sec">SEND</span><br>Trust Anchor</td>
+                    <td class="ref-cell">[RFC3971]</td>
+                    <td>Indicates credential type (SEND).</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">16</span></td>
+                    <td class="name-cell"><span class="badge b-sec">SEND</span><br>Certificate</td>
+                    <td class="ref-cell">[RFC3971]</td>
+                    <td>Encodes a certificate (SEND).</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">17</span></td>
+                    <td class="name-cell"><span class="badge b-mob">FMIPv6</span><br>IP Address/Prefix</td>
+                    <td class="ref-cell">[RFC5568]</td>
+                    <td>Care-of or NAR addresses; used with FMIPv6 messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">19</span></td>
+                    <td class="name-cell"><span class="badge b-mob">FMIPv6</span><br>Link-Layer Address</td>
+                    <td class="ref-cell">[RFC5568]</td>
+                    <td>Desired next access point; used with FMIPv6 messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">20</span></td>
+                    <td class="name-cell"><span class="badge b-mob">FMIPv6</span><br>NA ACK</td>
+                    <td class="ref-cell">[RFC5568]</td>
+                    <td>Tells mobile about next valid CoA; used with RA messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">24</span></td>
+                    <td class="name-cell"><span class="badge b-std">Routing</span><br>Route Information</td>
+                    <td class="ref-cell">[RFC4191]</td>
+                    <td>Route prefix/preferred router list.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">25</span></td>
+                    <td class="name-cell"><span class="badge b-dns">DNS</span><br>Recursive DNS Server</td>
+                    <td class="ref-cell">[RFC6106]</td>
+                    <td>IP address of DNS server; added to RA messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">26</span></td>
+                    <td class="name-cell"><span class="badge b-std">Extended</span><br>RA Flags Extension</td>
+                    <td class="ref-cell">[RFC5175]</td>
+                    <td>Expands space for RA flags.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">27</span></td>
+                    <td class="name-cell"><span class="badge b-sec">SEND</span><br>Handover Key Req</td>
+                    <td class="ref-cell">[RFC5269]</td>
+                    <td>FMIPv6—request key using SEND.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">28</span></td>
+                    <td class="name-cell"><span class="badge b-sec">SEND</span><br>Handover Key Reply</td>
+                    <td class="ref-cell">[RFC5269]</td>
+                    <td>FMIPv6—key reply using SEND.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">31</span></td>
+                    <td class="name-cell"><span class="badge b-dns">DNS</span><br>DNS Search List</td>
+                    <td class="ref-cell">[RFC6106]</td>
+                    <td>DNS domain search names; added to RA messages.</td>
+                </tr>
+                <tr>
+                    <td><span class="type-id">253-254</span></td>
+                    <td class="name-cell">Experimental</td>
+                    <td class="ref-cell">[RFC4727]</td>
+                    <td>Reserved for experimental use.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
