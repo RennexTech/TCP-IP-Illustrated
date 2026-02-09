@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generic Top-Level Domains</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e3a8a;
+            --secondary: #64748b;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            
+            /* Category Colors */
+            --tag-original: #dbeafe; --text-original: #1e40af; /* 1985 Originals */
+            --tag-sponsored: #dcfce7; --text-sponsored: #166534; /* 2000s Expansion */
+            --tag-modern: #f3e8ff; --text-modern: #6b21a8; /* Post-2012 */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        /* Header Section */
+        .header {
+            background: var(--primary-dark);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            margin: 10px 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        /* Modern Era Banner (2026 Update) */
+        .modern-update {
+            background: #eff6ff;
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.95rem;
+            color: var(--primary-dark);
+        }
+        
+        .update-badge {
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        /* Table Styling */
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            text-align: left;
+            padding: 20px 30px;
+            font-weight: 600;
+            color: var(--secondary);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            background: #fdfdfd;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 24px 30px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #f8fafc; }
+
+        /* Column Specifics */
+        .col-tld { 
+            font-weight: 700; 
+            font-size: 1.1rem; 
+            color: var(--text-main); 
+            width: 15%;
+        }
+
+        .tld-dot { color: var(--secondary); opacity: 0.5; }
+
+        .col-date {
+            font-family: 'Poppins', sans-serif; /* Keep consistent font */
+            color: var(--secondary);
+            font-size: 0.9rem;
+            width: 20%;
+        }
+
+        .col-use { width: 35%; line-height: 1.6; }
+        .col-ex { 
+            font-family: 'Courier New', monospace; 
+            color: var(--primary); 
+            font-weight: 600;
+            width: 30%;
+        }
+
+        /* Logic Badges */
+        .era-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+        .era-original { background: var(--tag-original); color: var(--text-original); }
+        .era-expansion { background: var(--tag-sponsored); color: var(--text-sponsored); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.5rem; }
+            td, th { padding: 15px 20px; }
+            .col-tld { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Generic Top-Level Domains (gTLDs)</h1>
+        <p>From the 1985 "Magnificent Seven" to the 2011 Expansion Era</p>
+    </div>
+
+    <div class="modern-update">
+        <span class="update-badge">2026 Status Update</span>
+        <span>
+            <strong>The "New gTLD" Explosion:</strong> Since this table was published (circa 2011), the DNS landscape changed radically in 2012. 
+            There are now over <strong>1,200+ gTLDs</strong>, including brands (<code>.google</code>, <code>.amazon</code>), 
+            cities (<code>.nyc</code>, <code>.tokyo</code>), and professions (<code>.dev</code>, <code>.app</code>).
+        </span>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>TLD</th>
+                    <th>First Use (Est.)</th>
+                    <th>Intended Use</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>COM<br><span class="era-badge era-original">Original 1985</span></td>
+                    <td class="col-date">January 1, 1985</td>
+                    <td class="col-use">Commercial organizations (Now unrestricted/generic).</td>
+                    <td class="col-ex">google.com</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>EDU<br><span class="era-badge era-original">Original 1985</span></td>
+                    <td class="col-date">January 1, 1985</td>
+                    <td class="col-use">Post-secondary educational institutions (Accredited by U.S.).</td>
+                    <td class="col-ex">mit.edu</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>GOV<br><span class="era-badge era-original">Original 1985</span></td>
+                    <td class="col-date">January 1, 1985</td>
+                    <td class="col-use">United States Government entities.</td>
+                    <td class="col-ex">whitehouse.gov</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>MIL<br><span class="era-badge era-original">Original 1985</span></td>
+                    <td class="col-date">January 1, 1985</td>
+                    <td class="col-use">United States Military.</td>
+                    <td class="col-ex">army.mil</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>NET<br><span class="era-badge era-original">Original 1985</span></td>
+                    <td class="col-date">January 1, 1985</td>
+                    <td class="col-use">Network infrastructure (Now unrestricted/generic).</td>
+                    <td class="col-ex">speedtest.net</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>ORG<br><span class="era-badge era-original">Original 1985</span></td>
+                    <td class="col-date">January 1, 1985</td>
+                    <td class="col-use">Non-profits (Now unrestricted/generic).</td>
+                    <td class="col-ex">wikipedia.org</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>ARPA<br><span class="era-badge era-original">Original 1985</span></td>
+                    <td class="col-date">January 1, 1985</td>
+                    <td class="col-use">Infrastructure and reverse DNS lookup.</td>
+                    <td class="col-ex">in-addr.arpa</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>INT<br><span class="era-badge era-original">Original 1988</span></td>
+                    <td class="col-date">November 3, 1988</td>
+                    <td class="col-use">International treaty organizations.</td>
+                    <td class="col-ex">nato.int</td>
+                </tr>
+
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>AERO<br><span class="era-badge era-expansion">Sponsored</span></td>
+                    <td class="col-date">Dec 21, 2001</td>
+                    <td class="col-use">Air-transport industry members.</td>
+                    <td class="col-ex">sita.aero</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>BIZ<br><span class="era-badge era-expansion">Generic</span></td>
+                    <td class="col-date">June 26, 2001</td>
+                    <td class="col-use">Business use (Alternative to .com).</td>
+                    <td class="col-ex">neustar.biz</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>INFO<br><span class="era-badge era-expansion">Generic</span></td>
+                    <td class="col-date">June 25, 2001</td>
+                    <td class="col-use">Informational sites (Unrestricted).</td>
+                    <td class="col-ex">about.info</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>COOP<br><span class="era-badge era-expansion">Sponsored</span></td>
+                    <td class="col-date">Dec 15, 2001</td>
+                    <td class="col-use">Cooperative associations.</td>
+                    <td class="col-ex">rei.coop</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>MUSEUM<br><span class="era-badge era-expansion">Sponsored</span></td>
+                    <td class="col-date">Oct 30, 2001</td>
+                    <td class="col-use">Museums and archives.</td>
+                    <td class="col-ex">louvre.museum</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>NAME<br><span class="era-badge era-expansion">Generic</span></td>
+                    <td class="col-date">Aug 16, 2001</td>
+                    <td class="col-use">Individuals / Personal websites.</td>
+                    <td class="col-ex">surname.name</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>PRO<br><span class="era-badge era-expansion">Sponsored</span></td>
+                    <td class="col-date">May 6, 2002</td>
+                    <td class="col-use">Credentialed professionals (Doctors, Lawyers, CPAs).</td>
+                    <td class="col-ex">med.pro</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>TRAVEL<br><span class="era-badge era-expansion">Sponsored</span></td>
+                    <td class="col-date">July 27, 2005</td>
+                    <td class="col-use">Travel industry and agencies.</td>
+                    <td class="col-ex">cancun.travel</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>JOBS<br><span class="era-badge era-expansion">Sponsored</span></td>
+                    <td class="col-date">Sep 8, 2005</td>
+                    <td class="col-use">Human resource managers / Employment.</td>
+                    <td class="col-ex">google.jobs</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>CAT<br><span class="era-badge era-expansion">Cultural</span></td>
+                    <td class="col-date">Dec 19, 2005</td>
+                    <td class="col-use">Catalan linguistic and cultural community.</td>
+                    <td class="col-ex">fundacio.cat</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>MOBI<br><span class="era-badge era-expansion">Sponsored</span></td>
+                    <td class="col-date">Oct 30, 2005</td>
+                    <td class="col-use">Optimized for mobile devices (Legacy use).</td>
+                    <td class="col-ex">bmw.mobi</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>TEL<br><span class="era-badge era-expansion">Sponsored</span></td>
+                    <td class="col-date">March 1, 2007</td>
+                    <td class="col-use">Contact data storage (Publishing contact info in DNS).</td>
+                    <td class="col-ex">telnic.tel</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>ASIA<br><span class="era-badge era-expansion">Geo</span></td>
+                    <td class="col-date">May 2, 2007</td>
+                    <td class="col-use">Pan-Asia and Asia Pacific region.</td>
+                    <td class="col-ex">welcome.asia</td>
+                </tr>
+                <tr>
+                    <td class="col-tld"><span class="tld-dot">.</span>XXX<br><span class="era-badge era-expansion">Sponsored</span></td>
+                    <td class="col-date">April 15, 2011</td>
+                    <td class="col-use">Adult entertainment industry.</td>
+                    <td class="col-ex">whois.nic.xxx</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
