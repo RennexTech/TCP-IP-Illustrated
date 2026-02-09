@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #09090b;
+            --card-bg: #18181b;
+            
+            /* BIC Colors (Algorithm/Logic) */
+            --bic-primary: #38bdf8;
+            --bic-dim: #0ea5e9;
+            --bic-glow: rgba(56, 189, 248, 0.15);
+
+            /* BIG Colors (Size/Power) */
+            --big-primary: #f97316;
+            --big-dim: #ea580c;
+            --big-glow: rgba(249, 115, 22, 0.15);
+
+            --text-main: #f4f4f5;
+            --text-sub: #a1a1aa;
+            --border: #27272a;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .header h1 { 
+            font-size: 2.5rem; 
+            margin: 0; 
+            letter-spacing: -1px;
+            background: linear-gradient(to right, var(--bic-primary), #fff, var(--big-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header p { color: var(--text-sub); margin-top: 10px; }
+
+        /* The Grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        /* Card Styles */
+        .tech-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+
+        .tech-card:hover { transform: translateY(-5px); }
+
+        /* Specific Theme Overrides */
+        .card-bic { box-shadow: 0 20px 40px -10px var(--bic-glow); border-top: 4px solid var(--bic-primary); }
+        .card-big { box-shadow: 0 20px 40px -10px var(--big-glow); border-top: 4px solid var(--big-primary); }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-subtitle {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        /* Feature List */
+        .feature-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .feature-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-sub);
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .feature-content {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .code-tag {
+            font-family: 'Fira Code', monospace;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Logic Visualization */
+        .logic-viz {
+            height: 60px;
+            margin-top: 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .viz-bic {
+            background: linear-gradient(90deg, transparent 0%, var(--bic-glow) 50%, transparent 100%);
+            border: 1px dashed var(--bic-primary);
+            color: var(--bic-primary);
+        }
+
+        .viz-big {
+            background: linear-gradient(90deg, var(--big-primary), var(--big-dim));
+            color: #000;
+            border: 1px solid var(--big-primary);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Confusion Clearing: BIC vs. BIG</h1>
+        <p>Two very similar acronyms, two completely different layers of the networking stack.</p>
+    </div>
+
+    <div class="comparison-grid">
+        
+        <!-- LEFT: BIC-TCP -->
+        <div class="tech-card card-bic">
+            <div class="card-title" style="color: var(--bic-primary);">
+                <span>📉</span> BIC-TCP
+            </div>
+            <span class="card-subtitle" style="color: var(--bic-primary);">Binary Increase Congestion Control</span>
+
+            <div class="feature-box">
+                <span class="feature-label">The Core Concept</span>
+                <div class="feature-content">
+                    A <strong>congestion control algorithm</strong> designed for high-speed networks with high latency (High BDP). It is the predecessor to CUBIC.
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <span class="feature-label">How it works</span>
+                <div class="feature-content">
+                    Uses a <span class="code-tag">Binary Search</span> strategy to find the available bandwidth. It aggressively increases the window when far from saturation and slows down as it approaches the limit.
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <span class="feature-label">Primary Goal</span>
+                <div class="feature-content">
+                    <strong>Window Management.</strong> To grow <span class="code-tag">cwnd</span> (Congestion Window) fast enough to fill a 10Gbps pipe without causing massive packet loss.
+                </div>
+            </div>
+
+            <div class="viz-bic">
+                min --- | find cwnd | --- max
+            </div>
+        </div>
+
+        <!-- RIGHT: BIG TCP -->
+        <div class="tech-card card-big">
+            <div class="card-title" style="color: var(--big-primary);">
+                <span>🚛</span> BIG TCP
+            </div>
+            <span class="card-subtitle" style="color: var(--big-primary);">Packet Batching Optimization</span>
+
+            <div class="feature-box">
+                <span class="feature-label">The Core Concept</span>
+                <div class="feature-content">
+                    An <strong>OS Kernel/Driver optimization</strong> (specifically Linux) that allows the networking stack to process "mega-packets" larger than 64KB.
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <span class="feature-label">How it works</span>
+                <div class="feature-content">
+                    It enables IPv6 headers to carry <span class="code-tag">Jumbogram</span> information internally, allowing TSO/GRO to handle batches up to <strong>192KB+</strong> per interrupt.
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <span class="feature-label">Primary Goal</span>
+                <div class="feature-content">
+                    <strong>CPU Efficiency.</strong> Reducing the number of CPU interrupts required to push 100Gbps traffic by grouping packets into massive chunks.
+                </div>
+            </div>
+
+            <div class="viz-big">
+                [ 192KB SUPER-PACKET ]
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
