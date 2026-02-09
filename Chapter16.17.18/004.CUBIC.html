@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-obsidian: #050505;
+            --card-charcoal: #121212;
+            --accent-cyan: #00f2ff;
+            --accent-green: #39ff14;
+            --accent-pink: #ff0055;
+            --accent-purple: #bc8cff;
+            --accent-yellow: #ffea00;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --border: #222222;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-obsidian);
+            color: var(--text-main);
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 950px;
+            width: 100%;
+        }
+
+        /* Card Styling */
+        .card {
+            background: var(--card-charcoal);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent-cyan);
+        }
+
+        .card-purple::before { background: var(--accent-purple); }
+        .card-green::before { background: var(--accent-green); }
+        .card-pink::before { background: var(--accent-pink); }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 15px;
+        }
+
+        .header h2 { margin: 0; font-size: 1.5rem; letter-spacing: 0.5px; }
+        .icon { font-size: 1.8rem; }
+
+        /* Formula Box */
+        .formula-box {
+            background: #080808;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid #333;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .math-display {
+            font-size: 1.6rem;
+            color: var(--text-main);
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1.8;
+        }
+
+        .fraction {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 8px;
+            font-size: 0.8em;
+        }
+        .top { border-bottom: 2px solid var(--text-dim); display: block; padding: 2px; }
+        .bottom { display: block; padding: 2px; }
+
+        .root { font-size: 1.8rem; vertical-align: middle; margin-right: -5px; color: var(--text-dim); }
+        .radical { border-top: 2px solid var(--text-dim); padding-top: 5px; display: inline-block; vertical-align: middle; }
+
+        /* Variable Grid */
+        .variable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+            border-top: 1px dashed #333;
+            padding-top: 20px;
+        }
+
+        .var-item {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            background: rgba(255,255,255,0.03);
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        .var-item b { color: white; margin-right: 5px; }
+
+        /* Feature List */
+        .feature-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+        }
+        .feature-title { color: white; font-weight: bold; font-size: 0.95rem; margin-bottom: 4px; display: block; }
+        .feature-desc { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
+
+        /* Code Block */
+        .code-block {
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #d4d4d4;
+            border-left: 3px solid var(--accent-green);
+        }
+        .sysctl { color: var(--accent-yellow); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CARD 1: THE CUBIC FUNCTION -->
+    <div class="card">
+        <div class="header">
+            <span class="icon">🧊</span>
+            <h2 style="color: var(--accent-cyan);">The CUBIC Growth Function</h2>
+        </div>
+        
+        <p style="color: var(--text-dim); font-size: 0.9rem;">
+            CUBIC replaces the linear growth of standard TCP with a cubic function. This creates a curve that is 
+            <strong>concave</strong> (cautious) when below the saturation point and <strong>convex</strong> (aggressive) when above it.
+        </p>
+
+        <div class="formula-box" style="border-color: var(--accent-cyan);">
+            <div class="math-display">
+                W(t) = <span style="color:var(--accent-cyan)">C</span>(t - <span style="color:var(--accent-pink)">K</span>)<sup>3</sup> + W<sub>max</sub>
+            </div>
+        </div>
+
+        <div class="variable-grid">
+            <div class="var-item"><b>W(t)</b> = Window Size at time t</div>
+            <div class="var-item"><b>C</b> = Scaling Constant (0.4)</div>
+            <div class="var-item"><b>t</b> = Time since last loss</div>
+            <div class="var-item"><b>W<sub>max</sub></b> = Window size before loss</div>
+        </div>
+    </div>
+
+    <!-- CARD 2: THE K PARAMETER -->
+    <div class="card card-pink">
+        <div class="header">
+            <span class="icon">⏱️</span>
+            <h2 style="color: var(--accent-pink);">Calculating K (Target Time)</h2>
+        </div>
+
+        <p style="color: var(--text-dim); font-size: 0.9rem;">
+            <strong>K</strong> represents the time it takes for the window to grow back to <em>W<sub>max</sub></em> after a loss event.
+        </p>
+
+        <div class="formula-box" style="border-color: var(--accent-pink);">
+            <div class="math-display">
+                K = <span class="root">∛</span><span class="radical">
+                    <div class="fraction">
+                        <span class="top">W<sub>max</sub> &bull; <span style="color:var(--accent-yellow)">β</span></span>
+                        <span class="bottom" style="color:var(--accent-cyan)">C</span>
+                    </div>
+                </span>
+            </div>
+        </div>
+
+        <div class="variable-grid">
+            <div class="var-item"><b style="color:var(--accent-yellow)">β</b> = Decrease Factor (0.2)</div>
+            <div class="var-item"><b style="color:var(--accent-cyan)">C</b> = Cubic Constant (0.4)</div>
+        </div>
+    </div>
+
+    <!-- CARD 3: GROWTH PHASES -->
+    <div class="card card-purple">
+        <div class="header">
+            <span class="icon">📈</span>
+            <h2 style="color: var(--accent-purple);">Growth Phases & Features</h2>
+        </div>
+
+        <div class="feature-row">
+            <div style="font-size:1.5rem;">🐢</div>
+            <div>
+                <span class="feature-title" style="color:var(--accent-purple)">Concave Phase (W < W<sub>max</sub>)</span>
+                <span class="feature-desc">When recovering from loss, growth slows down as it approaches the previous saturation point to avoid overshooting.</span>
+            </div>
+        </div>
+
+        <div class="feature-row">
+            <div style="font-size:1.5rem;">🚀</div>
+            <div>
+                <span class="feature-title" style="color:var(--accent-cyan)">Convex Phase (W > W<sub>max</sub>)</span>
+                <span class="feature-desc">Once W<sub>max</sub> is exceeded without loss, CUBIC assumes bandwidth is available and accelerates growth (Max Probing).</span>
+            </div>
+        </div>
+
+        <div class="feature-row">
+            <div style="font-size:1.5rem;">🤝</div>
+            <div>
+                <span class="feature-title" style="color:var(--accent-green)">TCP Friendliness</span>
+                <span class="feature-desc">In small windows (low BDP), CUBIC mimics standard Reno to ensure it doesn't starve legacy connections.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARD 4: LINUX IMPLEMENTATION -->
+    <div class="card card-green">
+        <div class="header">
+            <span class="icon">🐧</span>
+            <h2 style="color: var(--accent-green);">Linux Kernel Implementation</h2>
+        </div>
+
+        <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom:20px;">
+            Default since kernel <strong>2.6.18</strong>. Managed via sysctl.
+        </p>
+
+        <div class="code-block">
+            <div style="margin-bottom:10px;">
+                <span class="sysctl">net.ipv4.tcp_congestion_control</span> = cubic
+            </div>
+            <div>
+                <span class="sysctl">net.ipv4.tcp_allowed_congestion_control</span> = cubic reno
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
