@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --card: #111111;
+            --classic-blue: #00d4ff;
+            --big-green: #39ff14;
+            --text-main: #e0e0e0;
+            --border: #222222;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .side-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+        }
+
+        h2 { font-size: 1.2rem; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .classic-h { color: var(--classic-blue); }
+        .big-h { color: var(--big-green); }
+
+        /* Packet Visualization */
+        .packet-area {
+            height: 200px;
+            background: #000;
+            border-radius: 12px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 15px;
+            overflow: hidden;
+            border: 1px solid #1a1a1a;
+        }
+
+        /* Classic Packets */
+        .p-small {
+            width: 20px;
+            height: 30px;
+            background: var(--classic-blue);
+            margin: 3px;
+            border-radius: 2px;
+            opacity: 0.8;
+            box-shadow: 0 0 5px var(--classic-blue);
+        }
+
+        /* BIG TCP Packet */
+        .p-massive {
+            width: 80%;
+            height: 120px;
+            background: var(--big-green);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #000;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+            position: relative;
+        }
+
+        .p-massive::after {
+            content: "4 GB DATA";
+            font-size: 1rem;
+        }
+
+        .stat-box {
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .stat-box b { color: #fff; }
+
+        .tag {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 0.6rem;
+            background: #222;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .footer-analysis {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .footer-analysis b { color: var(--big-green); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h1 style="margin:0; font-size: 2.2rem;">BIG TCP 🚀</h1>
+        <p style="color: #888;">Scaling 100Gbps+ Networks with IPv6</p>
+    </div>
+
+    <div class="comparison-grid">
+        <div class="side-card">
+            <span class="tag">IPv4 / Standard IPv6</span>
+            <h2 class="classic-h">Classic TCP</h2>
+            <div class="packet-area">
+                <div class="p-small"></div><div class="p-small"></div><div class="p-small"></div>
+                <div class="p-small"></div><div class="p-small"></div><div class="p-small"></div>
+                <div class="p-small"></div><div class="p-small"></div><div class="p-small"></div>
+                <div class="p-small"></div><div class="p-small"></div><div class="p-small"></div>
+                <div class="p-small"></div><div class="p-small"></div><div class="p-small"></div>
+            </div>
+            <div class="stat-box">
+                <b>Limit:</b> 64 KB per packet<br>
+                <b>CPU:</b> High (Interrupt per packet)<br>
+                <b>Problem:</b> CPU bottleneck at 100Gbps+
+            </div>
+        </div>
+
+        <div class="side-card">
+            <span class="tag">Linux 5.19+ / IPv6 Hop-by-Hop</span>
+            <h2 class="big-h">BIG TCP</h2>
+            <div class="packet-area">
+                <div class="p-massive"></div>
+            </div>
+            <div class="stat-box">
+                <b>Limit:</b> Up to 4 GB per packet<br>
+                <b>CPU:</b> Ultra-Low (Bulk handling)<br>
+                <b>Solution:</b> Full utilization of 400Gbps NICs
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-analysis">
+        <h3>🧠 Why it's a Game Changer</h3>
+        <p style="font-size: 0.9rem; color: #aaa; line-height: 1.6;">
+            In traditional networking, the CPU has to "touch" every 64KB packet header. At speeds like 100Gbps, the CPU spends 100% of its time just processing headers, leaving no room for actual applications. <b>BIG TCP</b> uses the <b>IPv6 Hop-by-Hop Options header</b> to carry Jumbograms, allowing the system to process one massive block of data instead of thousands of tiny ones.
+        </p>
+    </div>
+</div>
+
+</body>
+</html>
