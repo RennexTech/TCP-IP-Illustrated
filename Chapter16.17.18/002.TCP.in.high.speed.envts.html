@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-obsidian: #050505;
+            --card-charcoal: #121212;
+            --accent-cyan: #00f2ff;
+            --accent-green: #39ff14;
+            --accent-pink: #ff0055;
+            --accent-yellow: #ffea00;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --border: #222222;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-obsidian);
+            color: var(--text-main);
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 950px;
+            width: 100%;
+        }
+
+        /* Card Container */
+        .card {
+            background: var(--card-charcoal);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent-cyan);
+        }
+
+        .card-pink::before { background: var(--accent-pink); }
+        .card-green::before { background: var(--accent-green); }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 15px;
+        }
+
+        .header h2 { margin: 0; font-size: 1.5rem; letter-spacing: 0.5px; }
+        .icon { font-size: 1.8rem; }
+
+        /* Formula Box Styling */
+        .formula-box {
+            background: #080808;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid #333;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .math-display {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1.8;
+        }
+
+        /* Fraction CSS */
+        .fraction {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 8px;
+        }
+        .top { border-bottom: 2px solid var(--text-dim); display: block; padding: 2px; }
+        .bottom { display: block; padding: 2px; }
+
+        /* Color Utilities */
+        .c-cyan { color: var(--accent-cyan); }
+        .c-green { color: var(--accent-green); }
+        .c-pink { color: var(--accent-pink); }
+        .c-yellow { color: var(--accent-yellow); }
+        .c-dim { color: var(--text-dim); }
+
+        /* Grid Layouts */
+        .variable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+            border-top: 1px dashed #333;
+            padding-top: 20px;
+        }
+
+        .var-item {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            background: rgba(255,255,255,0.03);
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        .var-item b { color: white; margin-right: 5px; }
+
+        /* Logic Block (Code) */
+        .logic-block {
+            background: #0a0a0a;
+            border-left: 3px solid var(--accent-yellow);
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: #d4d4d4;
+            white-space: pre;
+            line-height: 1.6;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .kw { color: var(--accent-pink); font-weight: bold; } /* Keyword */
+        .fn { color: var(--accent-cyan); } /* Function */
+        .val { color: var(--accent-green); } /* Value */
+        .cm { color: #555; font-style: italic; } /* Comment */
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CARD 1: HSTCP Response Function -->
+    <div class="card">
+        <div class="header">
+            <span class="icon">🚀</span>
+            <h2 class="c-cyan">HighSpeed TCP Response Function</h2>
+        </div>
+        
+        <p class="c-dim" style="font-size: 0.9rem;">
+            Standard TCP performs poorly on high-speed WANs because window growth is too linear. 
+            HSTCP modifies the relationship between window size (w) and drop rate (p) using a 
+            <strong>Power Law</strong> function when <em>w > Low_Window</em>.
+        </p>
+
+        <div class="formula-box" style="border-color: var(--accent-cyan);">
+            <div class="math-display">
+                w = <span class="c-cyan">C</span> &bull; p<sup>S</sup>
+            </div>
+            <div style="margin-top: 20px; font-size: 1.1rem; color: var(--text-dim);">
+                Where constant 
+                <span class="math-display" style="font-size: 1.1rem;">
+                    C = P<sub>0</sub><sup>-S</sup> W<sub>0</sub>
+                </span>
+            </div>
+        </div>
+
+        <div class="variable-grid">
+            <div class="var-item"><b>w</b> = Window Size</div>
+            <div class="var-item"><b>p</b> = Packet Drop Rate</div>
+            <div class="var-item"><b>S</b> = Slope (on log-log plot)</div>
+            <div class="var-item"><b>W<sub>0</sub>, P<sub>0</sub></b> = Anchor Points</div>
+        </div>
+    </div>
+
+    <!-- CARD 2: Generalized AIMD -->
+    <div class="card card-green">
+        <div class="header">
+            <span class="icon">📈</span>
+            <h2 class="c-green">Generalized AIMD Updates</h2>
+        </div>
+
+        <p class="c-dim" style="font-size: 0.9rem;">
+            Instead of fixed constants (add 1, halve window), HSTCP makes the increase (a) and decrease (b) parameters dynamic functions of the current window size.
+        </p>
+
+        <!-- Increase -->
+        <div class="formula-box" style="text-align: left; padding-left: 40px; border-left: 4px solid var(--accent-green);">
+            <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent-green); margin-bottom: 10px;">On Good ACK (Increase)</div>
+            <div class="math-display">
+                cwnd<sub>t+1</sub> = cwnd<sub>t</sub> + 
+                <div class="fraction">
+                    <span class="top c-green">a(cwnd<sub>t</sub>)</span>
+                    <span class="bottom">cwnd<sub>t</sub></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decrease -->
+        <div class="formula-box" style="text-align: left; padding-left: 40px; border-left: 4px solid var(--accent-pink);">
+            <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent-pink); margin-bottom: 10px;">On Congestion Event (Decrease)</div>
+            <div class="math-display">
+                cwnd<sub>t+1</sub> = cwnd<sub>t</sub> - 
+                ( <span class="c-pink">b(cwnd<sub>t</sub>)</span> &bull; cwnd<sub>t</sub> )
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CARD 3: Limited Slow Start -->
+    <div class="card card-pink">
+        <div class="header">
+            <span class="icon">🚧</span>
+            <h2 class="c-yellow">Limited Slow Start Algorithm</h2>
+        </div>
+
+        <p class="c-dim" style="font-size: 0.9rem; margin-bottom: 25px;">
+            To prevent massive packet bursts when window sizes are huge (tens of thousands of packets), 
+            we introduce <code>max_ssthresh</code> to brake the exponential growth.
+        </p>
+
+        <div class="logic-block">
+<span class="kw">if</span> (cwnd <= <span class="val">max_ssthresh</span>) {
+    <span class="cm">// Standard Exponential Growth</span>
+    cwnd = cwnd + <span class="val">SMSS</span> 
+} 
+<span class="kw">else</span> {
+    <span class="cm">// Limited Growth (Linear-ish)</span>
+    <span class="fn">K</span> = <span class="kw">int</span>(cwnd / (<span class="val">0.5</span> * <span class="val">max_ssthresh</span>))
+    
+    cwnd = cwnd + <span class="kw">int</span>( (<span class="val">1</span>/<span class="fn">K</span>) * <span class="val">SMSS</span> )
+}</div>
+
+        <div class="variable-grid">
+            <div class="var-item"><b class="c-yellow">max_ssthresh</b> = Threshold (typ. 100 pkts)</div>
+            <div class="var-item"><b class="c-cyan">K</b> = Dampening Factor</div>
+            <div class="var-item"><b class="c-green">SMSS</b> = Max Segment Size</div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
