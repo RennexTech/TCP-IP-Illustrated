@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silly Window Syndrome Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+
+            /* Actor Colors */
+            --sender-bg: #eff6ff; --sender-text: #1d4ed8;
+            --receiver-bg: #f0fdf4; --receiver-text: #15803d;
+            --app-bg: #f5f3ff; --app-text: #7c3aed;
+            --alert-bg: #fef2f2; --alert-text: #b91c1c;
+            --warn-bg: #fffbeb; --warn-text: #b45309;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* HEADER */
+        .header {
+            background: #0f172a;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { margin: 0; font-size: 1.8rem; font-weight: 700; }
+        .header p { margin: 10px 0 0; opacity: 0.8; font-weight: 400; font-size: 0.95rem; }
+
+        /* SCENARIO BAR */
+        .scenario-bar {
+            background: #f1f5f9;
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.85rem;
+        }
+        .param { font-weight: 600; color: #475569; }
+        .val { background: white; padding: 2px 8px; border-radius: 4px; border: 1px solid #cbd5e1; color: #0f172a; font-family: 'JetBrains Mono', monospace; }
+
+        /* TABLE STYLING */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        /* Column Specifics */
+        .col-time { font-family: 'JetBrains Mono', monospace; color: var(--text-sub); width: 80px; font-size: 0.8rem; }
+        .col-pkt { width: 50px; text-align: center; }
+        .col-act { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; width: 300px; }
+        .col-buf { width: 250px; }
+        
+        .pkt-badge {
+            background: #e2e8f0;
+            color: #475569;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Action Highlighting */
+        .act-syn { color: #2563eb; font-weight: 700; }
+        .act-ack { color: #16a34a; }
+        .act-push { color: #d97706; }
+        .act-fin { color: #dc2626; font-weight: 700; }
+        .act-app { color: #7c3aed; font-style: italic; }
+
+        /* Buffer Visualization */
+        .buffer-track {
+            height: 8px;
+            width: 100%;
+            background: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+            border: 1px solid #e2e8f0;
+        }
+        .buffer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            transition: width 0.3s;
+        }
+        .buffer-full { background: #ef4444; } /* Red when full */
+        .buffer-label { font-size: 0.7rem; color: #64748b; display: flex; justify-content: space-between; margin-top: 2px; }
+
+        /* Window State Badges */
+        .win-state {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: 8px;
+        }
+        .win-open { background: #dcfce7; color: #15803d; }
+        .win-zero { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+        .win-probe { background: #fef3c7; color: #92400e; }
+
+        /* Application Rows */
+        .row-app { background-color: #fafafa; }
+        .row-probe { background-color: #fffbeb; } /* Highlights probe timeouts */
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Silly Window Syndrome (SWS) Trace</h1>
+        <p>Analyzing flow control dynamics, Nagle's algorithm, and window avoidance.</p>
+    </div>
+
+    <div class="scenario-bar">
+        <span><span class="param">Total Write:</span> <span class="val">3 x 2048 Bytes</span></span>
+        <span><span class="param">Receive Buffer:</span> <span class="val">3000 Bytes</span></span>
+        <span><span class="param">App Read Size:</span> <span class="val">256 Bytes</span></span>
+        <span><span class="param">Read Delay:</span> <span class="val">2s (Initial 15s)</span></span>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Pkt</th>
+                <th>Action / Payload</th>
+                <th>Receiver State (Buffer)</th>
+                <th>Sender / App Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- CONNECTION SETUP -->
+            <tr>
+                <td class="col-time">0.000</td>
+                <td class="col-pkt"><span class="pkt-badge">1</span></td>
+                <td class="col-act act-syn">SYN</td>
+                <td>
+                    <div class="buffer-label"><span>Empty</span><span>0/3000</span></div>
+                    <div class="buffer-track"><div class="buffer-fill" style="width: 0%"></div></div>
+                </td>
+                <td>Win 3000 Advertised</td>
+            </tr>
+            <tr>
+                <td class="col-time">0.000</td>
+                <td class="col-pkt"><span class="pkt-badge">2</span></td>
+                <td class="col-act act-syn">SYN + ACK</td>
+                <td></td>
+                <td>Connection Established</td>
+            </tr>
+
+            <!-- FIRST WRITE BLOCK -->
+            <tr>
+                <td class="col-time">0.052</td>
+                <td class="col-pkt"><span class="pkt-badge">4</span></td>
+                <td class="col-act act-push">DATA: 1460 Bytes (MSS)</td>
+                <td>
+                    <div class="buffer-label"><span>Filling...</span><span>1460/3000</span></div>
+                    <div class="buffer-track"><div class="buffer-fill" style="width: 48%"></div></div>
+                </td>
+                <td>App writes 2048B total</td>
+            </tr>
+            <tr>
+                <td class="col-time">0.053</td>
+                <td class="col-pkt"><span class="pkt-badge">5</span></td>
+                <td class="col-act act-push">DATA: 588 Bytes</td>
+                <td>
+                    <div class="buffer-label"><span>Filling...</span><span>2048/3000</span></div>
+                    <div class="buffer-track"><div class="buffer-fill" style="width: 68%"></div></div>
+                </td>
+                <td>Remnant of first write</td>
+            </tr>
+            <tr>
+                <td class="col-time">0.053</td>
+                <td class="col-pkt"><span class="pkt-badge">6</span></td>
+                <td class="col-act act-ack">ACK 2049 (Win 952)</td>
+                <td>Win = 3000 - 2048 = 952</td>
+                <td><span class="win-state win-open">Small Win</span> Sender holds (Nagle)</td>
+            </tr>
+
+            <!-- THE STALL & PROBES -->
+            <tr class="row-probe">
+                <td class="col-time">5.066</td>
+                <td class="col-pkt"><span class="pkt-badge">7</span></td>
+                <td class="col-act act-push">DATA: 952 Bytes</td>
+                <td>
+                    <div class="buffer-label"><span>FULL!</span><span>3000/3000</span></div>
+                    <div class="buffer-track"><div class="buffer-fill buffer-full" style="width: 100%"></div></div>
+                </td>
+                <td><span class="win-state win-probe">Persist Timer</span> Sender forces data</td>
+            </tr>
+            <tr>
+                <td class="col-time">5.160</td>
+                <td class="col-pkt"><span class="pkt-badge">8</span></td>
+                <td class="col-act act-ack">ACK 3001 (Win 0)</td>
+                <td>
+                    <span class="win-state win-zero">ZERO WINDOW</span>
+                </td>
+                <td>Receiver buffer completely full</td>
+            </tr>
+
+            <!-- EXPONENTIAL BACKOFF PROBES -->
+            <tr class="row-probe">
+                <td class="col-time">6.970</td>
+                <td class="col-pkt"><span class="pkt-badge">9</span></td>
+                <td class="col-act act-push">ZeroWindowProbe (1B)</td>
+                <td>Timer ~2s</td>
+                <td>Sender checking availability</td>
+            </tr>
+            <tr>
+                <td class="col-time">6.970</td>
+                <td class="col-pkt"><span class="pkt-badge">10</span></td>
+                <td class="col-act act-ack">ACK 3001 (Win 0)</td>
+                <td>Still Full</td>
+                <td><span class="win-state win-zero">Win 0</span></td>
+            </tr>
+            <tr class="row-probe">
+                <td class="col-time">10.782</td>
+                <td class="col-pkt"><span class="pkt-badge">11</span></td>
+                <td class="col-act act-push">ZeroWindowProbe (1B)</td>
+                <td>Timer ~4s (Exponential)</td>
+                <td>Sender checking availability</td>
+            </tr>
+            <tr>
+                <td class="col-time">10.782</td>
+                <td class="col-pkt"><span class="pkt-badge">12</span></td>
+                <td class="col-act act-ack">ACK 3001 (Win 0)</td>
+                <td>Still Full</td>
+                <td><span class="win-state win-zero">Win 0</span></td>
+            </tr>
+
+            <!-- APPLICATION READS START -->
+            <tr class="row-app">
+                <td class="col-time">~15.0</td>
+                <td class="col-pkt"></td>
+                <td class="col-act act-app">App Read: 256 Bytes</td>
+                <td>
+                    <div class="buffer-label"><span>Draining</span><span>2744/3000</span></div>
+                    <div class="buffer-track"><div class="buffer-fill" style="width: 91%"></div></div>
+                </td>
+                <td>Initial delay ends</td>
+            </tr>
+            <tr class="row-app">
+                <td class="col-time">~17.0</td>
+                <td class="col-pkt"></td>
+                <td class="col-act act-app">App Read: 256 Bytes</td>
+                <td>
+                    <div class="buffer-label"><span>Draining</span><span>2488/3000</span></div>
+                    <div class="buffer-track"><div class="buffer-fill" style="width: 82%"></div></div>
+                </td>
+                <td>Available: 512B (Not enough to advertise)</td>
+            </tr>
+            <tr class="row-probe">
+                <td class="col-time">18.408</td>
+                <td class="col-pkt"><span class="pkt-badge">13</span></td>
+                <td class="col-act act-push">ZeroWindowProbe (1B)</td>
+                <td>Timer ~8s</td>
+                <td>Receiver accepts 1 byte now</td>
+            </tr>
+            <tr>
+                <td class="col-time">18.408</td>
+                <td class="col-pkt"><span class="pkt-badge">14</span></td>
+                <td class="col-act act-ack">ACK 3002 (Win 0)</td>
+                <td>511 bytes free</td>
+                <td><span class="win-state win-zero">SWS Active</span> Don't advertise small win!</td>
+            </tr>
+
+            <!-- MASSIVE DRAINING & RECOVERY -->
+            <tr class="row-app">
+                <td class="col-time">19..25</td>
+                <td class="col-pkt"></td>
+                <td class="col-act act-app">4 x 256B Reads</td>
+                <td>
+                    <div class="buffer-label"><span>Opening...</span><span>1465/3000</span></div>
+                    <div class="buffer-track"><div class="buffer-fill" style="width: 48%"></div></div>
+                </td>
+                <td>1535 Bytes free (> 50% buffer)</td>
+            </tr>
+            <tr>
+                <td class="col-time">25.061</td>
+                <td class="col-pkt"><span class="pkt-badge">15</span></td>
+                <td class="col-act act-ack">ACK 3002 (Win 1535)</td>
+                <td>
+                    <span class="win-state win-open">Win Update!</span>
+                </td>
+                <td>Receiver SWS rule met (Space > MSS/Half)</td>
+            </tr>
+
+            <!-- SENDER RESUMES -->
+            <tr>
+                <td class="col-time">25.064</td>
+                <td class="col-pkt"><span class="pkt-badge">16</span></td>
+                <td class="col-act act-push">DATA: 1460 Bytes</td>
+                <td>
+                    <div class="buffer-label"><span>Filling</span><span>2925/3000</span></div>
+                    <div class="buffer-track"><div class="buffer-fill" style="width: 97%"></div></div>
+                </td>
+                <td>Sender fills the new space</td>
+            </tr>
+            <tr>
+                <td class="col-time">25.161</td>
+                <td class="col-pkt"><span class="pkt-badge">17</span></td>
+                <td class="col-act act-ack">ACK 4462 (Win 75)</td>
+                <td>75 bytes free</td>
+                <td>Advertised to avoid Window Shrinkage</td>
+            </tr>
+
+            <!-- PATTERN REPEATS -->
+            <tr class="row-app">
+                <td class="col-time">~27..29</td>
+                <td class="col-pkt"></td>
+                <td class="col-act act-app">2 x 256B Reads</td>
+                <td>Draining...</td>
+                <td>Slow app reads continue</td>
+            </tr>
+            <tr class="row-probe">
+                <td class="col-time">30.043</td>
+                <td class="col-pkt"><span class="pkt-badge">18</span></td>
+                <td class="col-act act-push">DATA: 75 Bytes</td>
+                <td>Full again</td>
+                <td>Sender uses small window</td>
+            </tr>
+            <tr>
+                <td class="col-time">30.141</td>
+                <td class="col-pkt"><span class="pkt-badge">19</span></td>
+                <td class="col-act act-ack">ACK 4537 (Win 0)</td>
+                <td><span class="win-state win-zero">Win 0</span></td>
+                <td>Back to zero window state</td>
+            </tr>
+
+            <!-- ... (Time skips for brevity) ... -->
+            
+            <!-- TERMINATION -->
+            <tr class="row-app">
+                <td class="col-time">45..55</td>
+                <td class="col-pkt"></td>
+                <td class="col-act act-app">Multiple Reads</td>
+                <td>Buffer finally clears</td>
+                <td>App consumes remaining data</td>
+            </tr>
+            <tr>
+                <td class="col-time">63.252</td>
+                <td class="col-pkt"><span class="pkt-badge">35</span></td>
+                <td class="col-act act-fin">FIN</td>
+                <td>
+                    <div class="buffer-label"><span>Empty</span><span>0/3000</span></div>
+                    <div class="buffer-track"><div class="buffer-fill" style="width: 0%"></div></div>
+                </td>
+                <td>Connection Close</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
