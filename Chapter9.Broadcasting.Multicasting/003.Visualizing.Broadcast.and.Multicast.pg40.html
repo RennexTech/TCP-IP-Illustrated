@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multicast vs Broadcast: CPU Efficiency Visualized</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            background: linear-gradient(90deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8892b0;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .comparison { grid-template-columns: 1fr; }
+        }
+
+        .scenario {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .scenario.broadcast { border-color: #ff6b6b; }
+        .scenario.multicast { border-color: #1dd1a1; }
+
+        .scenario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .broadcast h2 { color: #ff6b6b; }
+        .multicast h2 { color: #1dd1a1; }
+
+        .badge {
+            font-size: 0.5em;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .network-diagram {
+            position: relative;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Host Grid */
+        .host-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 200px;
+        }
+
+        .host {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            position: relative;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+
+        .host.interested {
+            background: rgba(29, 209, 161, 0.2);
+            border-color: #1dd1a1;
+            color: #1dd1a1;
+        }
+
+        .host.wasted {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .host.filtered {
+            background: rgba(136, 146, 176, 0.1);
+            border-color: #576574;
+            color: #576574;
+            opacity: 0.5;
+        }
+
+        .host-label {
+            position: absolute;
+            top: -25px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            font-weight: 700;
+        }
+
+        /* Server & Switch */
+        .server {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            z-index: 10;
+        }
+
+        .switch {
+            position: absolute;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 40px;
+            background: #4a5568;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: 600;
+            border: 2px solid #718096;
+            z-index: 10;
+        }
+
+        .switch::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            width: 2px;
+            height: 60px;
+            background: #718096;
+            transform: translateX(-50%);
+        }
+
+        /* Connection Lines */
+        .connection-line {
+            position: absolute;
+            top: 160px;
+            left: 50%;
+            width: 2px;
+            height: 40px;
+            background: #718096;
+            transform: translateX(-50%);
+        }
+
+        .fan-out {
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            width: 90%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #718096, transparent);
+            transform: translateX(-50%);
+        }
+
+        /* Packets */
+        .packet {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            z-index: 20;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .broadcast .packet {
+            background: #feca57;
+            color: #feca57;
+        }
+
+        .multicast .packet {
+            background: #1dd1a1;
+            color: #1dd1a1;
+        }
+
+        /* Animations */
+        @keyframes broadcastFlow {
+            0% { top: 80px; left: 50%; opacity: 1; }
+            30% { top: 140px; left: 50%; }
+            60% { top: 200px; left: var(--dest-x); opacity: 1; }
+            80% { top: var(--dest-y); left: var(--dest-x); opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { top: var(--dest-y); left: var(--dest-x); opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+        }
+
+        @keyframes multicastFlow {
+            0% { top: 80px; left: 50%; opacity: 1; }
+            30% { top: 140px; left: 50%; }
+            50% { top: 200px; left: var(--dest-x); opacity: 1; }
+            70% { top: var(--dest-y); left: var(--dest-x); opacity: 1; }
+            100% { top: var(--dest-y); left: var(--dest-x); opacity: 0; }
+        }
+
+        @keyframes nicDrop {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(20px); opacity: 0; }
+        }
+
+        @keyframes cpuSpike {
+            0% { height: 20%; }
+            50% { height: 90%; background: #ff6b6b; }
+            100% { height: 20%; }
+        }
+
+        .packet.animating {
+            animation: broadcastFlow 2s ease-in-out forwards;
+        }
+
+        .multicast .packet.animating {
+            animation: multicastFlow 1.5s ease-in-out forwards;
+        }
+
+        .drop-indicator {
+            position: absolute;
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 0.8em;
+            opacity: 0;
+            pointer-events: none;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .drop-indicator.show {
+            animation: nicDrop 1s ease-out forwards;
+        }
+
+        .multicast .drop-indicator {
+            color: #576574;
+            font-size: 0.7em;
+            top: 50%;
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .stat-label {
+            color: #a0aec0;
+            font-size: 0.9em;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .broadcast .stat-value.waste { color: #ff6b6b; }
+        .multicast .stat-value.saving { color: #1dd1a1; }
+
+        .cpu-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+            position: relative;
+        }
+
+        .cpu-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .broadcast .cpu-fill { background: #ff6b6b; }
+        .multicast .cpu-fill { background: #1dd1a1; }
+
+        .layer-label {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7em;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Controls */
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            color: #a0aec0;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 2px solid;
+        }
+
+        .explanation {
+            background: rgba(29, 209, 161, 0.1);
+            border-left: 4px solid #1dd1a1;
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 30px;
+            line-height: 1.6;
+        }
+
+        .explanation strong {
+            color: #1dd1a1;
+        }
+
+        .igmp-notice {
+            position: absolute;
+            top: 100px;
+            right: 20px;
+            background: rgba(29, 209, 161, 0.2);
+            border: 1px solid #1dd1a1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            color: #1dd1a1;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s;
+        }
+
+        .igmp-notice.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .filter-layer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 107, 107, 0.1) 10px,
+                rgba(255, 107, 107, 0.1) 20px
+            );
+            border-top: 2px dashed #ff6b6b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            color: #ff6b6b;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .multicast .filter-layer {
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(29, 209, 161, 0.1) 10px,
+                rgba(29, 209, 161, 0.1) 20px
+            );
+            border-top-color: #1dd1a1;
+            color: #1dd1a1;
+            height: 15%;
+        }
+
+        .show-layers .filter-layer {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Why Multicast Filtering Matters 🔥</h1>
+        <p class="subtitle">Visualizing CPU waste in Broadcast vs. NIC-level filtering in Multicast</p>
+
+        <div class="controls">
+            <button id="playBtn" onclick="startSimulation()">▶ Run Simulation</button>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(29, 209, 161, 0.2); border-color: #1dd1a1;"></div>
+                    <span>Interested Hosts (20)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(255, 107, 107, 0.2); border-color: #ff6b6b;"></div>
+                    <span>Wasted Processing (30)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(136, 146, 176, 0.1); border-color: #576574;"></div>
+                    <span>Filtered by NIC (0 CPU)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison">
+            <!-- BROADCAST SCENARIO -->
+            <div class="scenario broadcast" id="broadcast-scenario">
+                <div class="scenario-header">
+                    <h2>📢 UDP Broadcast <span class="badge">Old School</span></h2>
+                </div>
+
+                <div class="network-diagram">
+                    <div class="server">Server</div>
+                    <div class="switch">Switch</div>
+                    <div class="connection-line"></div>
+                    <div class="fan-out"></div>
+                    
+                    <div class="host-grid" id="broadcast-hosts">
+                        <!-- Generated by JS -->
+                    </div>
+
+                    <div class="filter-layer" id="broadcast-layer">
+                        UDP Port Check (Application Layer)
+                    </div>
+                </div>
+
+                <div class="stats-panel">
+                    <div class="stat-row">
+                        <span class="stat-label">Total Hosts Processing</span>
+                        <span class="stat-value">50/50</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Wasted CPU Cycles</span>
+                        <span class="stat-value waste" id="broadcast-waste">60%</span>
+                    </div>
+                    <div class="cpu-bar">
+                        <div class="cpu-fill" id="broadcast-cpu" style="width: 0%"></div>
+                        <span class="layer-label">CPU Load</span>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 0.85em; color: #ff6b6b; font-style: italic;" id="broadcast-status">
+                        30 hosts process up to UDP layer just to drop packet 😰
+                    </div>
+                </div>
+            </div>
+
+            <!-- MULTICAST SCENARIO -->
+            <div class="scenario multicast" id="multicast-scenario">
+                <div class="scenario-header">
+                    <h2>🎯 Multicast <span class="badge">Efficient</span></h2>
+                </div>
+
+                <div class="network-diagram">
+                    <div class="server">Server</div>
+                    <div class="switch">IGMP Snooping</div>
+                    <div class="connection-line"></div>
+                    <div class="fan-out"></div>
+                    
+                    <div class="igmp-notice" id="igmp-notice">
+                        📋 IGMP Join Sent
+                    </div>
+
+                    <div class="host-grid" id="multicast-hosts">
+                        <!-- Generated by JS -->
+                    </div>
+
+                    <div class="filter-layer" id="multicast-layer">
+                        NIC Hardware Filter (Layer 2)
+                    </div>
+                </div>
+
+                <div class="stats-panel">
+                    <div class="stat-row">
+                        <span class="stat-label">Total Hosts Processing</span>
+                        <span class="stat-value saving">20/50</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Wasted CPU Cycles</span>
+                        <span class="stat-value saving">0%</span>
+                    </div>
+                    <div class="cpu-bar">
+                        <div class="cpu-fill" id="multicast-cpu" style="width: 0%"></div>
+                        <span class="layer-label">CPU Load</span>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 0.85em; color: #1dd1a1; font-style: italic;" id="multicast-status">
+                        NIC drops non-matching MACs → Zero CPU interruption ✨
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="explanation">
+            <strong>💡 The Happy Takeaway:</strong> In multicast, the NIC (Network Interface Card) filters packets using the Multicast MAC address (01-00-5e-...) before they ever reach the CPU. Only subscribed hosts process the packet up the network stack (IP → UDP → App). Non-interested hosts drop the packet at the hardware layer—literally zero CPU cycles wasted. This is why your server doesn't spike to 100% when streaming video or handling discovery protocols!
+        </div>
+    </div>
+
+    <script>
+        let isRunning = false;
+        
+        function createHosts() {
+            const broadcastGrid = document.getElementById('broadcast-hosts');
+            const multicastGrid = document.getElementById('multicast-hosts');
+            
+            broadcastGrid.innerHTML = '';
+            multicastGrid.innerHTML = '';
+            
+            // Create 50 hosts for each scenario
+            for (let i = 0; i < 50; i++) {
+                const isInterested = i < 20; // First 20 are interested
+                
+                // Broadcast hosts
+                const bHost = document.createElement('div');
+                bHost.className = `host ${isInterested ? 'interested' : 'wasted'}`;
+                bHost.id = `b-host-${i}`;
+                bHost.innerHTML = `
+                    <span style="font-size: 0.6em;">Host ${i+1}</span>
+                    ${!isInterested ? '<span style="font-size: 0.5em; margin-top: 2px;">DROP</span>' : ''}
+                `;
+                broadcastGrid.appendChild(bHost);
+                
+                // Multicast hosts
+                const mHost = document.createElement('div');
+                mHost.className = `host ${isInterested ? 'interested' : 'filtered'}`;
+                mHost.id = `m-host-${i}`;
+                mHost.innerHTML = `
+                    <span style="font-size: 0.6em;">Host ${i+1}</span>
+                    ${!isInterested ? '<span style="font-size: 0.5em; margin-top: 2px;">NIC DROP</span>' : ''}
+                `;
+                multicastGrid.appendChild(mHost);
+            }
+        }
+
+        function createPacket(scenario, hostIndex, delay) {
+            setTimeout(() => {
+                const scenarioEl = document.querySelector(`.${scenario}`);
+                const diagram = scenarioEl.querySelector('.network-diagram');
+                const host = document.getElementById(`${scenario === 'broadcast' ? 'b' : 'm'}-host-${hostIndex}`);
+                const hostRect = host.getBoundingClientRect();
+                const diagramRect = diagram.getBoundingClientRect();
+                
+                const packet = document.createElement('div');
+                packet.className = 'packet';
+                
+                // Calculate destination relative to diagram
+                const destX = hostRect.left - diagramRect.left + (hostRect.width / 2);
+                const destY = hostRect.top - diagramRect.top + (hostRect.height / 2);
+                
+                packet.style.setProperty('--dest-x', destX + 'px');
+                packet.style.setProperty('--dest-y', destY + 'px');
+                packet.style.left = '50%';
+                packet.style.top = '80px';
+                
+                diagram.appendChild(packet);
+                
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    packet.classList.add('animating');
+                });
+                
+                // Show drop indicator for wasted hosts in broadcast
+                if (scenario === 'broadcast' && hostIndex >= 20) {
+                    setTimeout(() => {
+                        const drop = document.createElement('div');
+                        drop.className = 'drop-indicator';
+                        drop.textContent = 'DROP @ UDP';
+                        drop.style.left = destX + 'px';
+                        drop.style.top = (destY - 20) + 'px';
+                        drop.style.transform = 'translate(-50%, -50%)';
+                        diagram.appendChild(drop);
+                        
+                        requestAnimationFrame(() => {
+                            drop.classList.add('show');
+                        });
+                        
+                        setTimeout(() => drop.remove(), 1000);
+                        
+                        // Flash the host red to show CPU waste
+                        host.style.background = 'rgba(255, 107, 107, 0.6)';
+                        setTimeout(() => {
+                            host.style.background = '';
+                        }, 500);
+                    }, 1600);
+                }
+                
+                // Remove packet after animation
+                setTimeout(() => {
+                    packet.remove();
+                }, 2500);
+                
+            }, delay);
+        }
+
+        function updateCPU(scenario, percentage, duration = 1000) {
+            const cpuBar = document.getElementById(`${scenario}-cpu`);
+            cpuBar.style.width = percentage + '%';
+            
+            if (scenario === 'broadcast') {
+                cpuBar.style.background = percentage > 50 ? '#ff6b6b' : '#feca57';
+            }
+        }
+
+        async function startSimulation() {
+            if (isRunning) return;
+            isRunning = true;
+            
+            const btn = document.getElementById('playBtn');
+            btn.disabled = true;
+            btn.textContent = 'Running...';
+            
+            createHosts();
+            
+            // Reset CPUs
+            updateCPU('broadcast', 0);
+            updateCPU('multicast', 0);
+            
+            // Show layer indicators
+            document.getElementById('broadcast-scenario').classList.add('show-layers');
+            document.getElementById('multicast-scenario').classList.add('show-layers');
+            
+            // IGMP join notice for multicast
+            setTimeout(() => {
+                document.getElementById('igmp-notice').classList.add('show');
+            }, 500);
+            
+            // Phase 1: Broadcast chaos (send to all 50)
+            updateCPU('broadcast', 85);
+            document.getElementById('broadcast-status').textContent = 'All 50 hosts interrupted! 30 wasting CPU...';
+            
+            for (let i = 0; i < 50; i++) {
+                createPacket('broadcast', i, i * 50);
+            }
+            
+            await sleep(1500);
+            
+            // Phase 2: Multicast precision (send only to 20)
+            updateCPU('multicast', 35); // Only 40% load (20/50)
+            document.getElementById('multicast-status').textContent = 'Only 20 hosts process packet. 30 filtered by NIC.';
+            
+            for (let i = 0; i < 20; i++) {
+                createPacket('multicast', i, i * 80);
+            }
+            
+            // Show filtered drops for multicast (visual effect at switch level)
+            for (let i = 20; i < 50; i++) {
+                setTimeout(() => {
+                    const host = document.getElementById(`m-host-${i}`);
+                    host.style.borderColor = '#576574';
+                    setTimeout(() => {
+                        host.style.borderColor = '';
+                    }, 300);
+                }, 1000 + (i * 30));
+            }
+            
+            await sleep(3000);
+            
+            // Final state
+            document.getElementById('broadcast-status').innerHTML = 'Result: <strong>60% CPU waste</strong> on uninterested hosts';
+            document.getElementById('multicast-status').innerHTML = 'Result: <strong>Zero waste</strong> - NIC hardware filtering ✨';
+            
+            btn.disabled = false;
+            btn.textContent = '▶ Run Again';
+            isRunning = false;
+            
+            // Hide IGMP notice after delay
+            setTimeout(() => {
+                document.getElementById('igmp-notice').classList.remove('show');
+            }, 2000);
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Initialize on load
+        createHosts();
+    </script>
+</body>
+</html>

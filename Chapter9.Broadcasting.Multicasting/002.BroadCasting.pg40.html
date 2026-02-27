@@ -1,0 +1,461 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multicast Frame Filtering Journey</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 50%, #90caf9 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 40px;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: relative;
+        }
+        
+        .layer {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .layer:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+            background: rgba(255, 255, 255, 0.35);
+        }
+        
+        .layer-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #0d47a1;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .layer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .process-box {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            min-width: 150px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .process-box:hover {
+            transform: scale(1.03);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .process-box.glowing {
+            box-shadow: 0 0 20px rgba(33, 150, 243, 0.4), 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid rgba(33, 150, 243, 0.7);
+            margin: 20px auto;
+            position: relative;
+            animation: pulse 2s infinite;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.7; transform: scale(1); }
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(5px);
+        }
+        
+        .icon {
+            font-size: 24px;
+            color: #1565c0;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-item:hover .icon {
+            transform: scale(1.2);
+            color: #0d47a1;
+        }
+        
+        .checkmark {
+            color: #2e7d32;
+            font-weight: bold;
+            text-shadow: 0 0 4px rgba(46, 125, 50, 0.3);
+        }
+        
+        .cross {
+            color: #c62828;
+            font-weight: bold;
+            text-shadow: 0 0 4px rgba(198, 40, 40, 0.3);
+        }
+        
+        .ip-address {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .ip-address:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .socket {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(33, 150, 243, 0.5);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .socket:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .socket::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 24px;
+            height: 24px;
+            background: #2e7d32;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+            box-shadow: 0 0 8px rgba(46, 125, 50, 0.5);
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+        
+        .frame-icon {
+            font-size: 42px;
+            animation: float 3s ease-in-out infinite;
+            color: #1565c0;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .dropped {
+            opacity: 0.4;
+            text-decoration: line-through;
+            transition: all 0.3s ease;
+        }
+        
+        .accepted {
+            font-weight: 600;
+            color: #0d47a1;
+            text-shadow: 0 0 8px rgba(13, 71, 161, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .legend:hover {
+            background: rgba(255, 255, 255, 0.85);
+            transform: translateY(-5px);
+        }
+        
+        .legend h3 {
+            margin-top: 0;
+            color: #0d47a1;
+            border-bottom: 1px solid rgba(13, 71, 161, 0.2);
+            padding-bottom: 8px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+        }
+        
+        .legend-icon {
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .legend-item:hover .legend-icon {
+            transform: scale(1.2);
+        }
+        
+        @media (max-width: 768px) {
+            .legend {
+                position: static;
+                margin-top: 30px;
+            }
+            
+            .layer-content {
+                flex-direction: column;
+            }
+            
+            .flowchart {
+                gap: 20px;
+            }
+            
+            .layer {
+                padding: 20px 15px;
+            }
+            
+            .layer-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Multicast Frame Filtering Journey</h1>
+        
+        <div class="legend">
+            <h3>Legend</h3>
+            <div class="legend-item">
+                <span class="legend-icon">✓</span>
+                <span>Passed/Accepted</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-icon">✗</span>
+                <span>Dropped/Filtered</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-icon">📦</span>
+                <span>Frame/Packet</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-icon">🔍</span>
+                <span>Filtering</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-icon">🌟</span>
+                <span>Glowing/Active</span>
+            </div>
+        </div>
+        
+        <div class="flowchart">
+            <!-- NIC Hardware Layer -->
+            <div class="layer">
+                <div class="layer-title">NIC Hardware</div>
+                <div class="layer-content">
+                    <div class="process-box">
+                        <div class="frame-icon">📦</div>
+                        <div>Frame In</div>
+                    </div>
+                    <div class="filter-item">
+                        <span class="icon">🔍</span>
+                        <span>CRC Check</span>
+                        <span class="checkmark">✓</span>
+                    </div>
+                    <div class="filter-item">
+                        <span class="icon">🏷️</span>
+                        <span>VLAN Filter</span>
+                        <span class="checkmark">✓</span>
+                    </div>
+                    <div class="filter-item">
+                        <span class="icon">🎯</span>
+                        <span>MAC Filter</span>
+                        <span class="checkmark">✓</span>
+                    </div>
+                    <div class="process-box glowing">
+                        <div class="frame-icon">📦</div>
+                        <div class="accepted">Frame Accepted</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- Device Driver Layer -->
+            <div class="layer">
+                <div class="layer-title">Device Driver</div>
+                <div class="layer-content">
+                    <div class="process-box">
+                        <div class="frame-icon">📦</div>
+                        <div>Frame Processing</div>
+                    </div>
+                    <div class="filter-item">
+                        <span class="icon">🌐</span>
+                        <span>IPv4</span>
+                        <span class="checkmark">✓</span>
+                    </div>
+                    <div class="filter-item">
+                        <span class="icon">🌐</span>
+                        <span>IPv6</span>
+                        <span class="cross">✗</span>
+                    </div>
+                    <div class="filter-item">
+                        <span class="icon">🔧</span>
+                        <span>ARP</span>
+                        <span class="cross">✗</span>
+                    </div>
+                    <div class="filter-item">
+                        <span class="icon">👥</span>
+                        <span>Multicast Group Check</span>
+                        <span class="checkmark">✓</span>
+                    </div>
+                    <div class="process-box glowing">
+                        <div class="frame-icon">📦</div>
+                        <div class="accepted">Packet Passed</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- IP Layer -->
+            <div class="layer">
+                <div class="layer-title">IP Layer</div>
+                <div class="layer-content">
+                    <div class="process-box">
+                        <div class="frame-icon">📦</div>
+                        <div>IP Packet</div>
+                    </div>
+                    <div class="filter-item">
+                        <span class="icon">🌟</span>
+                        <div class="ip-address">Source IP: 192.168.1.100</div>
+                        <span class="checkmark">✓</span>
+                    </div>
+                    <div class="filter-item">
+                        <span class="icon">🌟</span>
+                        <div class="ip-address">Dest IP: 239.1.2.3</div>
+                        <span class="checkmark">✓</span>
+                    </div>
+                    <div class="filter-item dropped">
+                        <span class="icon">🌟</span>
+                        <div class="ip-address">Invalid IP: Dropped</div>
+                        <span class="cross">✗</span>
+                    </div>
+                    <div class="process-box glowing">
+                        <div class="frame-icon">📦</div>
+                        <div class="accepted">IP Validated</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- UDP Layer -->
+            <div class="layer">
+                <div class="layer-title">UDP Layer</div>
+                <div class="layer-content">
+                    <div class="process-box">
+                        <div class="frame-icon">📦</div>
+                        <div>UDP Datagram</div>
+                    </div>
+                    <div class="filter-item">
+                        <span class="icon">🔢</span>
+                        <span>Checksum Validation</span>
+                        <span class="checkmark">✓</span>
+                    </div>
+                    <div class="socket">
+                        <div class="icon">🎧</div>
+                        <div>Socket Listening</div>
+                        <div class="ip-address">Port: 5000</div>
+                        <div class="accepted">Active</div>
+                    </div>
+                    <div class="filter-item dropped">
+                        <span class="icon">🎧</span>
+                        <span>No Listener</span>
+                        <span class="cross">✗</span>
+                    </div>
+                    <div class="process-box glowing">
+                        <div class="frame-icon">📦</div>
+                        <div class="accepted">Packet Delivered!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+```
