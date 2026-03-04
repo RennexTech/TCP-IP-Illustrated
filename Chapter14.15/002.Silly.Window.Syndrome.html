@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP SWS Avoidance Trace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: #f1f5f9; }
+        .mono { font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        
+        /* Wireshark-inspired but modernized row colors */
+        .row-handshake { background-color: rgba(186, 230, 253, 0.05); border-left: 4px solid #0ea5e9; }
+        .row-data { background-color: rgba(255, 255, 255, 0.02); border-left: 4px solid #64748b; }
+        .row-zero-window { background-color: rgba(244, 63, 94, 0.1); border-left: 4px solid #f43f5e; color: #fda4af; }
+        .row-probe { background-color: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; color: #fcd34d; }
+        .row-fin { background-color: rgba(168, 85, 247, 0.1); border-left: 4px solid #a855f7; }
+        
+        .highlight-sws { outline: 2px solid #34d399; position: relative; }
+        .highlight-sws::after { 
+            content: 'SWS AVOIDANCE ACTIVE'; 
+            position: absolute; right: 10px; top: -10px; 
+            background: #059669; color: white; font-size: 10px; 
+            padding: 2px 6px; border-radius: 4px; font-weight: bold;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body class="p-4 md:p-10 flex flex-col items-center">
+
+    <!-- Container -->
+    <div class="w-full max-w-6xl bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-800">
+        
+        <!-- Header Section -->
+        <div class="p-6 bg-slate-800 border-b border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-blue-500 rounded-lg">
+                        <i data-lucide="activity" class="text-white w-6 h-6"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold">TCP Trace: Silly Window Syndrome (SWS)</h1>
+                </div>
+                <p class="text-slate-400 mt-1 flex items-center gap-2">
+                    <span class="bg-slate-700 px-2 py-0.5 rounded text-xs text-blue-300">sws-demonstrate.td</span>
+                    <span class="text-xs">• Analysis of Window Probe & Delayed Transmission</span>
+                </p>
+            </div>
+            <div class="flex gap-2">
+                <div class="bg-slate-700/50 px-4 py-2 rounded-xl border border-slate-600">
+                    <span class="block text-[10px] text-slate-500 font-bold uppercase">Sender</span>
+                    <span class="mono text-blue-400">10.0.0.100</span>
+                </div>
+                <div class="bg-slate-700/50 px-4 py-2 rounded-xl border border-slate-600">
+                    <span class="block text-[10px] text-slate-500 font-bold uppercase">Receiver</span>
+                    <span class="mono text-emerald-400">10.0.0.8</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Packet Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider font-semibold">
+                    <tr>
+                        <th class="py-3 px-4 w-12 text-center">No.</th>
+                        <th class="py-3 px-4 w-24">Time</th>
+                        <th class="py-3 px-4 w-32">Source</th>
+                        <th class="py-3 px-4">Protocol / Info</th>
+                        <th class="py-3 px-4 text-right">Window</th>
+                    </tr>
+                </thead>
+                <tbody class="mono">
+                    <!-- Handshake -->
+                    <tr class="row-handshake border-b border-slate-800">
+                        <td class="py-2 px-4 text-center text-slate-500">1</td>
+                        <td class="py-2 px-4 text-slate-400">0.000000</td>
+                        <td class="py-2 px-4 text-blue-400">10.0.0.100</td>
+                        <td class="py-2 px-4"><span class="text-blue-400 font-bold">[SYN]</span> Seq=0 Win=65535 Len=0 MSS=1460 SACK_PERM=1</td>
+                        <td class="py-2 px-4 text-right">65k</td>
+                    </tr>
+                    <tr class="row-handshake border-b border-slate-800">
+                        <td class="py-2 px-4 text-center text-slate-500">2</td>
+                        <td class="py-2 px-4 text-slate-400">0.000332</td>
+                        <td class="py-2 px-4 text-emerald-400">10.0.0.8</td>
+                        <td class="py-2 px-4"><span class="text-blue-400 font-bold">[SYN, ACK]</span> Seq=0 Ack=1 Win=3000 Len=0 MSS=1460 SACK_PERM=1</td>
+                        <td class="py-2 px-4 text-right text-yellow-500">3000</td>
+                    </tr>
+
+                    <!-- Initial Transfer -->
+                    <tr class="row-data border-b border-slate-800">
+                        <td class="py-2 px-4 text-center text-slate-500">5</td>
+                        <td class="py-2 px-4 text-slate-400">0.053057</td>
+                        <td class="py-2 px-4 text-blue-400">10.0.0.100</td>
+                        <td class="py-2 px-4"><span class="text-slate-200 font-bold">[PSH, ACK]</span> Seq=1461 Ack=1 Win=65535 <span class="text-emerald-400">Len=588</span></td>
+                        <td class="py-2 px-4 text-right">65k</td>
+                    </tr>
+
+                    <!-- SWS AVOIDANCE POINT -->
+                    <tr class="row-data highlight-sws border-b border-slate-800">
+                        <td class="py-2 px-4 text-center text-slate-500">7</td>
+                        <td class="py-2 px-4 text-slate-400 font-bold text-emerald-400">5.066108</td>
+                        <td class="py-2 px-4 text-blue-400">10.0.0.100</td>
+                        <td class="py-2 px-4"><span class="text-slate-200 font-bold">[ACK]</span> Seq=2049 Ack=1 Win=65535 <span class="text-emerald-400">Len=952</span></td>
+                        <td class="py-2 px-4 text-right">65k</td>
+                    </tr>
+
+                    <!-- Zero Window Cycles -->
+                    <tr class="row-zero-window border-b border-slate-800/50">
+                        <td class="py-2 px-4 text-center text-slate-500">8</td>
+                        <td class="py-2 px-4 text-slate-400">5.160715</td>
+                        <td class="py-2 px-4 text-emerald-400">10.0.0.8</td>
+                        <td class="py-2 px-4 font-bold text-rose-400 uppercase tracking-tighter">[TCP ZeroWindow] 6666 > 3699 [ACK] Seq=1 Ack=3001 Win=0</td>
+                        <td class="py-2 px-4 text-right">0</td>
+                    </tr>
+                    <tr class="row-probe border-b border-slate-800/50">
+                        <td class="py-2 px-4 text-center text-slate-500">9</td>
+                        <td class="py-2 px-4 text-slate-400">6.970589</td>
+                        <td class="py-2 px-4 text-blue-400">10.0.0.100</td>
+                        <td class="py-2 px-4 italic font-medium">[TCP ZeroWindowProbe] 3699 > 6666 [ACK] Seq=3001 Ack=1 Win=65535 Len=1</td>
+                        <td class="py-2 px-4 text-right">65k</td>
+                    </tr>
+                    <tr class="row-zero-window border-b border-slate-800/50">
+                        <td class="py-2 px-4 text-center text-slate-500">10</td>
+                        <td class="py-2 px-4 text-slate-400">6.970754</td>
+                        <td class="py-2 px-4 text-emerald-400">10.0.0.8</td>
+                        <td class="py-2 px-4">[TCP ZeroWindowProbeAck] [TCP ZeroWindow] Ack=3001 Win=0</td>
+                        <td class="py-2 px-4 text-right">0</td>
+                    </tr>
+
+                    <!-- Receiver SWS Point -->
+                    <tr class="row-zero-window border-b border-slate-800/50 highlight-sws">
+                        <td class="py-2 px-4 text-center text-slate-500">14</td>
+                        <td class="py-2 px-4 text-slate-400">18.408384</td>
+                        <td class="py-2 px-4 text-emerald-400">10.0.0.8</td>
+                        <td class="py-2 px-4 italic">[TCP ZeroWindow] Receiver has consumed data but still advertises 0 to avoid SWS.</td>
+                        <td class="py-2 px-4 text-right text-rose-500">0</td>
+                    </tr>
+
+                    <tr class="row-data border-b border-slate-800">
+                        <td class="py-2 px-4 text-center text-slate-500">15</td>
+                        <td class="py-2 px-4 text-slate-400">25.061290</td>
+                        <td class="py-2 px-4 text-emerald-400">10.0.0.8</td>
+                        <td class="py-2 px-4 text-emerald-400 font-bold">[TCP Window Update] Ack=3002 Win=1535</td>
+                        <td class="py-2 px-4 text-right">1535</td>
+                    </tr>
+
+                    <tr class="row-data border-b border-slate-800">
+                        <td class="py-2 px-4 text-center text-slate-500">16</td>
+                        <td class="py-2 px-4 text-slate-400">25.064378</td>
+                        <td class="py-2 px-4 text-blue-400">10.0.0.100</td>
+                        <td class="py-2 px-4">[PSH, ACK] Seq=3002 Ack=1 Win=65535 Len=1460</td>
+                        <td class="py-2 px-4 text-right">65k</td>
+                    </tr>
+
+                    <!-- Termination -->
+                    <tr class="row-fin border-b border-slate-800">
+                        <td class="py-2 px-4 text-center text-slate-500">32</td>
+                        <td class="py-2 px-4 text-slate-400">43.711676</td>
+                        <td class="py-2 px-4 text-blue-400">10.0.0.100</td>
+                        <td class="py-2 px-4 font-bold text-purple-400">[FIN, ACK] Seq=6145 Ack=1 Win=65535 Len=0</td>
+                        <td class="py-2 px-4 text-right">65k</td>
+                    </tr>
+                    <tr class="row-fin">
+                        <td class="py-2 px-4 text-center text-slate-500">35</td>
+                        <td class="py-2 px-4 text-slate-400">63.252390</td>
+                        <td class="py-2 px-4 text-emerald-400">10.0.0.8</td>
+                        <td class="py-2 px-4 font-bold text-purple-400">[FIN, ACK] Seq=1 Ack=6146 Win=3000 Len=0</td>
+                        <td class="py-2 px-4 text-right">3000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Descriptive Caption Section -->
+        <div class="p-8 bg-slate-950/50 border-t border-slate-700">
+            <h3 class="text-xl font-semibold mb-4 text-white flex items-center gap-2">
+                <i data-lucide="microscope" class="w-5 h-5 text-emerald-400"></i>
+                Technical Analysis: SWS Avoidance
+            </h3>
+            <div class="grid md:grid-cols-2 gap-8 text-sm leading-relaxed text-slate-400">
+                <div class="space-y-3">
+                    <p>
+                        <strong class="text-slate-200">Sender-Side Strategy:</strong> At <code class="text-emerald-400">t=0.053</code> (Packet 5), the sender holds back. Even though it has more data, it waits until <code class="text-emerald-400 font-bold">t=5.066</code> to transmit. This avoids sending tiny segments that would waste overhead.
+                    </p>
+                    <p>
+                        <strong class="text-slate-200">The Probe Mechanism:</strong> Packet 9 shows a <span class="text-amber-500">ZeroWindowProbe</span>. The sender forces the receiver to respond with an ACK to see if the window has finally opened up.
+                    </p>
+                </div>
+                <div class="space-y-3">
+                    <p>
+                        <strong class="text-slate-200">Receiver-Side Strategy:</strong> Seen at Packet 14, the receiver continues to advertise a <span class="text-rose-500">Zero Window</span> even after data is consumed. It waits until it can offer a "respectable" window size (1 MSS or half the buffer) before letting the floodgates open.
+                    </p>
+                    <p class="bg-blue-900/20 p-3 border border-blue-500/30 rounded-lg italic">
+                        This dance prevents "Silly Window Syndrome"—a state where TCP moves data in tiny 1-byte chunks, effectively killing throughput.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
