@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP CUBIC: The Modern Standard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #020617;
+            color: #f8fafc;
+        }
+        .cubic-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .cubic-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawCubic 4s forwards ease-in-out;
+        }
+        @keyframes drawCubic {
+            to { stroke-dashoffset: 0; }
+        }
+        .glow-cyan {
+            text-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-12 flex justify-center items-center min-h-screen">
+
+    <div class="max-w-5xl w-full space-y-8">
+        
+        <!-- Header -->
+        <div class="text-center space-y-4">
+            <h1 class="text-4xl md:text-5xl font-black glow-cyan tracking-tight">TCP CUBIC</h1>
+            <p class="text-slate-400 max-w-2xl mx-auto italic">The default logic for Linux and modern high-speed networks.</p>
+        </div>
+
+        <!-- The 3 Phases of the Cubic Curve -->
+        <div class="grid lg:grid-cols-3 gap-6">
+            <div class="cubic-card p-6 border-b-4 border-emerald-500">
+                <div class="flex items-center gap-3 mb-3">
+                    <i data-lucide="trending-up" class="text-emerald-400"></i>
+                    <h3 class="font-bold">Concave Growth</h3>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">After a loss, CUBIC grows quickly at first but slows down as it approaches its previous high speed.</p>
+            </div>
+
+            <div class="cubic-card p-6 border-b-4 border-cyan-500">
+                <div class="flex items-center gap-3 mb-3">
+                    <i data-lucide="minus" class="text-cyan-400"></i>
+                    <h3 class="font-bold">The Plateau</h3>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">Near the old limit, it levels off. This makes it very stable and "friendly" to other users on the network.</p>
+            </div>
+
+            <div class="cubic-card p-6 border-b-4 border-purple-500">
+                <div class="flex items-center gap-3 mb-3">
+                    <i data-lucide="rocket" class="text-purple-400"></i>
+                    <h3 class="font-bold">Convex Probe</h3>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">If no loss happens at the plateau, CUBIC starts searching for even more speed, growing faster and faster.</p>
+            </div>
+        </div>
+
+        <!-- Visual Curve Display -->
+        <div class="cubic-card p-8 md:p-12">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative bg-slate-950 rounded-2xl p-6 border border-white/5 shadow-2xl">
+                    <svg viewBox="0 0 400 200" class="w-full h-full">
+                        <!-- Grid Lines -->
+                        <line x1="40" y1="180" x2="380" y2="180" stroke="#1e293b" />
+                        <line x1="40" y1="20" x2="40" y2="180" stroke="#1e293b" />
+                        
+                        <!-- The Cubic Path -->
+                        <!-- Points roughly tracing a cubic curve: loss -> concave -> plateau -> convex -->
+                        <path d="M 40 160 C 100 80, 200 80, 280 80 S 360 40, 380 20" 
+                              fill="none" 
+                              stroke="#22d3ee" 
+                              stroke-width="4" 
+                              class="cubic-line" />
+                        
+                        <!-- Labels -->
+                        <text x="380" y="195" fill="#64748b" font-size="10" text-anchor="end">Time Since Last Loss</text>
+                        <text x="35" y="30" fill="#64748b" font-size="10" transform="rotate(-90 35,30)" text-anchor="end">Window Size</text>
+                        
+                        <!-- Markers -->
+                        <circle cx="230" cy="80" r="4" fill="#fbbf24" />
+                        <text x="235" y="95" fill="#fbbf24" font-size="10">Stability Point</text>
+                    </svg>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-cyan-400">Why a Cubic Function?</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Classic TCP uses a straight line. CUBIC uses a <span class="text-cyan-400 font-bold">"S-Curve"</span>. 
+                        This shape is perfect because it spend most of its time near the <span class="italic">estimated ideal speed</span>, reducing the "sawtooth" jitter found in older versions.
+                    </p>
+                    <div class="bg-white/5 p-4 rounded-xl border-l-4 border-cyan-500">
+                        <p class="text-xs text-slate-400 font-medium">
+                            It scales effortlessly. Whether you are on a 10 Mbps home link or a 100 Gbps data center pipe, CUBIC adapts its growth automatically.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Analogy -->
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 border border-white/10">
+            <div class="flex flex-col md:flex-row gap-8 items-center">
+                <div class="shrink-0 bg-cyan-500/20 p-5 rounded-2xl">
+                    <i data-lucide="ship" class="w-10 h-10 text-cyan-400"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-2">The Cruise Ship Analogy</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        If Classic TCP is like a car constantly hitting the gas and then the brakes, CUBIC is like a massive <span class="text-white font-semibold">Cruise Ship</span>. 
+                        It takes a bit to get up to speed, but once it finds the right velocity, it stays there with incredible stability, only adjusting its power when it is absolutely sure it can go faster.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
