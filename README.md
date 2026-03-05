@@ -35,4 +35,6 @@ I rely heavily on **images and diagrams** so processing dense networking textboo
 
 ~ Google Sites: Under construction (March 2026)
 
+~ Feeling Generous? Send me an email, cool stuff or https://buymeacoffee.com/rennex 
+
 The rest is up to you. Enjoy! 😊
