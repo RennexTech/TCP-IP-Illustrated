@@ -3,16 +3,17 @@ This repository contains my notes from multiple networking books after months of
 
 It's meant for **networking enthusiasts, CCNA learners, reverse engineers, and developers** who want to understand how networks actually work.
 
+<img width="674" height="348" alt="image" src="https://github.com/user-attachments/assets/3fdfb9ed-bb87-48e7-b94f-b9413fde5888" />
+
 From software-side network programming to hardware configuration — it’s all covered.
 
 The notes are organized into **chapters and a table of contents**, so you can jump to whatever interests you.
 
-
 Knowledge hoarded is knowledge lost — so it's free.
 
-Grab some coffee ☕ and enjoy.
+<img width="1243" height="768" alt="image" src="https://github.com/user-attachments/assets/c570f64a-2586-4835-b0bd-66d1dd30aed9" />
 
-<img width="674" height="348" alt="image" src="https://github.com/user-attachments/assets/3fdfb9ed-bb87-48e7-b94f-b9413fde5888" />
+Grab some coffee ☕ and enjoy.
 
 ---
 
