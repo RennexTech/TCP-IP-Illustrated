@@ -1,9 +1,9 @@
-# Networking & TCP/IP Stuff (Yes… it’s a lot)
-
 Networking and TCP/IP **in depth**.  
 This repository contains my notes from multiple networking books after months of reading, summarizing, and experimenting.
 
 It's meant for **networking enthusiasts, CCNA learners, reverse engineers, and developers** who want to understand how networks actually work.
+
+From software-side network programming to hardware configuration — it’s all covered.
 
 The notes are organized into **chapters and a table of contents**, so you can jump to whatever interests you.
 
@@ -11,15 +11,7 @@ Knowledge hoarded is knowledge lost — so it's free.
 
 Grab some coffee ☕ and enjoy.
 
----
-
-## Books Used
-
-<img src="https://github.com/user-attachments/assets/f2f3eb7c-6fe4-4e6a-b8ff-a46f1a421ada" width="700"/>
-
----
-
-<img src="https://github.com/user-attachments/assets/32a38435-dba4-4953-8b2c-7a06e6af7908" width="700"/>
+<img width="674" height="348" alt="image" src="https://github.com/user-attachments/assets/3fdfb9ed-bb87-48e7-b94f-b9413fde5888" />
 
 ---
 
@@ -37,8 +29,12 @@ I rely heavily on **images and diagrams** so processing dense networking textboo
 
 ---
 
-**~ RennexTech**  
-YouTube: *Lifeen*  
-Google Sites: *Under construction (March 2026)*
+~ RennexTech (email)
+
+~ YouTube: Lifeen
+
+~ Google Sites: Under construction (March 2026)
+
+~ Feeling Generous? Send me an email, cool stuff or https://buymeacoffee.com/rennex 
 
 The rest is up to you. Enjoy! 😊
