@@ -30,7 +30,9 @@ I rely heavily on **images and diagrams** so processing dense networking textboo
 ---
 
 ~ RennexTech (email)
-YouTube: Lifeen
-Google Sites: Under construction (March 2026)
+
+~ YouTube: Lifeen
+
+~ Google Sites: Under construction (March 2026)
 
 The rest is up to you. Enjoy! 😊
