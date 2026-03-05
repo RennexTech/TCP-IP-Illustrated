@@ -7,6 +7,8 @@ It's meant for **networking enthusiasts, CCNA learners, reverse engineers, and d
 
 From software-side network programming to hardware configuration — it’s all covered.
 
+<img width="1420" height="947" alt="image" src="https://github.com/user-attachments/assets/64ac0007-3a70-4035-ad19-ddeb92850d62" />
+
 The notes are organized into **chapters and a table of contents**, so you can jump to whatever interests you.
 
 Knowledge hoarded is knowledge lost — so it's free.
