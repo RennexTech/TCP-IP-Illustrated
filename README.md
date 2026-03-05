@@ -7,6 +7,8 @@ From software-side network programming to hardware configuration — it’s all 
 
 The notes are organized into **chapters and a table of contents**, so you can jump to whatever interests you.
 
+<img width="726" height="427" alt="image" src="https://github.com/user-attachments/assets/6edd73ee-0fc4-47c2-aed3-7f5ee49d642d" />
+
 Knowledge hoarded is knowledge lost — so it's free.
 
 Grab some coffee ☕ and enjoy.
