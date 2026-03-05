@@ -11,7 +11,7 @@ The notes are organized into **chapters and a table of contents**, so you can ju
 
 Knowledge hoarded is knowledge lost — so it's free.
 
-<img width="1243" height="768" alt="image" src="https://github.com/user-attachments/assets/c570f64a-2586-4835-b0bd-66d1dd30aed9" />
+
 
 Grab some coffee ☕ and enjoy.
 
